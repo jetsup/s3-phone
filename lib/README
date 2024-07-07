@@ -1,0 +1,10 @@
+# Libs
+
+This directory contains the libraries that are used by the project. The libraries are stored in the `lib` directory. The `lib` directory contains the following subdirectories:
+
+- `lib/README`: This file.
+- `lib/ui`: Contains the user interface library. This is where all the user interface components are stored.
+
+## Note
+
+The `ui` for now is empty as the user interface library is not yet finished and is still under development. Putting it here for now makes the building process to take longer since the whole project is rebuilt every time a change is made to the library. This will be fixed in the future.

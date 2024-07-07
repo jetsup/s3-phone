@@ -24,5 +24,11 @@ jobs:
             - name: Set up PlatformIO
               run: python3 -m pip install platformio
 
+            - name: Install platformIO dependencies
+              run: platformio pkg install
+
+            - name: Copy lvgl library
+              run: cp -r resources/lv_conf.sample.h .pio/libdeps/4d_systems_esp32s3_gen4_r8n16/lv_conf.h
+
             - name: Build firmware
               run: platformio run

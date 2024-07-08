@@ -1,13 +1,17 @@
 #include <Arduino.h>
 #include <lvgl.h>
-#include "ui.h"
 
 #include <Display.hpp>
 #include <GSM.hpp>
+#include <Helpers.hpp>
+
+#include "ui.h"
 
 GSM gsm(GSM_RX, GSM_TX, GSM_BAUD);
 static Display display(TFT_CLK, TFT_MOSI, TFT_MISO, TFT_CS, TFT_DC, TFT_RST,
                        TFT_LED, TOUCH_CS, TOUCH_CLK, TOUCH_DIN, TOUCH_DO);
+
+S3Time s3Time("2024-07-08 09:40:56", 3);
 
 unsigned int lastTickMillis = 0;
 
@@ -86,13 +90,6 @@ void loop() {
   lastTickMillis = millis();
 
   lv_timer_handler();
-
-  // if (DEBUG) {
-    // if(millis() - DEBUG_TIMER_1 > 1000) {
-    //   DEBUG_TIMER_1 = millis();
-    //   DEBUG_PRINTLN("Loop");
-    // }
-  // }
 }
 
 // ----------------------------------------------------------

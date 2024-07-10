@@ -6,6 +6,17 @@
 #include <Helpers.hpp>
 
 #include "ui.h"
+#include "ui_contacts.h"
+
+int contactsCount = 0;
+String names[] = {"George", "John", "Joe", "Brandon"};
+String numbers[] = {"0714430347", "0788965432", "0709765432", "0787653434"};
+char *cStrNames[] = {};
+char *cStrNumbers[] = {};
+
+char *cNames[] = {};
+char *cNumbers[] = {};
+int cCount = 0;
 
 GSM gsm(GSM_RX, GSM_TX, GSM_BAUD);
 static Display display(TFT_CLK, TFT_MOSI, TFT_MISO, TFT_CS, TFT_DC, TFT_RST,
@@ -81,6 +92,23 @@ void setup() {
   lv_indev_set_type(indev, LV_INDEV_TYPE_POINTER);
   lv_indev_set_read_cb(indev, my_touchpad_read);
 
+  for (int i = 0; i < 4; i++) {
+    DEBUG_PRINT(">> ");
+    DEBUG_PRINT(names[i]);
+    DEBUG_PRINT(" ");
+    DEBUG_PRINTLN(numbers[i]);
+  }
+
+  contactsCount = 4;
+  DEBUG_PRINTF("Contacts count: %d\n", contactsCount);
+
+  for (int i = 0; i < 4; i++) {
+    cNames[i] = (char *)names[i].c_str();
+    cNumbers[i] = (char *)numbers[i].c_str();
+
+    DEBUG_PRINTF("%s::%s\n", cNames[i], cNumbers[i]);
+    cCount++;
+  }
   ui_init();
 }
 

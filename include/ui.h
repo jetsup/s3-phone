@@ -22,6 +22,8 @@ extern "C" {
 #include "lvgl.h"
 #endif
 
+#include <CustomSymbols.hpp>
+
 #include "ui_events.h"
 #include "ui_helpers.h"
 
@@ -56,12 +58,16 @@ extern lv_obj_t* ui_imbAbout;
 extern lv_obj_t* ui_bottomBar;
 void ui_event_lblMainMenuBack(lv_event_t* e);
 extern lv_obj_t* ui_lblMainMenuBack;
+void ui_event_lblHomeContacts(lv_event_t* e);
 // SCREEN: ui_contactsScreen
 void ui_contactsScreen_screen_init(void);
 extern lv_obj_t* ui_contactsScreen;
 extern lv_obj_t* ui_panelContactMain;
 extern lv_obj_t* ui_lblContactTitle;
 extern lv_obj_t* ui_listContact;
+extern void ui_event_listContact(lv_event_t* e);
+extern lv_obj_t* ui_lblContactBack;
+void ui_event_lblContactBack(lv_event_t* e);
 // SCREEN: ui_alarmMainScreen
 void ui_alarmMainScreen_screen_init(void);
 extern lv_obj_t* ui_alarmMainScreen;

@@ -41,6 +41,9 @@ lv_obj_t* ui_imbAbout;
 lv_obj_t* ui_bottomBar;
 void ui_event_lblMainMenuBack(lv_event_t* e);
 lv_obj_t* ui_lblMainMenuBack;
+void ui_event_listContact(lv_event_t* e);
+void ui_event_lblContactBack(lv_event_t* e);
+lv_obj_t* ui_lblContactBack;
 
 // SCREEN: ui_contactsScreen
 void ui_contactsScreen_screen_init(void);
@@ -48,10 +51,12 @@ lv_obj_t* ui_contactsScreen;
 lv_obj_t* ui_panelContactMain;
 lv_obj_t* ui_lblContactTitle;
 lv_obj_t* ui_listContact;
+lv_obj_t* ui_lblContactBack;
+void ui_event_listContact(lv_event_t* e);
+lv_obj_t* ui_lblMainMenuBack;
 
-    // SCREEN: ui_alarmMainScreen
-    void
-    ui_alarmMainScreen_screen_init(void);
+// SCREEN: ui_alarmMainScreen
+void ui_alarmMainScreen_screen_init(void);
 lv_obj_t* ui_alarmMainScreen;
 lv_obj_t* ui____initial_actions0;
 
@@ -79,12 +84,38 @@ void ui_event_lblHomeMenu(lv_event_t* e) {
                       &ui_mainMenuScreen_screen_init);
   }
 }
+void ui_event_lblHomeContacts(lv_event_t* e) {
+  lv_event_code_t event_code = lv_event_get_code(e);
+  lv_obj_t* target = lv_event_get_target(e);
+  if (event_code == LV_EVENT_CLICKED) {
+    _ui_screen_change(&ui_contactsScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT, 300, 0,
+                      &ui_contactsScreen_screen_init);
+  }
+}
 void ui_event_lblMainMenuBack(lv_event_t* e) {
   lv_event_code_t event_code = lv_event_get_code(e);
   lv_obj_t* target = lv_event_get_target(e);
   if (event_code == LV_EVENT_CLICKED) {
     _ui_screen_change(&ui_homeScreen, LV_SCR_LOAD_ANIM_MOVE_BOTTOM, 300, 0,
                       &ui_homeScreen_screen_init);
+  }
+}
+
+void ui_event_lblContactBack(lv_event_t* e) {
+  lv_event_code_t event_code = lv_event_get_code(e);
+  lv_obj_t* target = lv_event_get_target(e);
+  if (event_code == LV_EVENT_CLICKED) {
+    _ui_screen_change(&ui_homeScreen, LV_SCR_LOAD_ANIM_MOVE_RIGHT, 300, 0,
+                      &ui_homeScreen_screen_init);
+  }
+}
+
+void ui_event_listContact(lv_event_t* e) {
+  lv_event_code_t event_code = lv_event_get_code(e);
+  lv_obj_t* target = lv_event_get_target(e);
+  if (event_code == LV_EVENT_CLICKED) {
+    LV_LOG_USER("Clicked", lv_list_get_button_text(target));
+    // DEBUG_PRINTF("Clicked: %s\n", lv_list_get_button_text(target));
   }
 }
 

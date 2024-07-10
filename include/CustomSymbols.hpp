@@ -1,0 +1,7 @@
+#ifndef CUSTOM_SYMBOL_HPP_
+#define CUSTOM_SYMBOL_HPP_
+
+#define LVC_SYMBOL_SIM_CARD "\xEF\x9F\x84"
+#define LVC_SYMBOL_SD_CARD "\xEF\x9F\x82"
+
+#endif  // CUSTOM_SYMBOL_HPP_

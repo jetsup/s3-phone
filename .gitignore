@@ -6,3 +6,4 @@
 .vscode/ipch
 .vscode/settings.json
 lib/ui
+Credentials.hpp

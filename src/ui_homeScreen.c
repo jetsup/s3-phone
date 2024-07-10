@@ -159,4 +159,5 @@ void ui_homeScreen_screen_init(void) {
 
   lv_obj_add_event_cb(ui_lblHomeTime, ui_event_lblHomeTime, LV_EVENT_ALL, NULL);
   lv_obj_add_event_cb(ui_lblHomeMenu, ui_event_lblHomeMenu, LV_EVENT_ALL, NULL);
+  lv_obj_add_event_cb(ui_lblHomeContacts, ui_event_lblHomeContacts, LV_EVENT_ALL, NULL);
 }

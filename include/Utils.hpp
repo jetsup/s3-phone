@@ -1,9 +1,11 @@
 #ifndef UTILS_HPP_
 #define UTILS_HPP_
 
-#include <Arduino.h>
-
 #define DEBUG 1
+
+#if DEBUG
+#include <Arduino.h>
+#endif
 
 #if DEBUG
 static unsigned long DEBUG_TIMER_1 = 0;

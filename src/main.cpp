@@ -7,6 +7,7 @@
 
 #include "ui.h"
 #include "ui_contacts.h"
+#include "ui_utils.h"
 
 int contactsCount = 0;
 String names[] = {"George", "John", "Joe", "Brandon"};
@@ -22,7 +23,7 @@ GSM gsm(GSM_RX, GSM_TX, GSM_BAUD);
 static Display display(TFT_CLK, TFT_MOSI, TFT_MISO, TFT_CS, TFT_DC, TFT_RST,
                        TFT_LED, TOUCH_CS, TOUCH_CLK, TOUCH_DIN, TOUCH_DO);
 
-S3Time s3Time("2024-07-08 09:40:56", 3);
+S3Time s3Time("2024-11-01 14:40:56", 3);
 
 unsigned int lastTickMillis = 0;
 
@@ -118,6 +119,18 @@ void loop() {
   lastTickMillis = millis();
 
   lv_timer_handler();
+  s3Time.loop();
+  if (s3Time.isTimeUpdated()) {
+    // set lvCurrentTime and lvCurrentDate eg (MM/DD/YYYY Tue)
+    // https://cplusplus.com/reference/ctime/strftime/
+    sprintf(lvCurrentTime, "%s", s3Time.getTime("%H:%M"));
+    // sprintf(lvCurrentDate, "%s", s3Time.getTime("%d/%m/%Y %a")); // erroneous
+    sprintf(lvCurrentDate, "%s/%s/%s %s", s3Time.getTime("%d"),
+            s3Time.getTime("%m"), s3Time.getTime("%Y"),
+            s3Time.getTime("%a"));
+
+    ui_utils_updateTimeDate();
+  }
 }
 
 // ----------------------------------------------------------

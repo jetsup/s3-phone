@@ -146,7 +146,7 @@ void ui_homeScreen_screen_init(void) {
   ui_lblHomeISP = lv_label_create(ui_panelMain);
   lv_obj_set_width(ui_lblHomeISP, LV_SIZE_CONTENT);   /// 1
   lv_obj_set_height(ui_lblHomeISP, LV_SIZE_CONTENT);  /// 1
-  lv_obj_set_x(ui_lblHomeISP, -32);
+  lv_obj_set_x(ui_lblHomeISP, -20);
   lv_obj_set_y(ui_lblHomeISP, -64);
   lv_obj_set_align(ui_lblHomeISP, LV_ALIGN_CENTER);
   lv_label_set_text(ui_lblHomeISP, "Safaricom");

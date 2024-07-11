@@ -6,6 +6,8 @@
 #include <WiFi.h>
 #include <WiFiUdp.h>
 
+#include <Utils.hpp>
+
 class S3Time : public ESP32Time {
  private:
   int8_t timeZone;
@@ -14,6 +16,9 @@ class S3Time : public ESP32Time {
   WiFiUDP ntpUDP;
   NTPClient* timeClient;
   ESP32Time* esp32Time;
+  bool _timeUpdated = false;
+
+  int _nowMinute = -1;
 
  private:
   S3Time() = delete;
@@ -64,4 +69,15 @@ class S3Time : public ESP32Time {
    * @param interval Update interval in milliseconds
    */
   void setUpdateInterval(uint32_t interval);
+
+  /**
+   * @brief Keep the time updated, call this in loop
+   */
+  void loop();
+
+  /**
+   * @brief Check if time is updated
+   * @return true if time is updated, false otherwise
+   */
+  bool isTimeUpdated();
 };

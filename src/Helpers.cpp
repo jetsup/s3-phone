@@ -13,8 +13,8 @@ S3Time::S3Time(int8_t offset, const char* server)
 
 S3Time::S3Time(const char* datetime, int8_t offset) : timeZone(offset) {
   esp32Time = new ESP32Time(offset * 3600);
-  esp32Time->setTime(atol(datetime + 17), atoi(datetime + 11),
-                     atoi(datetime + 14), atoi(datetime + 8),
+  esp32Time->setTime(atol(datetime + 17), atoi(datetime + 14),
+                     atoi(datetime + 10), atoi(datetime + 8),
                      atoi(datetime + 5), atoi(datetime));
 }
 
@@ -53,4 +53,34 @@ void S3Time::setServer(const char* server) {
 void S3Time::setUpdateInterval(uint32_t updateInterval) {
   this->updateInterval = updateInterval;
   timeClient->setUpdateInterval(updateInterval);
+}
+
+void S3Time::loop() {
+  if (esp32Time->getMinute() != _nowMinute) {
+    _timeUpdated = true;
+    _nowMinute = esp32Time->getMinute();
+
+    /**
+     * %a - abbreviated weekday name (Thu)
+     * %Y - year (2024)
+     * %m - month (01)
+     * %d - day of the month (01)
+     *
+     * %H - hour (24-hour clock) (09)
+     * %M - minute (03)
+     */
+
+    DEBUG_PRINTF("Time: %s/%s/%s %s :: %s\n", esp32Time->getTime("%d"),
+                 esp32Time->getTime("%m"), esp32Time->getTime("%Y"),
+                 esp32Time->getTime("%a"), esp32Time->getTime("%H:%M"));
+  }
+}
+
+bool S3Time::isTimeUpdated() {
+  if (_timeUpdated) {
+    _timeUpdated = false;
+    return true;
+  }
+
+  return false;
 }

@@ -93,16 +93,22 @@ extern void ui_event_btnMatrixNumHandler(lv_event_t* e);
 void ui_alarmMainScreen_screen_init(void);
 extern lv_obj_t* ui_alarmMainScreen;
 extern lv_obj_t* ui____initial_actions0;
+// SCREEN: ui_splashScreen
+void ui_splashScreen_screen_init(void);
+extern lv_obj_t* ui_splashScreen;
+extern lv_obj_t* ui____initial_actions0;
 
-LV_IMG_DECLARE(ui_img_nature_png);      // assets/nature.png
-LV_IMG_DECLARE(ui_img_phone_png);       // assets/phone.png
-LV_IMG_DECLARE(ui_img_email_png);       // assets/email.png
-LV_IMG_DECLARE(ui_img_617275014);       // assets/phone-call.png
-LV_IMG_DECLARE(ui_img_settings_png);    // assets/settings.png
-LV_IMG_DECLARE(ui_img_multimedia_png);  // assets/multimedia.png
-LV_IMG_DECLARE(ui_img_target_png);      // assets/target.png
-LV_IMG_DECLARE(ui_img_335818912);       // assets/game-controller.png
-LV_IMG_DECLARE(ui_img_info_png);        // assets/info.png
+LV_IMG_DECLARE(ui_img_nature_png);             // assets/nature.png
+LV_IMG_DECLARE(ui_img_phone_png);              // assets/phone.png
+LV_IMG_DECLARE(ui_img_email_png);              // assets/email.png
+LV_IMG_DECLARE(ui_img_617275014);              // assets/phone-call.png
+LV_IMG_DECLARE(ui_img_settings_png);           // assets/settings.png
+LV_IMG_DECLARE(ui_img_multimedia_png);         // assets/multimedia.png
+LV_IMG_DECLARE(ui_img_target_png);             // assets/target.png
+LV_IMG_DECLARE(ui_img_335818912);              // assets/game-controller.png
+LV_IMG_DECLARE(ui_img_info_png);               // assets/info.png
+LV_IMG_DECLARE(ui_lottie_load_circular);       // binary lottie file
+LV_IMG_DECLARE(ui_lottie_load_circular_lines)  // binary lottie file
 
 void ui_init(void);
 

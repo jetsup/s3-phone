@@ -81,6 +81,11 @@ void ui_alarmMainScreen_screen_init(void);
 lv_obj_t* ui_alarmMainScreen;
 lv_obj_t* ui____initial_actions0;
 
+// SCREEN: ui_splashScreen
+void ui_splashScreen_screen_init(void);
+lv_obj_t* ui_splashScreen;
+lv_obj_t* ui____initial_actions0;
+
 ///////////////////// TEST LVGL SETTINGS ////////////////////
 #if LV_COLOR_DEPTH != 16
 #error "LV_COLOR_DEPTH should be 16bit to match SquareLine Studio's settings"
@@ -196,6 +201,7 @@ void ui_init(void) {
   ui_contactsScreen_screen_init();
   ui_alarmMainScreen_screen_init();
   ui_simPinScreen_screen_init();
+  ui_splashScreen_screen_init();
   ui____initial_actions0 = lv_obj_create(NULL);
   lv_disp_load_scr(ui_homeScreen);
 }

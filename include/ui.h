@@ -68,6 +68,27 @@ extern lv_obj_t* ui_listContact;
 extern void ui_event_listContact(lv_event_t* e);
 extern lv_obj_t* ui_lblContactBack;
 void ui_event_lblContactBack(lv_event_t* e);
+// SCREEN: ui_contactDetailsScreen
+void ui_contactDetailsScreen_screen_init(void);
+extern lv_obj_t* ui_contactDetailsScreen;
+extern lv_obj_t* ui_panelContactDetails;
+extern lv_obj_t* ui_lblContactDetailsTitle;
+extern lv_obj_t* ui_listContactDetailsOptions;
+extern lv_obj_t* ui_lblContactDetailsBack;
+void ui_event_listContactDetailsOptions(lv_event_t* e);
+void ui_event_lblContactDetailsBack(lv_event_t* e);
+extern lv_obj_t* ui_lblContactBack;
+// SCREEN: ui_simPinScreen
+void ui_simPinScreen_screen_init(void);
+extern lv_obj_t* ui_simPinScreen;
+extern lv_obj_t* ui_txtPinPinScreen;
+extern lv_obj_t* ui_btnOkPinPinScreen;
+extern lv_obj_t* ui_lblOkPinPinScreen;
+extern lv_obj_t* ui_lblUnlockPhonePinScreen;
+void ui_event_btnOkPinPinScreen(lv_event_t* e);
+extern lv_obj_t* ui_btnMatrixNumPinScreen;
+extern void ui_event_btnMatrixNumHandler(lv_event_t* e);
+
 // SCREEN: ui_alarmMainScreen
 void ui_alarmMainScreen_screen_init(void);
 extern lv_obj_t* ui_alarmMainScreen;

@@ -55,6 +55,27 @@ lv_obj_t* ui_lblContactBack;
 void ui_event_listContact(lv_event_t* e);
 lv_obj_t* ui_lblMainMenuBack;
 
+// SCREEN: ui_contactDetailsScreen
+void ui_contactDetailsScreen_screen_init(void);
+lv_obj_t* ui_contactDetailsScreen;
+lv_obj_t* ui_panelContactDetails;
+lv_obj_t* ui_lblContactDetailsTitle;
+lv_obj_t* ui_listContactDetailsOptions;
+lv_obj_t* ui_lblContactDetailsBack;
+void ui_event_lblContactDetailsBack(lv_event_t* e);
+void ui_event_listContactDetailsOptions(lv_event_t* e);
+
+// SCREEN: ui_simPinScreen
+void ui_simPinScreen_screen_init(void);
+lv_obj_t* ui_simPinScreen;
+lv_obj_t* ui_txtPinPinScreen;
+lv_obj_t* ui_btnOkPinPinScreen;
+lv_obj_t* ui_lblOkPinPinScreen;
+lv_obj_t* ui_lblUnlockPhonePinScreen;
+void ui_event_btnOkPinPinScreen(lv_event_t* e);
+lv_obj_t* ui_btnMatrixNumPinScreen;
+void ui_event_btnMatrixNumHandler(lv_event_t* e);
+
 // SCREEN: ui_alarmMainScreen
 void ui_alarmMainScreen_screen_init(void);
 lv_obj_t* ui_alarmMainScreen;
@@ -116,9 +137,52 @@ void ui_event_listContact(lv_event_t* e) {
   if (event_code == LV_EVENT_CLICKED) {
     LV_LOG_USER("Clicked", lv_list_get_button_text(target));
     // DEBUG_PRINTF("Clicked: %s\n", lv_list_get_button_text(target));
+    // TODO: Populate contact details to screen variables
+    _ui_screen_change(&ui_contactDetailsScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT, 300,
+                      0, &ui_contactDetailsScreen_screen_init);
   }
 }
 
+void ui_event_lblContactDetailsBack(lv_event_t* e) {
+  lv_event_code_t event_code = lv_event_get_code(e);
+  lv_obj_t* target = lv_event_get_target(e);
+  if (event_code == LV_EVENT_CLICKED) {
+    _ui_screen_change(&ui_contactsScreen, LV_SCR_LOAD_ANIM_MOVE_RIGHT, 300, 0,
+                      &ui_contactDetailsScreen_screen_init);
+  }
+}
+
+void ui_event_listContactDetailsOptions(lv_event_t* e) {
+  lv_event_code_t event_code = lv_event_get_code(e);
+  lv_obj_t* target = lv_event_get_target(e);
+  if (event_code == LV_EVENT_CLICKED) {
+    LV_LOG_USER("Clicked", lv_list_get_button_text(target));
+    // DEBUG_PRINTF("Clicked: %s\n", lv_list_get_button_text(target));
+  }
+}
+
+void ui_event_btnOkPinPinScreen(lv_event_t* e) {
+  lv_event_code_t event_code = lv_event_get_code(e);
+  lv_obj_t* target = lv_event_get_target(e);
+  if (event_code == LV_EVENT_CLICKED) {
+    _ui_screen_change(&ui_homeScreen, LV_SCR_LOAD_ANIM_MOVE_BOTTOM, 300, 0,
+                      &ui_homeScreen_screen_init);
+  }
+}
+
+void ui_event_btnMatrixNumHandler(lv_event_t* e) {
+  lv_obj_t* obj = lv_event_get_target(e);
+  lv_obj_t* uData = lv_event_get_user_data(e);
+  const char* txt = lv_buttonmatrix_get_button_text(
+      obj, lv_buttonmatrix_get_selected_button(obj));
+
+  if (lv_strcmp(txt, LV_SYMBOL_BACKSPACE) == 0)
+    lv_textarea_delete_char(uData);
+  else if (lv_strcmp(txt, LV_SYMBOL_NEW_LINE) == 0)
+    lv_obj_send_event(uData, LV_EVENT_READY, NULL);
+  else
+    lv_textarea_add_text(uData, txt);
+}
 ///////////////////// SCREENS ////////////////////
 
 void ui_init(void) {
@@ -131,6 +195,7 @@ void ui_init(void) {
   ui_mainMenuScreen_screen_init();
   ui_contactsScreen_screen_init();
   ui_alarmMainScreen_screen_init();
+  ui_simPinScreen_screen_init();
   ui____initial_actions0 = lv_obj_create(NULL);
   lv_disp_load_scr(ui_homeScreen);
 }

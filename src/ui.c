@@ -145,10 +145,13 @@ void ui_event_listContact(lv_event_t* e) {
     strcpy(contactData, contact);
 
     char* token;
+    // FIXME: Handle words separated by " "
     token = strtok(contactData, contactSeparationDelimeter);
+    // token = strsep(&contactData, contactSeparationDelimeter);
     if (token != NULL) {
       strlcpy(contactName, token, sizeof(contactName));
       token = strtok(NULL, contactSeparationDelimeter);
+      // token = strsep(&contactData, NULL);
       if (token != NULL) {
         strlcpy(contactNumber, token, sizeof(contactNumber));
       }

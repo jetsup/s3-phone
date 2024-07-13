@@ -10,7 +10,7 @@
 #include "ui_utils.h"
 
 int contactsCount = 0;
-String names[] = {"George", "John", "Joe", "Brandon"};
+String names[] = {"George Ngigi", "John", "Joe", "Brandon"};
 String numbers[] = {"0714430347", "0788965432", "0709765432", "0787653434"};
 char *cStrNames[] = {};
 char *cStrNumbers[] = {};
@@ -46,7 +46,7 @@ void setup() {
   display.init();
   display.setRotation(2);
   display.setBrightness(255);
-  display.fillScreen(TFT_BLUE);
+  display.fillScreen(TFT_BLACK);
   uint16_t calibrationData[8] = CALIBRATION_DATA;
   display.setTouchCalibrate(calibrationData);
   DEBUG_PRINTLN("Calibration done");
@@ -126,8 +126,7 @@ void loop() {
     sprintf(lvCurrentTime, "%s", s3Time.getTime("%H:%M"));
     // sprintf(lvCurrentDate, "%s", s3Time.getTime("%d/%m/%Y %a")); // erroneous
     sprintf(lvCurrentDate, "%s/%s/%s %s", s3Time.getTime("%d"),
-            s3Time.getTime("%m"), s3Time.getTime("%Y"),
-            s3Time.getTime("%a"));
+            s3Time.getTime("%m"), s3Time.getTime("%Y"), s3Time.getTime("%a"));
 
     ui_utils_updateTimeDate();
   }

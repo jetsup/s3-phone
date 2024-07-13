@@ -1,5 +1,18 @@
 #include "ui_contacts.h"
 
+// ===========================CONTACT DETAILS============================
+char contactOptions[9][18] = {"Call",
+                              "Send text message",
+                              "Add to blacklist",
+                              "View",
+                              "Edit",
+                              "Delete",
+                              "Copy",
+                              "Move",
+                              "Send Contact"};
+
+// ===============================CONTACTS===============================
+
 void contact_add_to_list(lv_obj_t* list, const char* text,
                          const char* symbol_icon, lv_event_cb_t event_cb/*,
                          lv_event_code_t filter, void* user_data*/) {
@@ -34,5 +47,16 @@ void contacts_add_contact_to_array(char** names, char** numbers) {
     cNames[i] = names[i];
     cNumbers[i] = numbers[i];
     cCount++;
+  }
+}
+
+// ===============================CONTACT DETAILS===============================
+
+void contact_details_set_options_list(lv_obj_t* list) {
+  for (int i = 0; i < 9; i++) {
+    lv_obj_t* btn;
+    btn = lv_list_add_btn(list, NULL, contactOptions[i]);
+    lv_obj_add_event_cb(btn, ui_event_listContactDetailsOptions,
+                        LV_EVENT_CLICKED, NULL);
   }
 }

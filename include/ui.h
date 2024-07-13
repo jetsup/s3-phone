@@ -26,6 +26,7 @@ extern "C" {
 
 #include "ui_events.h"
 #include "ui_helpers.h"
+#include "ui_utils.h"
 
 // SCREEN: ui_homeScreen
 void ui_homeScreen_screen_init(void);

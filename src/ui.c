@@ -140,11 +140,22 @@ void ui_event_listContact(lv_event_t* e) {
   lv_event_code_t event_code = lv_event_get_code(e);
   lv_obj_t* target = lv_event_get_target(e);
   if (event_code == LV_EVENT_CLICKED) {
-    LV_LOG_USER("Clicked", lv_list_get_button_text(target));
-    // DEBUG_PRINTF("Clicked: %s\n", lv_list_get_button_text(target));
-    // TODO: Populate contact details to screen variables
+    const char* contact = lv_list_get_button_text(ui_listContact, target);
+    char contactData[CONTACT_NAME_NUMBER_LENGTH];
+    strcpy(contactData, contact);
+
+    char* token;
+    token = strtok(contactData, contactSeparationDelimeter);
+    if (token != NULL) {
+      strlcpy(contactName, token, sizeof(contactName));
+      token = strtok(NULL, contactSeparationDelimeter);
+      if (token != NULL) {
+        strlcpy(contactNumber, token, sizeof(contactNumber));
+      }
+    }
     _ui_screen_change(&ui_contactDetailsScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT, 300,
                       0, &ui_contactDetailsScreen_screen_init);
+    lv_label_set_text(ui_lblContactDetailsTitle, (const char*)contactName);
   }
 }
 
@@ -162,7 +173,6 @@ void ui_event_listContactDetailsOptions(lv_event_t* e) {
   lv_obj_t* target = lv_event_get_target(e);
   if (event_code == LV_EVENT_CLICKED) {
     LV_LOG_USER("Clicked", lv_list_get_button_text(target));
-    // DEBUG_PRINTF("Clicked: %s\n", lv_list_get_button_text(target));
   }
 }
 

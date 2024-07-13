@@ -4,6 +4,7 @@
 // Project name: s3-phone
 
 #include "ui.h"
+#include "loading.h"
 
 void ui_splashScreen_screen_init(void)
 {
@@ -12,13 +13,8 @@ void ui_splashScreen_screen_init(void)
     lv_obj_set_style_bg_color(ui_splashScreen, lv_color_hex(0x171826), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_splashScreen, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    // TODO: find a way to work with lottie animations
-    lv_obj_t* gifLoadAnim;
-    gifLoadAnim = lv_gif_create(ui_splashScreen);
-    lv_obj_set_width(gifLoadAnim, 240);
-    lv_obj_set_height(gifLoadAnim, 240);
-    lv_gif_set_src(gifLoadAnim, &ui_lottie_load_circular);
-    // lv_gif_set_src(gifLoadAnim, "A:/load_circular.gif");
-    lv_obj_set_align(gifLoadAnim, LV_ALIGN_CENTER);
-    // lv_gif_restart(gifLoadAnim);
+    // FIXME: find a way to work with lottie animations
+    lv_obj_t *loadingGIF = lv_gif_create(ui_splashScreen);
+    lv_gif_set_src(loadingGIF, "A:/load_circular.gif");
+    lv_obj_set_align(loadingGIF, LV_ALIGN_CENTER);
 }

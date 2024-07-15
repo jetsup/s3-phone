@@ -81,6 +81,17 @@ void ui_contactsScreen_screen_init(void) {
   // contact populate logic
   contact_set_contact_list(ui_listContact);
 
+  lv_obj_t* float_btn = lv_button_create(ui_listContact);
+  lv_obj_set_size(float_btn, 40, 40);
+  lv_obj_add_flag(float_btn, LV_OBJ_FLAG_FLOATING);
+  lv_obj_align(float_btn, LV_ALIGN_BOTTOM_RIGHT, 0,
+               -lv_obj_get_style_pad_right(ui_listContact, LV_PART_MAIN));
+  lv_obj_set_style_radius(float_btn, LV_RADIUS_CIRCLE, 0);
+  lv_obj_set_style_bg_image_src(float_btn, LV_SYMBOL_PLUS, 0);
+  lv_obj_set_style_text_font(float_btn, lv_theme_get_font_large(float_btn), 0);
+  lv_obj_add_event_cb(float_btn, ui_event_fabContactAdd, LV_EVENT_ALL,
+                      ui_listContact);
+
   // back button
   ui_lblContactBack = lv_label_create(ui_panelContactMain);
   // lv_obj_set_width(ui_lblContactBack, LV_SIZE_CONTENT);

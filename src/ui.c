@@ -84,6 +84,28 @@ lv_obj_t* ui____initial_actions0;
 // SCREEN: ui_splashScreen
 void ui_splashScreen_screen_init(void);
 lv_obj_t* ui_splashScreen;
+// SCREEN: ui_contactAddScreen
+void ui_contactAddScreen_screen_init(void);
+lv_obj_t* ui_contactAddScreen;
+lv_obj_t* ui_contactAddPanel;
+lv_obj_t* ui_lblContactAddName;
+lv_obj_t* ui_txtContactAddName;
+lv_obj_t* ui_lblContactAddNumber;
+lv_obj_t* ui_txtContactAddNumber;
+lv_obj_t* ui_lblContactAddSaveTo;
+lv_obj_t* ui_dropDownContactAddSaveTo;
+lv_obj_t* ui_lblContactAddSave;
+lv_obj_t* ui_lblContactAddDiscard;
+lv_obj_t* ui_lblContactAddBack;
+void ui_event_fabContactAdd(lv_event_t* e);
+void ui_event_lblContactAddSave(lv_event_t* e);
+void ui_event_lblContactAddDiscard(lv_event_t* e);
+
+// General UI
+lv_obj_t* ui_keyboard;
+void ui_event_textArea_cb(lv_event_t* e);
+void ui_event_keyboard_event_cb(lv_event_t* e);
+
 lv_obj_t* ui____initial_actions0;
 
 ///////////////////// TEST LVGL SETTINGS ////////////////////
@@ -133,6 +155,37 @@ void ui_event_lblContactBack(lv_event_t* e) {
   if (event_code == LV_EVENT_CLICKED) {
     _ui_screen_change(&ui_homeScreen, LV_SCR_LOAD_ANIM_MOVE_RIGHT, 300, 0,
                       &ui_homeScreen_screen_init);
+  }
+}
+
+void ui_event_fabContactAdd(lv_event_t* e) {
+  lv_event_code_t event_code = lv_event_get_code(e);
+  lv_obj_t* floatButton = lv_event_get_target(e);
+
+  if (event_code == LV_EVENT_CLICKED) {
+    _ui_screen_change(&ui_contactAddScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT, 300, 0,
+                      &ui_contactAddScreen_screen_init);
+  }
+}
+
+void ui_event_lblContactAddSave(lv_event_t* e) {
+  lv_event_code_t event_code = lv_event_get_code(e);
+  lv_obj_t* target = lv_event_get_target(e);
+
+  if (event_code == LV_EVENT_CLICKED) {
+    // TODO: will save the contact
+    _ui_screen_change(&ui_contactsScreen, LV_SCR_LOAD_ANIM_MOVE_RIGHT, 300, 0,
+                      &ui_contactsScreen_screen_init);
+  }
+}
+
+void ui_event_lblContactAddDiscard(lv_event_t* e) {
+  lv_event_code_t event_code = lv_event_get_code(e);
+  lv_obj_t* target = lv_event_get_target(e);
+
+  if (event_code == LV_EVENT_CLICKED) {
+    _ui_screen_change(&ui_contactsScreen, LV_SCR_LOAD_ANIM_MOVE_RIGHT, 300, 0,
+                      &ui_contactsScreen_screen_init);
   }
 }
 
@@ -201,6 +254,37 @@ void ui_event_btnMatrixNumHandler(lv_event_t* e) {
   else
     lv_textarea_add_text(uData, txt);
 }
+
+// General events
+void ui_event_textArea_cb(lv_event_t* e) {
+  lv_event_code_t code = lv_event_get_code(e);
+  lv_obj_t* ta = lv_event_get_target(e);
+  if (code == LV_EVENT_CLICKED) {
+    if (ui_keyboard == NULL) {
+      /*Create a keyboard to use it with an of the text areas*/
+      ui_keyboard = lv_keyboard_create(lv_scr_act());
+      lv_obj_add_event_cb(ui_keyboard, ui_event_keyboard_event_cb, LV_EVENT_ALL,
+                          NULL);
+    }
+    lv_keyboard_set_textarea(ui_keyboard, ta);
+  }
+
+  if (code == LV_EVENT_DEFOCUSED) {
+    if (ui_keyboard) {
+      lv_obj_del(ui_keyboard);
+      ui_keyboard = NULL;
+    }
+  }
+}
+
+void ui_event_keyboard_event_cb(lv_event_t* e) {
+  lv_event_code_t code = lv_event_get_code(e);
+
+  if (code == LV_EVENT_READY || code == LV_EVENT_CANCEL) {
+    lv_obj_del(ui_keyboard);
+    ui_keyboard = NULL;
+  }
+}
 ///////////////////// SCREENS ////////////////////
 
 void ui_init(void) {
@@ -215,6 +299,7 @@ void ui_init(void) {
   ui_alarmMainScreen_screen_init();
   ui_simPinScreen_screen_init();
   ui_splashScreen_screen_init();
+  ui_contactAddScreen_screen_init();
   ui____initial_actions0 = lv_obj_create(NULL);
   lv_disp_load_scr(ui_homeScreen);
 }

@@ -98,6 +98,28 @@ extern lv_obj_t* ui____initial_actions0;
 void ui_splashScreen_screen_init(void);
 extern lv_obj_t* ui_splashScreen;
 extern lv_obj_t* ui____initial_actions0;
+// SCREEN: ui_contactAddScreen
+void ui_contactAddScreen_screen_init(void);
+extern lv_obj_t* ui_contactAddScreen;
+extern lv_obj_t* ui_contactAddPanel;
+extern lv_obj_t* ui_lblContactAddName;
+extern lv_obj_t* ui_txtContactAddName;
+extern lv_obj_t* ui_lblContactAddNumber;
+extern lv_obj_t* ui_txtContactAddNumber;
+extern lv_obj_t* ui_lblContactAddSaveTo;
+extern lv_obj_t* ui_dropDownContactAddSaveTo;
+extern lv_obj_t* ui_lblContactAddSave;
+extern lv_obj_t* ui_lblContactAddDiscard;
+extern lv_obj_t* ui_lblContactAddBack;
+void ui_event_fabContactAdd(lv_event_t* e);
+void ui_event_lblContactAddSave(lv_event_t* e);
+void ui_event_lblContactAddDiscard(lv_event_t* e);
+// General UI events
+extern lv_obj_t* ui_keyboard;
+void ui_event_textArea_cb(lv_event_t* e);
+void ui_event_keyboard_event_cb(lv_event_t* e);
+
+extern lv_obj_t* ui____initial_actions0;
 
 LV_IMG_DECLARE(ui_img_nature_png);             // assets/nature.png
 LV_IMG_DECLARE(ui_img_phone_png);              // assets/phone.png

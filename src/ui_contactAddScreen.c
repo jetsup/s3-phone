@@ -34,8 +34,8 @@ void ui_contactAddScreen_screen_init(void) {
   lv_obj_set_y(ui_txtContactAddName, -130);
   lv_obj_set_align(ui_txtContactAddName, LV_ALIGN_CENTER);
   lv_textarea_set_placeholder_text(ui_txtContactAddName, "Name...");
-  lv_obj_add_event_cb(ui_txtContactAddName, ui_event_textArea_cb, LV_EVENT_ALL,
-                      NULL);
+  lv_obj_add_event_cb(ui_txtContactAddName, ui_event_textArea_full_cb,
+                      LV_EVENT_ALL, NULL);
 
   ui_lblContactAddNumber = lv_label_create(ui_contactAddPanel);
   lv_obj_set_width(ui_lblContactAddNumber, LV_SIZE_CONTENT);   /// 1
@@ -52,7 +52,7 @@ void ui_contactAddScreen_screen_init(void) {
   lv_obj_set_y(ui_txtContactAddNumber, -85);
   lv_obj_set_align(ui_txtContactAddNumber, LV_ALIGN_CENTER);
   lv_textarea_set_placeholder_text(ui_txtContactAddNumber, "Number...");
-  lv_obj_add_event_cb(ui_txtContactAddNumber, ui_event_textArea_cb,
+  lv_obj_add_event_cb(ui_txtContactAddNumber, ui_event_textArea_num_cb,
                       LV_EVENT_ALL, NULL);
 
   ui_lblContactAddSaveTo = lv_label_create(ui_contactAddPanel);

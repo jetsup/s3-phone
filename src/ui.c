@@ -102,9 +102,12 @@ void ui_event_lblContactAddSave(lv_event_t* e);
 void ui_event_lblContactAddDiscard(lv_event_t* e);
 
 // General UI
-lv_obj_t* ui_keyboard;
-void ui_event_textArea_cb(lv_event_t* e);
-void ui_event_keyboard_event_cb(lv_event_t* e);
+lv_obj_t* ui_keyboard_full;
+lv_obj_t* ui_keyboard_num;
+void ui_event_textArea_full_cb(lv_event_t* e);
+void ui_event_textArea_num_cb(lv_event_t* e);
+void ui_event_keyboard_full_event_cb(lv_event_t* e);
+void ui_event_keyboard_num_event_cb(lv_event_t* e);
 
 lv_obj_t* ui____initial_actions0;
 
@@ -256,33 +259,63 @@ void ui_event_btnMatrixNumHandler(lv_event_t* e) {
 }
 
 // General events
-void ui_event_textArea_cb(lv_event_t* e) {
+void ui_event_textArea_full_cb(lv_event_t* e) {
   lv_event_code_t code = lv_event_get_code(e);
   lv_obj_t* ta = lv_event_get_target(e);
   if (code == LV_EVENT_CLICKED) {
-    if (ui_keyboard == NULL) {
-      /*Create a keyboard to use it with an of the text areas*/
-      ui_keyboard = lv_keyboard_create(lv_scr_act());
-      lv_obj_add_event_cb(ui_keyboard, ui_event_keyboard_event_cb, LV_EVENT_ALL,
-                          NULL);
+    if (ui_keyboard_full == NULL) {
+      ui_keyboard_full = lv_keyboard_create(lv_scr_act());
+      lv_obj_add_event_cb(ui_keyboard_full, ui_event_keyboard_full_event_cb,
+                          LV_EVENT_ALL, NULL);
     }
-    lv_keyboard_set_textarea(ui_keyboard, ta);
+    lv_keyboard_set_textarea(ui_keyboard_full, ta);
   }
 
   if (code == LV_EVENT_DEFOCUSED) {
-    if (ui_keyboard) {
-      lv_obj_del(ui_keyboard);
-      ui_keyboard = NULL;
+    if (ui_keyboard_full) {
+      lv_obj_del(ui_keyboard_full);
+      ui_keyboard_full = NULL;
     }
   }
 }
 
-void ui_event_keyboard_event_cb(lv_event_t* e) {
+void ui_event_textArea_num_cb(lv_event_t* e) {
+  lv_event_code_t code = lv_event_get_code(e);
+  lv_obj_t* ta = lv_event_get_target(e);
+
+  if (code == LV_EVENT_CLICKED) {
+    if (ui_keyboard_num == NULL) {
+      ui_keyboard_num = lv_keyboard_create(lv_scr_act());
+      lv_obj_add_event_cb(ui_keyboard_num, ui_event_keyboard_num_event_cb,
+                          LV_EVENT_ALL, NULL);
+      lv_keyboard_set_mode(ui_keyboard_num, LV_KEYBOARD_MODE_NUMBER);
+    }
+    lv_keyboard_set_textarea(ui_keyboard_num, ta);
+  }
+
+  if (code == LV_EVENT_DEFOCUSED) {
+    if (ui_keyboard_num) {
+      lv_obj_del(ui_keyboard_num);
+      ui_keyboard_num = NULL;
+    }
+  }
+}
+
+void ui_event_keyboard_full_event_cb(lv_event_t* e) {
   lv_event_code_t code = lv_event_get_code(e);
 
   if (code == LV_EVENT_READY || code == LV_EVENT_CANCEL) {
-    lv_obj_del(ui_keyboard);
-    ui_keyboard = NULL;
+    lv_obj_del(ui_keyboard_full);
+    ui_keyboard_full = NULL;
+  }
+}
+
+void ui_event_keyboard_num_event_cb(lv_event_t* e) {
+  lv_event_code_t code = lv_event_get_code(e);
+
+  if (code == LV_EVENT_READY || code == LV_EVENT_CANCEL) {
+    lv_obj_del(ui_keyboard_num);
+    ui_keyboard_num = NULL;
   }
 }
 ///////////////////// SCREENS ////////////////////

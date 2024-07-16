@@ -115,9 +115,12 @@ void ui_event_fabContactAdd(lv_event_t* e);
 void ui_event_lblContactAddSave(lv_event_t* e);
 void ui_event_lblContactAddDiscard(lv_event_t* e);
 // General UI events
-extern lv_obj_t* ui_keyboard;
-void ui_event_textArea_cb(lv_event_t* e);
-void ui_event_keyboard_event_cb(lv_event_t* e);
+extern lv_obj_t* ui_keyboard_full;
+extern lv_obj_t* ui_keyboard_num;
+void ui_event_textArea_full_cb(lv_event_t* e);
+void ui_event_textArea_num_cb(lv_event_t* e);
+void ui_event_keyboard_full_event_cb(lv_event_t* e);
+void ui_event_keyboard_num_event_cb(lv_event_t* e);
 
 extern lv_obj_t* ui____initial_actions0;
 

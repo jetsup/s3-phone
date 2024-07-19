@@ -10,7 +10,7 @@ void ui_simPinScreen_screen_init(void) {
   lv_obj_remove_flag(ui_simPinScreen, LV_OBJ_FLAG_SCROLLABLE);  /// Flags
 
   ui_txtPinPinScreen = lv_textarea_create(ui_simPinScreen);
-  lv_obj_set_width(ui_txtPinPinScreen, 239);
+  lv_obj_set_width(ui_txtPinPinScreen, 240);
   lv_obj_set_height(ui_txtPinPinScreen, LV_SIZE_CONTENT);  /// 40
   lv_obj_set_x(ui_txtPinPinScreen, 0);
   lv_obj_set_y(ui_txtPinPinScreen, -110);
@@ -23,7 +23,8 @@ void ui_simPinScreen_screen_init(void) {
   lv_textarea_set_placeholder_text(ui_txtPinPinScreen, "Enter SIM PIN");
   lv_textarea_set_one_line(ui_txtPinPinScreen, true);
   lv_textarea_set_password_mode(ui_txtPinPinScreen, true);
-  lv_obj_add_state(ui_txtPinPinScreen, LV_STATE_FOCUSED); /*To be sure the cursor is visible*/
+  lv_obj_add_state(ui_txtPinPinScreen,
+                   LV_STATE_FOCUSED); /*To be sure the cursor is visible*/
 
   ui_btnOkPinPinScreen = lv_button_create(ui_simPinScreen);
   lv_obj_set_width(ui_btnOkPinPinScreen, 50);
@@ -34,12 +35,12 @@ void ui_simPinScreen_screen_init(void) {
   lv_obj_add_flag(ui_btnOkPinPinScreen, LV_OBJ_FLAG_SCROLL_ON_FOCUS);  /// Flags
   lv_obj_remove_flag(ui_btnOkPinPinScreen, LV_OBJ_FLAG_SCROLLABLE);    /// Flags
 
-// replaced with a keypad
-//   ui_lblOkPinPinScreen = lv_label_create(ui_btnOkPinPinScreen);
-//   lv_obj_set_width(ui_lblOkPinPinScreen, LV_SIZE_CONTENT);   /// 1
-//   lv_obj_set_height(ui_lblOkPinPinScreen, LV_SIZE_CONTENT);  /// 1
-//   lv_obj_set_align(ui_lblOkPinPinScreen, LV_ALIGN_CENTER);
-//   lv_label_set_text(ui_lblOkPinPinScreen, "OK");
+  // replaced with a keypad
+  //   ui_lblOkPinPinScreen = lv_label_create(ui_btnOkPinPinScreen);
+  //   lv_obj_set_width(ui_lblOkPinPinScreen, LV_SIZE_CONTENT);   /// 1
+  //   lv_obj_set_height(ui_lblOkPinPinScreen, LV_SIZE_CONTENT);  /// 1
+  //   lv_obj_set_align(ui_lblOkPinPinScreen, LV_ALIGN_CENTER);
+  //   lv_label_set_text(ui_lblOkPinPinScreen, "OK");
 
   ui_lblUnlockPhonePinScreen = lv_label_create(ui_simPinScreen);
   lv_obj_set_width(ui_lblUnlockPhonePinScreen, LV_SIZE_CONTENT);   /// 1
@@ -52,24 +53,24 @@ void ui_simPinScreen_screen_init(void) {
                              LV_PART_MAIN | LV_STATE_DEFAULT);
 
   static const char* btnMatrixNumMap[] = {"1",
-                                   "2",
-                                   "3",
-                                   "\n",
-                                   "4",
-                                   "5",
-                                   "6",
-                                   "\n",
-                                   "7",
-                                   "8",
-                                   "9",
-                                   "\n",
-                                   LV_SYMBOL_BACKSPACE,
-                                   "0",
-                                   LV_SYMBOL_NEW_LINE,
-                                   ""};
+                                          "2",
+                                          "3",
+                                          "\n",
+                                          "4",
+                                          "5",
+                                          "6",
+                                          "\n",
+                                          "7",
+                                          "8",
+                                          "9",
+                                          "\n",
+                                          LV_SYMBOL_BACKSPACE,
+                                          "0",
+                                          LV_SYMBOL_NEW_LINE,
+                                          ""};
 
   ui_btnMatrixNumPinScreen = lv_buttonmatrix_create(ui_simPinScreen);
-  lv_obj_set_size(ui_btnMatrixNumPinScreen, 239, 264);
+  lv_obj_set_size(ui_btnMatrixNumPinScreen, 240, 264);
   lv_obj_set_y(ui_btnMatrixNumPinScreen, 35);
   lv_obj_set_align(ui_btnMatrixNumPinScreen, LV_ALIGN_CENTER);
   lv_obj_add_event_cb(ui_btnMatrixNumPinScreen, ui_event_btnMatrixNumHandler,

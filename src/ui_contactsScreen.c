@@ -5,43 +5,42 @@
 
 #include "ui.h"
 #include "ui_contacts.h"
+#include "ui_utils.h"
 
 void ui_contactsScreen_screen_init(void) {
   ui_contactsScreen = lv_obj_create(NULL);
   lv_obj_remove_flag(ui_contactsScreen, LV_OBJ_FLAG_SCROLLABLE);  /// Flags
 
   ui_panelContactMain = lv_obj_create(ui_contactsScreen);
-  lv_obj_set_width(ui_panelContactMain, 239);
-  lv_obj_set_height(ui_panelContactMain, 319);
-  lv_obj_set_align(ui_panelContactMain, LV_ALIGN_CENTER);
+  lv_obj_set_width(ui_panelContactMain, 240);
+  lv_obj_set_height(ui_panelContactMain, 320);
+  lv_obj_set_align(ui_panelContactMain, LV_ALIGN_TOP_LEFT);
   lv_obj_remove_flag(ui_panelContactMain, LV_OBJ_FLAG_SCROLLABLE);  /// Flags
-  lv_obj_set_style_bg_color(ui_panelContactMain, lv_color_hex(0xFFFFFF),
-                            LV_PART_MAIN | LV_STATE_DEFAULT);
-  lv_obj_set_style_bg_opa(ui_panelContactMain, 0,
-                          LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_bg_color(
+      ui_panelContactMain, lv_color_hex(0xFF00FF),
+      LV_PART_MAIN | LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
+  lv_obj_set_style_bg_opa(ui_panelContactMain, 100,
+                          LV_PART_MAIN | LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
   lv_obj_set_style_border_color(ui_panelContactMain, lv_color_hex(0x000000),
                                 LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_border_opa(ui_panelContactMain, 255,
                               LV_PART_MAIN | LV_STATE_DEFAULT);
-
   lv_obj_set_style_radius(ui_panelContactMain, 0,
                           LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
-  lv_obj_set_style_bg_color(ui_panelContactMain, lv_color_hex(0xFFFFFF),
-                            LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
-  lv_obj_set_style_bg_opa(ui_panelContactMain, 0,
-                          LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
-  lv_obj_set_style_bg_image_src(ui_panelContactMain, &ui_img_nature_png,
+  lv_obj_set_style_bg_image_src(ui_panelContactMain, &ui_img_bg1_png,
                                 LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
+  lv_obj_set_style_bg_image_src(ui_panelContactMain, &ui_img_bg1_png,
+                                LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_bg_image_opa(ui_panelContactMain, 100,
+                                LV_PART_MAIN | LV_STATE_DEFAULT);
 
   ui_lblContactTitle = lv_label_create(ui_panelContactMain);
   lv_label_set_text(ui_lblContactTitle, "Contacts");
   // lv_obj_set_width(ui_lblContactTitle, 40);
   // lv_obj_set_height(ui_lblContactTitle, 20);
-  lv_obj_set_width(ui_lblHomeMenu, LV_SIZE_CONTENT);   /// 1
-  lv_obj_set_height(ui_lblHomeMenu, LV_SIZE_CONTENT);  /// 1
   lv_obj_set_x(ui_lblContactTitle, 0);
-  lv_obj_set_y(ui_lblContactTitle, -145);
-  lv_obj_set_align(ui_lblContactTitle, LV_ALIGN_CENTER);
+  lv_obj_set_y(ui_lblContactTitle, -5);
+  lv_obj_set_align(ui_lblContactTitle, LV_ALIGN_TOP_MID);
   lv_obj_set_style_text_color(ui_lblContactTitle, lv_color_hex(0x000000),
                               LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_text_opa(ui_lblContactTitle, 255,
@@ -58,14 +57,14 @@ void ui_contactsScreen_screen_init(void) {
                               LV_PART_MAIN | LV_STATE_DEFAULT);
 
   ui_listContact = lv_list_create(ui_panelContactMain);
-  lv_obj_set_width(ui_listContact, 239);
-  lv_obj_set_height(ui_listContact, 275);
-  lv_obj_set_x(ui_listContact, 25);
-  lv_obj_set_y(ui_listContact, 120);
-  lv_obj_set_align(ui_listContact, LV_ALIGN_CENTER);
+  lv_obj_set_width(ui_listContact, 240);
+  lv_obj_set_height(ui_listContact, 255);
+  lv_obj_set_x(ui_listContact, 0);
+  lv_obj_set_y(ui_listContact, 20);
+  lv_obj_set_align(ui_listContact, LV_ALIGN_TOP_LEFT);
   lv_obj_set_style_radius(ui_listContact, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-  lv_obj_set_style_bg_color(ui_listContact, lv_color_hex(0xFFFFFF),
-                            LV_PART_MAIN | LV_STATE_DEFAULT);
+  // lv_obj_set_style_bg_color(ui_listContact, lv_color_hex(0xF00000),
+  //                           LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_bg_opa(ui_listContact, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_border_color(ui_listContact, lv_color_hex(0x000000),
                                 LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -77,32 +76,20 @@ void ui_contactsScreen_screen_init(void) {
                                LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_center(ui_listContact);
 
-  /*Add buttons to the list*/
-  // contact populate logic
+  // Populate with contacts
   contact_set_contact_list(ui_listContact);
 
   lv_obj_t* float_btn = lv_button_create(ui_listContact);
   lv_obj_set_size(float_btn, 40, 40);
   lv_obj_add_flag(float_btn, LV_OBJ_FLAG_FLOATING);
   lv_obj_align(float_btn, LV_ALIGN_BOTTOM_RIGHT, 0,
-               -lv_obj_get_style_pad_right(ui_listContact, LV_PART_MAIN));
+               /*-lv_obj_get_style_pad_right(ui_listContact, LV_PART_MAIN)*/ -5);
   lv_obj_set_style_radius(float_btn, LV_RADIUS_CIRCLE, 0);
   lv_obj_set_style_bg_image_src(float_btn, LV_SYMBOL_PLUS, 0);
   lv_obj_set_style_text_font(float_btn, lv_theme_get_font_large(float_btn), 0);
   lv_obj_add_event_cb(float_btn, ui_event_fabContactAdd, LV_EVENT_ALL,
                       ui_listContact);
 
-  // back button
-  ui_lblContactBack = lv_label_create(ui_panelContactMain);
-  // lv_obj_set_width(ui_lblContactBack, LV_SIZE_CONTENT);
-  // lv_obj_set_height(ui_lblContactBack, LV_SIZE_CONTENT);
-  lv_obj_set_x(ui_lblContactBack, 95);
-  lv_obj_set_y(ui_lblContactBack, 145);
-  lv_obj_set_align(ui_lblContactBack, LV_ALIGN_CENTER);
-  lv_obj_add_flag(ui_lblContactBack, LV_OBJ_FLAG_CLICKABLE);  /// Flags
-  lv_label_set_text(ui_lblContactBack, "Back");
-  lv_obj_set_style_text_color(ui_lblContactBack, lv_color_hex(0x000000),
-                              LV_PART_MAIN | LV_STATE_DEFAULT);
-  lv_obj_add_event_cb(ui_lblContactBack, ui_event_lblContactBack, LV_EVENT_ALL,
-                      NULL);
+  // navigation buttons
+  ui_add_bottom_bar(ui_panelContactMain, 0xFFFFFF, 10);
 }

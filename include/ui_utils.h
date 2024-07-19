@@ -17,6 +17,14 @@ extern char contactNumber[14];
 
 void ui_utils_updateTimeDate();
 
+/**
+ * @brief Creates a bottom bar with navigation buttons
+ * @param parent The parent object
+ * @param colorRGB The color of the icons
+ * @param marginBottom The margin from the bottom. Preferred `-5`
+ */
+void ui_add_bottom_bar(lv_obj_t *parent, int colorRGB, int marginBottom);
+
 #ifdef __cplusplus
 }
 #endif  // __cplusplus

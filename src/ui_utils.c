@@ -11,3 +11,55 @@ void ui_utils_updateTimeDate() {
   lv_label_set_text(ui_lblHomeTime, lvCurrentTime);
   lv_label_set_text(ui_lblHomeDate, lvCurrentDate);
 }
+
+void ui_add_bottom_bar(lv_obj_t *parent, int colorRGB, int marginBottom) {
+  ui_bottomBar = lv_obj_create(parent);
+  lv_obj_remove_style_all(ui_bottomBar);
+  lv_obj_set_width(ui_bottomBar, 240);
+  lv_obj_set_height(ui_bottomBar, 20);
+  lv_obj_set_x(ui_bottomBar, 0);
+  lv_obj_set_y(ui_bottomBar, marginBottom);
+  lv_obj_set_align(ui_bottomBar, LV_ALIGN_BOTTOM_MID);
+  lv_obj_set_flex_flow(ui_bottomBar, LV_FLEX_FLOW_ROW);
+  lv_obj_set_flex_align(ui_bottomBar, LV_FLEX_ALIGN_SPACE_AROUND,
+                        LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER);
+  lv_obj_remove_flag(ui_bottomBar,
+                     LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);  /// Flags
+
+  ui_lblBottombarTasks = lv_label_create(ui_bottomBar);
+  lv_obj_set_width(ui_lblBottombarTasks, LV_SIZE_CONTENT);       /// 1
+  lv_obj_set_height(ui_lblBottombarTasks, LV_SIZE_CONTENT);      /// 1
+  lv_obj_add_flag(ui_lblBottombarTasks, LV_OBJ_FLAG_CLICKABLE);  /// Flags
+  lv_label_set_text(ui_lblBottombarTasks, LV_SYMBOL_STOP);
+  lv_obj_set_style_text_color(ui_lblBottombarTasks, lv_color_hex(colorRGB),
+                              LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_text_opa(ui_lblBottombarTasks, 255,
+                            LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  ui_lblBottombarHome = lv_label_create(ui_bottomBar);
+  lv_obj_set_width(ui_lblBottombarHome, LV_SIZE_CONTENT);       /// 1
+  lv_obj_set_height(ui_lblBottombarHome, LV_SIZE_CONTENT);      /// 1
+  lv_obj_add_flag(ui_lblBottombarHome, LV_OBJ_FLAG_CLICKABLE);  /// Flags
+  lv_label_set_text(ui_lblBottombarHome, LV_SYMBOL_HOME);
+  lv_obj_set_style_text_color(ui_lblBottombarHome, lv_color_hex(colorRGB),
+                              LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_text_opa(ui_lblBottombarHome, 255,
+                            LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  ui_lblBottombarBack = lv_label_create(ui_bottomBar);
+  lv_obj_set_width(ui_lblBottombarBack, LV_SIZE_CONTENT);       /// 1
+  lv_obj_set_height(ui_lblBottombarBack, LV_SIZE_CONTENT);      /// 1
+  lv_obj_add_flag(ui_lblBottombarBack, LV_OBJ_FLAG_CLICKABLE);  /// Flags
+  lv_label_set_text(ui_lblBottombarBack, LV_SYMBOL_LEFT LV_SYMBOL_LEFT);
+  lv_obj_set_style_text_color(ui_lblBottombarBack, lv_color_hex(colorRGB),
+                              LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_text_opa(ui_lblBottombarBack, 255,
+                            LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  lv_obj_add_event_cb(ui_lblBottombarTasks, ui_event_evtBottombar, LV_EVENT_ALL,
+                      "navbar tasks");
+  lv_obj_add_event_cb(ui_lblBottombarHome, ui_event_evtBottombar, LV_EVENT_ALL,
+                      "navbar home");
+  lv_obj_add_event_cb(ui_lblBottombarBack, ui_event_evtBottombar, LV_EVENT_ALL,
+                      "navbar back");
+}

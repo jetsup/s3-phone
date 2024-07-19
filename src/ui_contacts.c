@@ -18,6 +18,7 @@ void contact_add_to_list(lv_obj_t* list, const char* text,
                          lv_event_code_t filter, void* user_data*/) {
   lv_obj_t* btn;
   btn = lv_list_add_button(list, symbol_icon, text);
+  lv_obj_set_style_bg_opa(btn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_add_event_cb(btn, event_cb, LV_EVENT_CLICKED, NULL);
 }
 
@@ -56,6 +57,7 @@ void contact_details_set_options_list(lv_obj_t* list) {
   for (int i = 0; i < 9; i++) {
     lv_obj_t* btn;
     btn = lv_list_add_btn(list, NULL, contactOptions[i]);
+    lv_obj_set_style_bg_opa(btn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_add_event_cb(btn, ui_event_listContactDetailsOptions,
                         LV_EVENT_CLICKED, NULL);
   }

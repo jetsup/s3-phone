@@ -12,38 +12,57 @@
 // SCREEN: ui_homeScreen
 void ui_homeScreen_screen_init(void);
 lv_obj_t* ui_homeScreen;
-lv_obj_t* ui_imgHomeWallpaper;
 lv_obj_t* ui_panelMain;
-lv_obj_t* ui_barHomeSignalLevel;
+lv_obj_t* ui_homeContainerTopBar;
 lv_obj_t* ui_lblHomeBatteryLevel;
+lv_obj_t* ui_lblHomeSignalLevel;
+lv_obj_t* ui_homeContainerDateISP;
 void ui_event_lblHomeTime(lv_event_t* e);
 lv_obj_t* ui_lblHomeTime;
 lv_obj_t* ui_lblHomeDate;
-void ui_event_lblHomeMenu(lv_event_t* e);
-lv_obj_t* ui_lblHomeMenu;
-lv_obj_t* ui_lblHomeContacts;
 lv_obj_t* ui_lblHomeISP;
+lv_obj_t* ui_homeContainerStart;
+lv_obj_t* ui_imbHomePhone;
+lv_obj_t* ui_imbHomeMessages;
+void ui_event_imbClickEvent(lv_event_t* e);
+lv_obj_t* ui_imbHomeApps;
+lv_obj_t* ui_imbHomeBrowser;
+lv_obj_t* ui_imbHomeContacts;
 
 // SCREEN: ui_mainMenuScreen
 void ui_mainMenuScreen_screen_init(void);
 lv_obj_t* ui_mainMenuScreen;
-lv_obj_t* ui_mainMenuPanel;
+lv_obj_t* ui_panelMainMenu;
 lv_obj_t* ui_menuMainContainer;
-lv_obj_t* ui_imbContacts;
+lv_obj_t* ui_menuPhoneContainer;
+lv_obj_t* ui_imbPhone;
+lv_obj_t* ui_lblMenuPhone;
+lv_obj_t* ui_menuMessagesContainer;
 lv_obj_t* ui_imbMessages;
-lv_obj_t* ui_imbCallHistory;
-lv_obj_t* ui_imbSettings;
+lv_obj_t* ui_lblMenuMessages;
+lv_obj_t* ui_menuMultimediaContainer;
 lv_obj_t* ui_imbMultimedia;
+lv_obj_t* ui_lblMenuMultimedia;
+lv_obj_t* ui_menuExtraContainer;
 lv_obj_t* ui_imbExtra;
+lv_obj_t* ui_lblMenuExtra;
+lv_obj_t* ui_menuGamesContainer;
 lv_obj_t* ui_imbGames;
+lv_obj_t* ui_lblMenuGames;
+lv_obj_t* ui_menuMyZoneContainer;
 lv_obj_t* ui_imbMyZone;
+lv_obj_t* ui_lblMenuMyZone;
+lv_obj_t* ui_menuAboutContainer;
 lv_obj_t* ui_imbAbout;
+lv_obj_t* ui_lblMenuAbout;
+lv_obj_t* ui_menuToolsContainer;
+lv_obj_t* ui_imbTools;
+lv_obj_t* ui_lblMenuTools;
 lv_obj_t* ui_bottomBar;
-void ui_event_lblMainMenuBack(lv_event_t* e);
-lv_obj_t* ui_lblMainMenuBack;
-void ui_event_listContact(lv_event_t* e);
-void ui_event_lblContactBack(lv_event_t* e);
-lv_obj_t* ui_lblContactBack;
+void ui_event_evtBottombar(lv_event_t* e);
+lv_obj_t* ui_lblBottombarTasks;
+lv_obj_t* ui_lblBottombarHome;
+lv_obj_t* ui_lblBottombarBack;
 
 // SCREEN: ui_contactsScreen
 void ui_contactsScreen_screen_init(void);
@@ -53,7 +72,7 @@ lv_obj_t* ui_lblContactTitle;
 lv_obj_t* ui_listContact;
 lv_obj_t* ui_lblContactBack;
 void ui_event_listContact(lv_event_t* e);
-lv_obj_t* ui_lblMainMenuBack;
+void ui_event_lblContactBack(lv_event_t* e);
 
 // SCREEN: ui_contactDetailsScreen
 void ui_contactDetailsScreen_screen_init(void);
@@ -87,7 +106,7 @@ lv_obj_t* ui_splashScreen;
 // SCREEN: ui_contactAddScreen
 void ui_contactAddScreen_screen_init(void);
 lv_obj_t* ui_contactAddScreen;
-lv_obj_t* ui_contactAddPanel;
+lv_obj_t* ui_panelContactAdd;
 lv_obj_t* ui_lblContactAddName;
 lv_obj_t* ui_txtContactAddName;
 lv_obj_t* ui_lblContactAddNumber;
@@ -111,6 +130,29 @@ void ui_event_keyboard_num_event_cb(lv_event_t* e);
 
 lv_obj_t* ui____initial_actions0;
 
+const lv_image_dsc_t* ui_imgset_usergroup[1] = {&ui_img_usergroup40_png};
+const lv_image_dsc_t* ui_imgset_browser[1] = {&ui_img_browser40_png};
+const lv_image_dsc_t* ui_imgset_callgreen[1] = {&ui_img_callgreen40_png};
+const lv_image_dsc_t* ui_imgset_callred[1] = {&ui_img_callred40_png};
+const lv_image_dsc_t* ui_imgset_phoneblue[1] = {&ui_img_phoneblue40_png};
+const lv_image_dsc_t* ui_imgset_dropzone[1] = {&ui_img_dropzone40_png};
+const lv_image_dsc_t* ui_imgset_simcard[1] = {&ui_img_simcard40_png};
+const lv_image_dsc_t* ui_imgset_outdatedphone[1] = {
+    &ui_img_outdatedphone40_png};
+const lv_image_dsc_t* ui_imgset_about[1] = {&ui_img_about40_png};
+const lv_image_dsc_t* ui_imgset_extra[1] = {&ui_img_extra40_png};
+const lv_image_dsc_t* ui_imgset_messages[1] = {&ui_img_messages40_png};
+const lv_image_dsc_t* ui_imgset_openphone[1] = {&ui_img_openphone40_png};
+const lv_image_dsc_t* ui_imgset_multimedia[1] = {&ui_img_multimedia40_png};
+const lv_image_dsc_t* ui_imgset_games[1] = {&ui_img_games40_png};
+const lv_image_dsc_t* ui_imgset_phonered[1] = {&ui_img_phonered40_png};
+const lv_image_dsc_t* ui_imgset_phonebluee[1] = {&ui_img_phonebluee40_png};
+const lv_image_dsc_t* ui_imgset_tools[1] = {&ui_img_tools40_png};
+const lv_image_dsc_t* ui_imgset_apps[1] = {&ui_img_apps40_png};
+const lv_image_dsc_t* ui_imgset_bg[5] = {&ui_img_bg1_png, &ui_img_bg2_png,
+                                         &ui_img_bg3_png, &ui_img_bg4_png,
+                                         &ui_img_bg5_png};
+
 ///////////////////// TEST LVGL SETTINGS ////////////////////
 #if LV_COLOR_DEPTH != 16
 #error "LV_COLOR_DEPTH should be 16bit to match SquareLine Studio's settings"
@@ -127,12 +169,59 @@ void ui_event_lblHomeTime(lv_event_t* e) {
                       &ui_alarmMainScreen_screen_init);
   }
 }
-void ui_event_lblHomeMenu(lv_event_t* e) {
+void ui_event_imbClickEvent(lv_event_t* e) {
   lv_event_code_t event_code = lv_event_get_code(e);
   lv_obj_t* target = lv_event_get_target(e);
+
+  const char* btnData = (const char*)e->user_data;
+
   if (event_code == LV_EVENT_CLICKED) {
-    _ui_screen_change(&ui_mainMenuScreen, LV_SCR_LOAD_ANIM_MOVE_TOP, 300, 0,
-                      &ui_mainMenuScreen_screen_init);
+    if (strcmp(btnData, "phone") == 0) {
+      _ui_screen_change(&ui_mainMenuScreen, LV_SCR_LOAD_ANIM_MOVE_TOP, 300, 0,
+                        &ui_mainMenuScreen_screen_init);
+    } else if (strcmp(btnData, "home phone") == 0) {
+      _ui_screen_change(&ui_mainMenuScreen, LV_SCR_LOAD_ANIM_MOVE_RIGHT, 300, 0,
+                        &ui_mainMenuScreen_screen_init);
+    } else if (strcmp(btnData, "messages") == 0) {
+      _ui_screen_change(&ui_mainMenuScreen, LV_SCR_LOAD_ANIM_MOVE_RIGHT, 300, 0,
+                        &ui_mainMenuScreen_screen_init);
+    } else if (strcmp(btnData, "home messages") == 0) {
+      _ui_screen_change(&ui_mainMenuScreen, LV_SCR_LOAD_ANIM_MOVE_RIGHT, 300, 0,
+                        &ui_mainMenuScreen_screen_init);
+    } else if (strcmp(btnData, "apps") == 0) {
+      _ui_screen_change(&ui_mainMenuScreen, LV_SCR_LOAD_ANIM_MOVE_TOP, 300, 0,
+                        &ui_mainMenuScreen_screen_init);
+    } else if (strcmp(btnData, "browser") == 0) {
+      _ui_screen_change(&ui_contactsScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT, 300, 0,
+                        &ui_contactsScreen_screen_init);
+    } else if (strcmp(btnData, "home browser") == 0) {
+      _ui_screen_change(&ui_mainMenuScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT, 300, 0,
+                        &ui_mainMenuScreen_screen_init);
+    } else if (strcmp(btnData, "contacts") == 0) {
+      _ui_screen_change(&ui_contactsScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT, 300, 0,
+                        &ui_contactsScreen_screen_init);
+    } else if (strcmp(btnData, "home contacts") == 0) {
+      _ui_screen_change(&ui_contactsScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT, 300, 0,
+                        &ui_contactsScreen_screen_init);
+    } else if (strcmp(btnData, "multimedia") == 0) {
+      _ui_screen_change(&ui_mainMenuScreen, LV_SCR_LOAD_ANIM_MOVE_TOP, 300, 0,
+                        &ui_mainMenuScreen_screen_init);
+    } else if (strcmp(btnData, "extra") == 0) {
+      _ui_screen_change(&ui_mainMenuScreen, LV_SCR_LOAD_ANIM_MOVE_TOP, 300, 0,
+                        &ui_mainMenuScreen_screen_init);
+    } else if (strcmp(btnData, "games") == 0) {
+      _ui_screen_change(&ui_mainMenuScreen, LV_SCR_LOAD_ANIM_MOVE_TOP, 300, 0,
+                        &ui_mainMenuScreen_screen_init);
+    } else if (strcmp(btnData, "myzone") == 0) {
+      _ui_screen_change(&ui_mainMenuScreen, LV_SCR_LOAD_ANIM_MOVE_TOP, 300, 0,
+                        &ui_mainMenuScreen_screen_init);
+    } else if (strcmp(btnData, "about") == 0) {
+      _ui_screen_change(&ui_mainMenuScreen, LV_SCR_LOAD_ANIM_MOVE_TOP, 300, 0,
+                        &ui_mainMenuScreen_screen_init);
+    } else if (strcmp(btnData, "tools") == 0) {
+      _ui_screen_change(&ui_contactsScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT, 300, 0,
+                        &ui_contactsScreen_screen_init);
+    }
   }
 }
 void ui_event_lblHomeContacts(lv_event_t* e) {
@@ -143,12 +232,25 @@ void ui_event_lblHomeContacts(lv_event_t* e) {
                       &ui_contactsScreen_screen_init);
   }
 }
-void ui_event_lblMainMenuBack(lv_event_t* e) {
+void ui_event_evtBottombar(lv_event_t* e) {
   lv_event_code_t event_code = lv_event_get_code(e);
   lv_obj_t* target = lv_event_get_target(e);
+  const char* btnData = (const char*)e->user_data;
+
   if (event_code == LV_EVENT_CLICKED) {
-    _ui_screen_change(&ui_homeScreen, LV_SCR_LOAD_ANIM_MOVE_BOTTOM, 300, 0,
-                      &ui_homeScreen_screen_init);
+    if (strcmp(btnData, "navbar home") == 0) {
+      // empty history stack
+      _ui_screen_change(&ui_homeScreen, LV_SCR_LOAD_ANIM_MOVE_BOTTOM, 300, 0,
+                        &ui_homeScreen_screen_init);
+    } else if (strcmp(btnData, "navbar back") == 0) {
+      // pop history stack
+      _ui_screen_change(&ui_homeScreen, LV_SCR_LOAD_ANIM_MOVE_TOP, 300, 0,
+                        &ui_homeScreen_screen_init);
+    } else if (strcmp(btnData, "navbar tasks") == 0) {
+      // complex for now
+      _ui_screen_change(&ui_homeScreen, LV_SCR_LOAD_ANIM_MOVE_TOP, 300, 0,
+                        &ui_homeScreen_screen_init);
+    }
   }
 }
 
@@ -333,6 +435,7 @@ void ui_init(void) {
   ui_simPinScreen_screen_init();
   ui_splashScreen_screen_init();
   ui_contactAddScreen_screen_init();
+  ui_contactDetailsScreen_screen_init();
   ui____initial_actions0 = lv_obj_create(NULL);
   lv_disp_load_scr(ui_homeScreen);
 }

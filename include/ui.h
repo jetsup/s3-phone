@@ -31,35 +31,57 @@ extern "C" {
 // SCREEN: ui_homeScreen
 void ui_homeScreen_screen_init(void);
 extern lv_obj_t* ui_homeScreen;
-extern lv_obj_t* ui_imgHomeWallpaper;
 extern lv_obj_t* ui_panelMain;
-extern lv_obj_t* ui_barHomeSignalLevel;
+extern lv_obj_t* ui_homeContainerTopBar;
 extern lv_obj_t* ui_lblHomeBatteryLevel;
+extern lv_obj_t* ui_lblHomeSignalLevel;
+extern lv_obj_t* ui_homeContainerDateISP;
 void ui_event_lblHomeTime(lv_event_t* e);
 extern lv_obj_t* ui_lblHomeTime;
 extern lv_obj_t* ui_lblHomeDate;
-void ui_event_lblHomeMenu(lv_event_t* e);
-extern lv_obj_t* ui_lblHomeMenu;
-extern lv_obj_t* ui_lblHomeContacts;
 extern lv_obj_t* ui_lblHomeISP;
+extern lv_obj_t* ui_homeContainerStart;
+extern lv_obj_t* ui_imbHomePhone;
+extern lv_obj_t* ui_imbHomeMessages;
+void ui_event_imbClickEvent(lv_event_t* e);
+extern lv_obj_t* ui_imbHomeApps;
+extern lv_obj_t* ui_imbHomeBrowser;
+extern lv_obj_t* ui_imbHomeContacts;
 // SCREEN: ui_mainMenuScreen
 void ui_mainMenuScreen_screen_init(void);
 extern lv_obj_t* ui_mainMenuScreen;
-extern lv_obj_t* ui_mainMenuPanel;
+extern lv_obj_t* ui_panelMainMenu;
 extern lv_obj_t* ui_menuMainContainer;
-extern lv_obj_t* ui_imbContacts;
+extern lv_obj_t* ui_menuPhoneContainer;
+extern lv_obj_t* ui_imbPhone;
+extern lv_obj_t* ui_lblMenuPhone;
+extern lv_obj_t* ui_menuMessagesContainer;
 extern lv_obj_t* ui_imbMessages;
-extern lv_obj_t* ui_imbCallHistory;
-extern lv_obj_t* ui_imbSettings;
+extern lv_obj_t* ui_lblMenuMessages;
+extern lv_obj_t* ui_menuMultimediaContainer;
 extern lv_obj_t* ui_imbMultimedia;
+extern lv_obj_t* ui_lblMenuMultimedia;
+extern lv_obj_t* ui_menuExtraContainer;
 extern lv_obj_t* ui_imbExtra;
+extern lv_obj_t* ui_lblMenuExtra;
+extern lv_obj_t* ui_menuGamesContainer;
 extern lv_obj_t* ui_imbGames;
+extern lv_obj_t* ui_lblMenuGames;
+extern lv_obj_t* ui_menuMyZoneContainer;
 extern lv_obj_t* ui_imbMyZone;
+extern lv_obj_t* ui_lblMenuMyZone;
+extern lv_obj_t* ui_menuAboutContainer;
 extern lv_obj_t* ui_imbAbout;
+extern lv_obj_t* ui_lblMenuAbout;
+extern lv_obj_t* ui_menuToolsContainer;
+extern lv_obj_t* ui_imbTools;
+extern lv_obj_t* ui_lblMenuTools;
 extern lv_obj_t* ui_bottomBar;
-void ui_event_lblMainMenuBack(lv_event_t* e);
-extern lv_obj_t* ui_lblMainMenuBack;
-void ui_event_lblHomeContacts(lv_event_t* e);
+void ui_event_evtBottombar(lv_event_t* e);
+extern lv_obj_t* ui_lblBottombarTasks;
+extern lv_obj_t* ui_lblBottombarHome;
+extern lv_obj_t* ui_lblBottombarBack;
+
 // SCREEN: ui_contactsScreen
 void ui_contactsScreen_screen_init(void);
 extern lv_obj_t* ui_contactsScreen;
@@ -101,7 +123,7 @@ extern lv_obj_t* ui____initial_actions0;
 // SCREEN: ui_contactAddScreen
 void ui_contactAddScreen_screen_init(void);
 extern lv_obj_t* ui_contactAddScreen;
-extern lv_obj_t* ui_contactAddPanel;
+extern lv_obj_t* ui_panelContactAdd;
 extern lv_obj_t* ui_lblContactAddName;
 extern lv_obj_t* ui_txtContactAddName;
 extern lv_obj_t* ui_lblContactAddNumber;
@@ -124,17 +146,31 @@ void ui_event_keyboard_num_event_cb(lv_event_t* e);
 
 extern lv_obj_t* ui____initial_actions0;
 
-LV_IMG_DECLARE(ui_img_nature_png);             // assets/nature.png
-LV_IMG_DECLARE(ui_img_phone_png);              // assets/phone.png
-LV_IMG_DECLARE(ui_img_email_png);              // assets/email.png
-LV_IMG_DECLARE(ui_img_617275014);              // assets/phone-call.png
-LV_IMG_DECLARE(ui_img_settings_png);           // assets/settings.png
-LV_IMG_DECLARE(ui_img_multimedia_png);         // assets/multimedia.png
-LV_IMG_DECLARE(ui_img_target_png);             // assets/target.png
-LV_IMG_DECLARE(ui_img_335818912);              // assets/game-controller.png
-LV_IMG_DECLARE(ui_img_info_png);               // assets/info.png
 LV_IMG_DECLARE(ui_lottie_load_circular);       // binary lottie file
 LV_IMG_DECLARE(ui_lottie_load_circular_lines)  // binary lottie file
+LV_IMG_DECLARE(ui_img_bg1_png);                // assets/bg1.png
+LV_IMG_DECLARE(ui_img_bg2_png);                // assets/bg2.png
+LV_IMG_DECLARE(ui_img_bg3_png);                // assets/bg3.png
+LV_IMG_DECLARE(ui_img_bg4_png);                // assets/bg4.png
+LV_IMG_DECLARE(ui_img_bg5_png);                // assets/bg5.png
+LV_IMG_DECLARE(ui_img_openphone40_png);        // assets/openphone40.png
+LV_IMG_DECLARE(ui_img_messages40_png);         // assets/messages40.png
+LV_IMG_DECLARE(ui_img_apps40_png);             // assets/apps40.png
+LV_IMG_DECLARE(ui_img_browser40_png);          // assets/browser40.png
+LV_IMG_DECLARE(ui_img_usergroup40_png);        // assets/usergroup40.png
+LV_IMG_DECLARE(ui_img_multimedia40_png);       // assets/multimedia40.png
+LV_IMG_DECLARE(ui_img_extra40_png);            // assets/extra40.png
+LV_IMG_DECLARE(ui_img_games40_png);            // assets/games40.png
+LV_IMG_DECLARE(ui_img_dropzone40_png);         // assets/dropzone40.png
+LV_IMG_DECLARE(ui_img_about40_png);            // assets/about40.png
+LV_IMG_DECLARE(ui_img_tools40_png);            // assets/tools40.png
+LV_IMG_DECLARE(ui_img_callgreen40_png);        // assets/callgreen40.png
+LV_IMG_DECLARE(ui_img_callred40_png);          // assets/callred40.png
+LV_IMG_DECLARE(ui_img_phoneblue40_png);        // assets/phoneblue40.png
+LV_IMG_DECLARE(ui_img_simcard40_png);          // assets/simcard40.png
+LV_IMG_DECLARE(ui_img_outdatedphone40_png);    // assets/outdatedphone40.png
+LV_IMG_DECLARE(ui_img_phonered40_png);         // assets/phonered40.png
+LV_IMG_DECLARE(ui_img_phonebluee40_png);       // assets/phonebluee40.png
 
 void ui_init(void);
 

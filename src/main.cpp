@@ -111,6 +111,7 @@ void setup() {
     cCount++;
   }
   ui_init();
+  DEBUG_PRINTLN("UI initialized");
 }
 
 void loop() {
@@ -124,7 +125,6 @@ void loop() {
     // set lvCurrentTime and lvCurrentDate eg (MM/DD/YYYY Tue)
     // https://cplusplus.com/reference/ctime/strftime/
     sprintf(lvCurrentTime, "%s", s3Time.getTime("%H:%M"));
-    // sprintf(lvCurrentDate, "%s", s3Time.getTime("%d/%m/%Y %a")); // erroneous
     sprintf(lvCurrentDate, "%s/%s/%s %s", s3Time.getTime("%d"),
             s3Time.getTime("%m"), s3Time.getTime("%Y"), s3Time.getTime("%a"));
 

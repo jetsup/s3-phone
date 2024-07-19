@@ -16,7 +16,7 @@ void ui_contactAddScreen_screen_init(void) {
   lv_obj_remove_flag(ui_panelContactAdd, LV_OBJ_FLAG_SCROLLABLE);  /// Flags
   lv_obj_set_style_border_color(ui_panelContactAdd, lv_color_hex(0x000000),
                                 LV_PART_MAIN | LV_STATE_DEFAULT);
-  lv_obj_set_style_border_opa(ui_panelContactAdd, 255,
+  lv_obj_set_style_border_opa(ui_panelContactAdd, 0,
                               LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_bg_image_src(ui_panelContactAdd, &ui_img_bg1_png,
                                 LV_PART_MAIN | LV_STATE_DEFAULT);

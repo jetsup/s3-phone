@@ -1,6 +1,7 @@
 #pragma once
 
 #define UI_ANIMATION_DURATION 150  //< Animation duration in milliseconds>
+#define UI_TRANSPARENCY 100        //< Transparency level>
 
 /**
  *@brief For events handling and screen navigation

@@ -6,9 +6,28 @@
 #ifndef _UI_EVENTS_H
 #define _UI_EVENTS_H
 
+#include "ui.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+void ui_event_lblHomeTime(lv_event_t* e);
+void ui_event_imbClickEvent(lv_event_t* e);
+void ui_event_evtBottombar(lv_event_t* e);
+void ui_event_listContact(lv_event_t* e);
+void ui_event_lblContactBack(lv_event_t* e);
+void ui_event_lblContactDetailsBack(lv_event_t* e);
+void ui_event_listContactDetailsOptions(lv_event_t* e);
+void ui_event_btnOkPinPinScreen(lv_event_t* e);
+void ui_event_btnMatrixNumHandler(lv_event_t* e);
+void ui_event_fabContactAdd(lv_event_t* e);
+void ui_event_lblContactAddSave(lv_event_t* e);
+void ui_event_lblContactAddDiscard(lv_event_t* e);
+void ui_event_textArea_full_cb(lv_event_t* e);
+void ui_event_textArea_num_cb(lv_event_t* e);
+void ui_event_keyboard_full_event_cb(lv_event_t* e);
+void ui_event_keyboard_num_event_cb(lv_event_t* e);
 
 #ifdef __cplusplus
 } /*extern "C"*/

@@ -23,9 +23,8 @@ void ui_homeScreen_screen_init(void) {
                                 LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_border_color(ui_panelMain, lv_color_hex(0x000000),
                                 LV_PART_MAIN | LV_STATE_DEFAULT);
-  lv_obj_set_style_border_opa(ui_panelMain, 255,
+  lv_obj_set_style_border_opa(ui_panelMain, 0,
                               LV_PART_MAIN | LV_STATE_DEFAULT);
-
   lv_obj_set_style_radius(ui_panelMain, 0,
                           LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
   lv_obj_set_style_bg_color(ui_panelMain, lv_color_hex(0xFFFFFF),

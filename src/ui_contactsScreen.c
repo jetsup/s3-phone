@@ -23,7 +23,7 @@ void ui_contactsScreen_screen_init(void) {
                           LV_PART_MAIN | LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
   lv_obj_set_style_border_color(ui_panelContactMain, lv_color_hex(0x000000),
                                 LV_PART_MAIN | LV_STATE_DEFAULT);
-  lv_obj_set_style_border_opa(ui_panelContactMain, 255,
+  lv_obj_set_style_border_opa(ui_panelContactMain, 0,
                               LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_radius(ui_panelContactMain, 0,
                           LV_PART_SCROLLBAR | LV_STATE_DEFAULT);

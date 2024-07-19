@@ -16,6 +16,10 @@ void ui_contactOptionsScreen_screen_init(void) {
                                 LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_bg_image_opa(ui_panelContactDetails, 100,
                                 LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_border_color(ui_panelContactDetails, lv_color_hex(0x000000),
+                                LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_border_opa(ui_panelContactDetails, 0,
+                              LV_PART_MAIN | LV_STATE_DEFAULT);
 
   ui_lblContactDetailsTitle = lv_label_create(ui_panelContactDetails);
   lv_obj_set_width(ui_lblContactDetailsTitle, LV_SIZE_CONTENT);   /// 1

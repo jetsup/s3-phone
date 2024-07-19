@@ -7,6 +7,9 @@ const char contactSeparationDelimeter[] = " - ";
 char contactName[30] = {};
 char contactNumber[14] = {};
 
+ScreenStack screenStack;
+
+//================================UI Update===============================
 void ui_utils_updateTimeDate() {
   lv_label_set_text(ui_lblHomeTime, lvCurrentTime);
   lv_label_set_text(ui_lblHomeDate, lvCurrentDate);
@@ -63,3 +66,59 @@ void ui_add_bottom_bar(lv_obj_t *parent, int colorRGB, int marginBottom) {
   lv_obj_add_event_cb(ui_lblBottombarBack, ui_event_evtBottombar, LV_EVENT_ALL,
                       "navbar back");
 }
+
+//==============================Screen Stack==============================
+bool screenStackInit() {
+  screenStack.screenStackElements = (ScreenStackElement *)malloc(
+      SCREEN_STACK_SIZE * sizeof(ScreenStackElement));
+
+  if (screenStack.screenStackElements == NULL) {
+    return false;
+  }
+
+  screenStack.top = -1;
+  return true;
+}
+
+bool screenStackIsEmpty() { return screenStack.top == -1; }
+
+bool screenStackIsFull() { return screenStack.top == SCREEN_STACK_SIZE - 1; }
+
+bool screenStackPush(enum SCREENS screen,
+                     lv_screen_load_anim_t transitionAnimation) {
+  if (screenStackIsFull()) {
+    // TODO: update the SCREEN_STACK_SIZE to make this condition unreachable
+    return false;
+  }
+
+  screenStack.top++;
+  screenStack.screenStackElements[screenStack.top].screen = screen;
+  screenStack.screenStackElements[screenStack.top].transitionAnimation =
+      transitionAnimation;
+  return true;
+}
+
+ScreenStackElement screenStackPop() {
+  if (screenStackIsEmpty()) {
+    screenStack.top = -1;
+    // return SCREEN_HOME;
+  }
+  return screenStack.screenStackElements[screenStack.top--];
+}
+
+ScreenStackElement screenStackPeek() {
+  if (screenStackIsEmpty()) {
+    // NULL
+    return screenStack.screenStackElements[0];
+  }
+  return screenStack.screenStackElements[screenStack.top];
+}
+
+void screenStackEmpty() {
+  while (!screenStackIsEmpty()) {
+    screenStackPop();
+  }
+  // screenStackPush(SCREEN_HOME, LV_SCR_LOAD_ANIM_NONE);
+}
+
+int screenStackSize() { return screenStack.top + 1; }

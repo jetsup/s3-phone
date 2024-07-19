@@ -1,5 +1,7 @@
 #include "ui_contacts.h"
 
+#include "ui_utils.h"
+
 // ===========================CONTACT DETAILS============================
 char contactOptions[9][18] = {"Call",
                               "Send text message",

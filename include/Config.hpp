@@ -26,4 +26,10 @@
 #define TFT_HEIGHT 320
 #define TFT_DRAW_BUF_SIZE (TFT_WIDTH * TFT_HEIGHT / 10 * (LV_COLOR_DEPTH / 8))
 
+// File System
+#define FILESYSTEM_FORMAT_ON_FAIL 1
+#define UI_SETTINGS_FILE_PATH "/settings/ui.json"
+// WiFi, GSM, Bluetooth etc.
+#define CONNECTIVITY_SETTINGS_FILE_PATH "/settings/connectivity.json"
+
 #endif  // CONFIG_HPP_

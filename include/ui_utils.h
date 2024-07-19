@@ -6,6 +6,7 @@ extern "C" {
 #endif
 
 #include "ui.h"
+#include "ui_constants.h"
 
 extern char lvCurrentTime[6];
 extern char lvCurrentDate[15];
@@ -15,6 +16,77 @@ extern const char contactSeparationDelimeter[4];
 extern char contactName[30];
 extern char contactNumber[14];
 
+#define SCREEN_STACK_SIZE 20
+
+//========================Screen Stack========================
+typedef struct {
+  enum SCREENS screen;
+  lv_screen_load_anim_t transitionAnimation;
+} ScreenStackElement;
+
+typedef struct {
+  ScreenStackElement *screenStackElements;
+  int top;
+} ScreenStack;
+
+extern ScreenStack screenStack;
+/**
+ * @brief Initializes the screen stack
+ */
+bool screenStackInit();
+
+/**
+ * @brief Checks if the screen stack is empty
+ * @return true if the screen stack is empty
+ */
+bool screenStackIsEmpty();
+
+/**
+ * @brief Checks if the screen stack is full
+ * @return true if the screen stack is full
+ */
+bool screenStackIsFull();
+
+/**
+ * @brief Pushes a screen to the screen stack
+ * @param screen The screen you are transitioning from
+ * @param transitionAnimation The animation used when transitioning to the
+ * screen
+ * @return true if the screen was pushed
+ */
+bool screenStackPush(enum SCREENS screen,
+                     lv_screen_load_anim_t transitionAnimation);
+
+/**
+ * @brief Pops a screen from the screen stack
+ * @return The screen that was popped
+ */
+ScreenStackElement screenStackPop();
+
+/**
+ * @brief Peeks the screen stack
+ * @return The screen at the top of the stack
+ */
+ScreenStackElement screenStackPeek();
+
+/**
+ * @brief Clears the screen stack by continuously popping the screens
+ * until the stack is empty. This means that the user will be taken back to
+ * the home screen.
+ */
+void screenStackEmpty();
+
+/**
+ * @brief Gets number of screens in the screen stack
+ * @return The number of screens in the screen stack
+ */
+int screenStackSize();
+
+//============================UI Updates============================
+
+/**
+ * @brief Updates the time and date on the screen
+ */
 void ui_utils_updateTimeDate();
 
 /**

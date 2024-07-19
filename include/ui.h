@@ -91,9 +91,9 @@ extern lv_obj_t* ui_listContact;
 extern void ui_event_listContact(lv_event_t* e);
 extern lv_obj_t* ui_lblContactBack;
 void ui_event_lblContactBack(lv_event_t* e);
-// SCREEN: ui_contactDetailsScreen
-void ui_contactDetailsScreen_screen_init(void);
-extern lv_obj_t* ui_contactDetailsScreen;
+// SCREEN: ui_contactOptionsScreen
+void ui_contactOptionsScreen_screen_init(void);
+extern lv_obj_t* ui_contactOptionsScreen;
 extern lv_obj_t* ui_panelContactDetails;
 extern lv_obj_t* ui_lblContactDetailsTitle;
 extern lv_obj_t* ui_listContactDetailsOptions;

@@ -2,6 +2,7 @@
 #include <lvgl.h>
 
 #include <Display.hpp>
+#include <FileSystem.hpp>
 #include <GSM.hpp>
 #include <Helpers.hpp>
 
@@ -22,8 +23,8 @@ int cCount = 0;
 GSM gsm(GSM_RX, GSM_TX, GSM_BAUD);
 static Display display(TFT_CLK, TFT_MOSI, TFT_MISO, TFT_CS, TFT_DC, TFT_RST,
                        TFT_LED, TOUCH_CS, TOUCH_CLK, TOUCH_DIN, TOUCH_DO);
-
 S3Time s3Time("2024-11-01 14:40:56", 3);
+FileSystem fileSystem;
 
 unsigned int lastTickMillis = 0;
 
@@ -43,6 +44,7 @@ void setup() {
     Serial.begin(115200);
   }
   gsm.init();
+  fileSystem.init();
   display.init();
   display.setRotation(2);
   display.setBrightness(255);

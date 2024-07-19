@@ -16,7 +16,6 @@ void ui_event_imbClickEvent(lv_event_t* e) {
   const char* btnData = (const char*)e->user_data;
 
   if (event_code == LV_EVENT_CLICKED) {
-    // Do not push SCREEN_HOME if the clicked object is on HOME_SCREEN
     if (strcmp(btnData, "phone") == 0) {
       if (screenStackPush(SCREEN_MAIN_MENU, LV_SCR_LOAD_ANIM_MOVE_BOTTOM)) {
         _ui_screen_change(&ui_phoneScreen, LV_SCR_LOAD_ANIM_MOVE_TOP,
@@ -285,11 +284,9 @@ void ui_event_listContact(lv_event_t* e) {
     char* token;
     // FIXME: Handle words separated by " "
     token = strtok(contactData, contactSeparationDelimeter);
-    // token = strsep(&contactData, contactSeparationDelimeter);
     if (token != NULL) {
       strlcpy(contactName, token, sizeof(contactName));
       token = strtok(NULL, contactSeparationDelimeter);
-      // token = strsep(&contactData, NULL);
       if (token != NULL) {
         strlcpy(contactNumber, token, sizeof(contactNumber));
       }

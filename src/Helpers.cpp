@@ -56,9 +56,16 @@ void S3Time::setUpdateInterval(uint32_t updateInterval) {
 }
 
 void S3Time::loop() {
-  if (esp32Time->getMinute() != _nowMinute) {
+  if (esp32Time->getMinute() != _nowMinute ||
+      esp32Time->getHour() != _nowHour || esp32Time->getDay() != _nowDay ||
+      esp32Time->getMonth() != _nowMonth || esp32Time->getYear() != _nowYear) {
+        
     _timeUpdated = true;
     _nowMinute = esp32Time->getMinute();
+    _nowHour = esp32Time->getHour();
+    _nowDay = esp32Time->getDay();
+    _nowMonth = esp32Time->getMonth();
+    _nowYear = esp32Time->getYear();
 
     /**
      * %a - abbreviated weekday name (Thu)

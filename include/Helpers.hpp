@@ -19,6 +19,10 @@ class S3Time : public ESP32Time {
   bool _timeUpdated = false;
 
   int _nowMinute = -1;
+  int _nowHour = -1;
+  int _nowDay = -1;
+  int _nowMonth = -1;
+  int _nowYear = -1;
 
  private:
   S3Time() = delete;

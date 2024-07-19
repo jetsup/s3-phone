@@ -31,14 +31,12 @@ extern lv_obj_t* ui_homeContainerTopBar;
 extern lv_obj_t* ui_lblHomeBatteryLevel;
 extern lv_obj_t* ui_lblHomeSignalLevel;
 extern lv_obj_t* ui_homeContainerDateISP;
-void ui_event_lblHomeTime(lv_event_t* e);
 extern lv_obj_t* ui_lblHomeTime;
 extern lv_obj_t* ui_lblHomeDate;
 extern lv_obj_t* ui_lblHomeISP;
 extern lv_obj_t* ui_homeContainerStart;
 extern lv_obj_t* ui_imbHomePhone;
 extern lv_obj_t* ui_imbHomeMessages;
-void ui_event_imbClickEvent(lv_event_t* e);
 extern lv_obj_t* ui_imbHomeApps;
 extern lv_obj_t* ui_imbHomeBrowser;
 extern lv_obj_t* ui_imbHomeContacts;
@@ -108,7 +106,6 @@ extern lv_obj_t* ui_menuVideosContainer;
 extern lv_obj_t* ui_imbVideos;
 extern lv_obj_t* ui_lblMenuVideos;
 extern lv_obj_t* ui_bottomBar;
-void ui_event_evtBottombar(lv_event_t* e);
 extern lv_obj_t* ui_lblBottombarTasks;
 extern lv_obj_t* ui_lblBottombarHome;
 extern lv_obj_t* ui_lblBottombarBack;
@@ -119,9 +116,7 @@ extern lv_obj_t* ui_contactsScreen;
 extern lv_obj_t* ui_panelContactMain;
 extern lv_obj_t* ui_lblContactTitle;
 extern lv_obj_t* ui_listContact;
-extern void ui_event_listContact(lv_event_t* e);
 extern lv_obj_t* ui_lblContactBack;
-void ui_event_lblContactBack(lv_event_t* e);
 // SCREEN: ui_contactOptionsScreen
 void ui_contactOptionsScreen_screen_init(void);
 extern lv_obj_t* ui_contactOptionsScreen;
@@ -129,8 +124,6 @@ extern lv_obj_t* ui_panelContactDetails;
 extern lv_obj_t* ui_lblContactDetailsTitle;
 extern lv_obj_t* ui_listContactDetailsOptions;
 extern lv_obj_t* ui_lblContactDetailsBack;
-void ui_event_listContactDetailsOptions(lv_event_t* e);
-void ui_event_lblContactDetailsBack(lv_event_t* e);
 extern lv_obj_t* ui_lblContactBack;
 // SCREEN: ui_simPinScreen
 void ui_simPinScreen_screen_init(void);
@@ -139,9 +132,7 @@ extern lv_obj_t* ui_txtPinPinScreen;
 extern lv_obj_t* ui_btnOkPinPinScreen;
 extern lv_obj_t* ui_lblOkPinPinScreen;
 extern lv_obj_t* ui_lblUnlockPhonePinScreen;
-void ui_event_btnOkPinPinScreen(lv_event_t* e);
 extern lv_obj_t* ui_btnMatrixNumPinScreen;
-extern void ui_event_btnMatrixNumHandler(lv_event_t* e);
 
 // SCREEN: ui_alarmMainScreen
 void ui_alarmMainScreen_screen_init(void);
@@ -162,9 +153,6 @@ extern lv_obj_t* ui_dropDownContactAddSaveTo;
 extern lv_obj_t* ui_lblContactAddSave;
 extern lv_obj_t* ui_lblContactAddDiscard;
 extern lv_obj_t* ui_lblContactAddBack;
-void ui_event_fabContactAdd(lv_event_t* e);
-void ui_event_lblContactAddSave(lv_event_t* e);
-void ui_event_lblContactAddDiscard(lv_event_t* e);
 // SCREEN: ui_settingsMainScreen
 void ui_settingsMainScreen_screen_init(void);
 extern lv_obj_t* ui_settingsMainScreen;
@@ -285,10 +273,25 @@ extern lv_obj_t* ui_panelBrowserMain;
 // General UI events
 extern lv_obj_t* ui_keyboard_full;
 extern lv_obj_t* ui_keyboard_num;
+
+// Events handlers
 void ui_event_textArea_full_cb(lv_event_t* e);
 void ui_event_textArea_num_cb(lv_event_t* e);
 void ui_event_keyboard_full_event_cb(lv_event_t* e);
 void ui_event_keyboard_num_event_cb(lv_event_t* e);
+void ui_event_fabContactAdd(lv_event_t* e);
+void ui_event_lblContactAddSave(lv_event_t* e);
+void ui_event_lblContactAddDiscard(lv_event_t* e);
+extern void ui_event_btnMatrixNumHandler(lv_event_t* e);
+void ui_event_btnOkPinPinScreen(lv_event_t* e);
+void ui_event_listContactDetailsOptions(lv_event_t* e);
+void ui_event_lblContactDetailsBack(lv_event_t* e);
+void ui_event_lblContactBack(lv_event_t* e);
+extern void ui_event_listContact(lv_event_t* e);
+void ui_event_evtBottombar(lv_event_t* e);
+void ui_event_lblHomeTime(lv_event_t* e);
+void ui_event_imbClickEvent(lv_event_t* e);
+void ui_event_uiComponentsChangeEvent(lv_event_t* e);
 
 extern lv_obj_t* ui____initial_actions0;
 

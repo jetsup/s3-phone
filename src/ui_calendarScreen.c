@@ -5,6 +5,13 @@
 
 #include "ui.h"
 
+lv_obj_t *calendar;
+lv_obj_t *btnUpdateDate;
+lv_obj_t *btnDiscard;
+
+void ui_event_btnCalendar(lv_event_t *e);
+void ui_event_uiComponentsChangeEvent(lv_event_t *e);
+
 void ui_calendarScreen_screen_init(void) {
   ui_calendarScreen = lv_obj_create(NULL);
   lv_obj_remove_flag(ui_calendarScreen, LV_OBJ_FLAG_SCROLLABLE);  /// Flags
@@ -22,5 +29,109 @@ void ui_calendarScreen_screen_init(void) {
   lv_obj_set_style_border_opa(ui_panelCalendarMain, 0,
                               LV_PART_MAIN | LV_STATE_DEFAULT);
 
+  lv_obj_t *lblCalendar = lv_label_create(ui_panelCalendarMain);
+  lv_label_set_text(lblCalendar, "Calendar");
+  lv_obj_set_align(lblCalendar, LV_ALIGN_TOP_MID);
+  lv_obj_set_x(lblCalendar, 0);
+  lv_obj_set_y(lblCalendar, -15);
+  lv_obj_set_style_text_font(lblCalendar, &lv_font_montserrat_18, 0);
+
+  calendar = lv_calendar_create(ui_panelCalendarMain);
+  lv_obj_set_size(calendar, 240, 235);
+  lv_obj_set_x(calendar, 0);
+  lv_obj_set_y(calendar, 10);
+  lv_obj_set_align(calendar, LV_ALIGN_TOP_MID);
+  lv_obj_add_event_cb(calendar, ui_event_uiComponentsChangeEvent, LV_EVENT_ALL,
+                      "date clicked");
+  char bufDate[11];  // DD/MM/YYYY
+  uint32_t year, month, day;
+
+  lv_utils_getDate(bufDate);
+
+  year = atoi(bufDate + 6);
+  month = atoi(bufDate + 3);
+  day = atoi(bufDate);
+
+  lv_calendar_set_today_date(calendar, year, month, day);
+  lv_calendar_set_showed_date(calendar, year, month);
+
+  lv_calendar_header_dropdown_create(calendar);
+
+  btnUpdateDate = lv_button_create(ui_panelCalendarMain);
+  lv_obj_add_event_cb(btnUpdateDate, ui_event_btnCalendar, LV_EVENT_CLICKED,
+                      "update date");
+  lv_obj_set_align(btnUpdateDate, LV_ALIGN_BOTTOM_RIGHT);
+  lv_obj_set_x(btnUpdateDate, -5);
+  lv_obj_set_y(btnUpdateDate, -15);
+  lv_obj_add_state(btnUpdateDate, LV_STATE_DISABLED);
+  lv_color_t btnColor = {.red = 50, .green = 255, .blue = 50};
+  lv_obj_set_style_bg_color(btnUpdateDate, btnColor, NULL);
+  lv_obj_t *lblUpdateDate = lv_label_create(btnUpdateDate);
+  lv_label_set_text(lblUpdateDate, "Update");
+  lv_obj_set_style_text_font(lblUpdateDate, &lv_font_montserrat_10, 0);
+  lv_obj_set_style_text_color(lblUpdateDate, lv_color_hex(0x000000),
+                              LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_text_opa(lblUpdateDate, 255,
+                            LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  btnDiscard = lv_button_create(ui_panelCalendarMain);
+  lv_obj_add_event_cb(btnDiscard, ui_event_btnCalendar, LV_EVENT_CLICKED,
+                      "discard");
+  lv_obj_set_align(btnDiscard, LV_ALIGN_BOTTOM_LEFT);
+  lv_obj_set_x(btnDiscard, 5);
+  lv_obj_set_y(btnDiscard, -15);
+  lv_obj_add_state(btnDiscard, LV_STATE_DISABLED);
+  btnColor.red = 255;
+  btnColor.green = 50;
+  btnColor.blue = 50;
+  lv_obj_set_style_bg_color(btnDiscard, btnColor, NULL);
+  lv_obj_t *lblDiscard = lv_label_create(btnDiscard);
+  lv_label_set_text(lblDiscard, "Discard");
+  lv_obj_set_style_text_font(lblDiscard, &lv_font_montserrat_10, 0);
+  lv_obj_set_style_text_color(lblDiscard, lv_color_hex(0xFFFFFF),
+                              LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_text_opa(lblDiscard, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+
   ui_add_bottom_bar(ui_panelCalendarMain, 0xFFFFFF, 10);
+}
+void ui_event_btnCalendar(lv_event_t *e) {
+  lv_obj_t *obj = lv_event_get_target(e);
+  const char *eventData = (const char *)e->user_data;
+
+  if (strcmp(eventData, "update date") == 0) {
+    uint32_t year, month, day;
+    const lv_calendar_date_t *date = lv_calendar_get_today_date(calendar);
+    lv_utils_setDate(date->year, date->month, date->day);
+
+    lv_obj_add_state(btnUpdateDate, LV_STATE_DISABLED);
+    lv_obj_add_state(btnDiscard, LV_STATE_DISABLED);
+  } else if (strcmp(eventData, "discard") == 0) {
+    char bufDate[11];  // DD/MM/YYYY
+    uint32_t year, month, day;
+    lv_utils_getDate(bufDate);
+    year = atoi(bufDate + 6);
+    month = atoi(bufDate + 3);
+    day = atoi(bufDate);
+
+    lv_calendar_set_today_date(calendar, year, month, day);
+
+    lv_obj_add_state(btnUpdateDate, LV_STATE_DISABLED);
+    lv_obj_add_state(btnDiscard, LV_STATE_DISABLED);
+  }
+}
+
+void ui_event_uiComponentsChangeEvent(lv_event_t *e) {
+  lv_event_code_t code = lv_event_get_code(e);
+  const char *data = (const char *)e->user_data;
+
+  if (code == LV_EVENT_VALUE_CHANGED) {
+    if (strcmp(data, "date clicked") == 0) {
+      lv_calendar_date_t date;
+      if (lv_calendar_get_pressed_date(calendar, &date)) {
+        lv_calendar_set_today_date(calendar, date.year, date.month, date.day);
+        lv_obj_remove_state(btnUpdateDate, LV_STATE_DISABLED);
+        lv_obj_remove_state(btnDiscard, LV_STATE_DISABLED);
+      }
+    }
+  }
 }

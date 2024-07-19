@@ -8,7 +8,7 @@
 
 #include "ui.h"
 #include "ui_contacts.h"
-#include "ui_utils.h"
+// #include "ui_utils.h"
 
 int contactsCount = 0;
 String names[] = {"George Ngigi", "John", "Joe", "Brandon"};
@@ -112,6 +112,11 @@ void setup() {
     DEBUG_PRINTF("%s::%s\n", cNames[i], cNumbers[i]);
     cCount++;
   }
+
+  // set the current date so that it can be used to initialize the calendar
+  sprintf(lvCurrentDate, "%s/%s/%s %s", s3Time.getTime("%d"),
+          s3Time.getTime("%m"), s3Time.getTime("%Y"), s3Time.getTime("%a"));
+
   ui_init();
   DEBUG_PRINTLN("UI initialized");
 }
@@ -131,6 +136,13 @@ void loop() {
             s3Time.getTime("%m"), s3Time.getTime("%Y"), s3Time.getTime("%a"));
 
     ui_utils_updateTimeDate();
+  }
+
+  if (dateChanged) {
+    s3Time.setTime(s3Time.getSecond(), s3Time.getMinute(), s3Time.getHour(),
+                   newDay, newMonth, newYear, s3Time.getMicros());
+    DEBUG_PRINTF("New Time: %s", s3Time.getTime());
+    dateChanged = false;
   }
 }
 

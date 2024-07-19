@@ -15,6 +15,10 @@ extern char lvCurrentDate[15];
 extern const char contactSeparationDelimeter[4];
 extern char contactName[30];
 extern char contactNumber[14];
+extern bool dateChanged;
+extern int newYear;
+extern int newMonth;
+extern int newDay;
 
 #define SCREEN_STACK_SIZE 20
 
@@ -88,6 +92,20 @@ int screenStackSize();
  * @brief Updates the time and date on the screen
  */
 void ui_utils_updateTimeDate();
+
+/**
+ * @brief Get the current date and store it in the buffer
+ * @param buffer The buffer to store the date
+ */
+void lv_utils_getDate(char *buffer);
+
+/**
+ * @brief Update system date
+ * @param year The year
+ * @param month The month
+ * @param day The day
+ */
+void lv_utils_setDate(int year, int month, int day);
 
 /**
  * @brief Creates a bottom bar with navigation buttons

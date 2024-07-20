@@ -25,7 +25,9 @@ extern int newDay;
 //========================Screen Stack========================
 typedef struct {
   enum SCREENS screen;
+  lv_obj_t *previousScreen;
   lv_screen_load_anim_t transitionAnimation;
+  void (*previousScreenInit)(void);
 } ScreenStackElement;
 
 typedef struct {
@@ -58,7 +60,8 @@ bool screenStackIsFull();
  * screen
  * @return true if the screen was pushed
  */
-bool screenStackPush(enum SCREENS screen,
+bool screenStackPush(enum SCREENS screen, lv_obj_t *previousScreen,
+                     void (*previousScreenInit)(void),
                      lv_screen_load_anim_t transitionAnimation);
 
 /**

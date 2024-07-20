@@ -98,7 +98,8 @@ bool screenStackIsEmpty() { return screenStack.top == -1; }
 
 bool screenStackIsFull() { return screenStack.top == SCREEN_STACK_SIZE - 1; }
 
-bool screenStackPush(enum SCREENS screen,
+bool screenStackPush(enum SCREENS screen, lv_obj_t *previousScreen,
+                     void (*previousScreenInit)(void),
                      lv_screen_load_anim_t transitionAnimation) {
   if (screenStackIsFull()) {
     // TODO: update the SCREEN_STACK_SIZE to make this condition unreachable
@@ -107,6 +108,10 @@ bool screenStackPush(enum SCREENS screen,
 
   screenStack.top++;
   screenStack.screenStackElements[screenStack.top].screen = screen;
+  screenStack.screenStackElements[screenStack.top].previousScreen =
+      previousScreen;
+  screenStack.screenStackElements[screenStack.top].previousScreenInit =
+      previousScreen;
   screenStack.screenStackElements[screenStack.top].transitionAnimation =
       transitionAnimation;
   return true;

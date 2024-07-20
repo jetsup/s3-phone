@@ -5,6 +5,23 @@
 
 #include "ui.h"
 
+char settingsOptions[][30] = {"Connectivity",
+                              "Network and Internet",
+                              "Display",
+                              "Wallpapers and Themes",
+                              "Lock Screen and Security",
+                              "Sounds",
+                              "Storage",
+                              "System",
+                              "About"};
+lv_obj_t *listSettingsOptions;
+
+void populate_list_from_array(lv_obj_t *list);
+void ui_event_list_event_callback(lv_event_t *e);
+void option_add_to_list(lv_obj_t *list, const char *text,
+                        const char *symbol_icon, lv_event_cb_t event_cb,
+                        lv_event_code_t event_filter, void *user_data);
+
 void ui_settingsMainScreen_screen_init(void) {
   ui_settingsMainScreen = lv_obj_create(NULL);
   lv_obj_remove_flag(ui_settingsMainScreen, LV_OBJ_FLAG_SCROLLABLE);  /// Flags
@@ -22,5 +39,144 @@ void ui_settingsMainScreen_screen_init(void) {
   lv_obj_set_style_border_opa(ui_panelSettingsMain, 0,
                               LV_PART_MAIN | LV_STATE_DEFAULT);
 
+  lv_obj_t *lblTitle = lv_label_create(ui_panelSettingsMain);
+  lv_obj_set_align(lblTitle, LV_ALIGN_TOP_MID);
+  lv_obj_set_x(lblTitle, 0);
+  lv_obj_set_y(lblTitle, -10);
+  lv_label_set_text(lblTitle, "Settings");
+  lv_obj_set_style_text_color(lblTitle, lv_color_hex(0x000000),
+                              LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_text_opa(lblTitle, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_text_font(lblTitle, &lv_font_montserrat_18,
+                             LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_text_letter_space(lblTitle, 2,
+                                     LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_text_line_space(lblTitle, 2,
+                                   LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_text_align(lblTitle, LV_TEXT_ALIGN_CENTER,
+                              LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_text_decor(lblTitle, LV_TEXT_DECOR_NONE,
+                              LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  // list for settings menu
+  listSettingsOptions = lv_list_create(ui_panelSettingsMain);
+  lv_obj_set_width(listSettingsOptions, 240);
+  lv_obj_set_height(listSettingsOptions, 255);
+  lv_obj_set_x(listSettingsOptions, 0);
+  lv_obj_set_y(listSettingsOptions, 20);
+  lv_obj_set_align(listSettingsOptions, LV_ALIGN_TOP_LEFT);
+  lv_obj_set_style_radius(listSettingsOptions, 0,
+                          LV_PART_MAIN | LV_STATE_DEFAULT);
+  // lv_obj_set_style_bg_color(listSettingsOptions, lv_color_hex(0xF00000),
+  //                           LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_bg_opa(listSettingsOptions, 0,
+                          LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_border_color(listSettingsOptions, lv_color_hex(0x000000),
+                                LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_border_opa(listSettingsOptions, 255,
+                              LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_border_width(listSettingsOptions, 0,
+                                LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_border_side(listSettingsOptions, LV_BORDER_SIDE_NONE,
+                               LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_center(listSettingsOptions);
+
+  // populate list
+  int arrayLength = sizeof(settingsOptions) / sizeof(settingsOptions[0]);
+  LV_LOG_USER("Data %d: %s", arrayLength, settingsOptions[0]);
+  populate_list_from_array(listSettingsOptions);
+
   ui_add_bottom_bar(ui_panelSettingsMain, 0xFFFFFF, 10);
+}
+
+void populate_list_from_array(lv_obj_t *list) {
+  int arrayLength = sizeof(settingsOptions) / sizeof(settingsOptions[0]);
+  LV_LOG_USER("Data %d: %s", arrayLength, settingsOptions[0]);
+  for (int i = 0; i < arrayLength; i++) {
+    option_add_to_list(list, settingsOptions[i], LV_SYMBOL_LIST,
+                       ui_event_list_event_callback, LV_EVENT_CLICKED, NULL);
+  }
+}
+
+void option_add_to_list(lv_obj_t *list, const char *text,
+                        const char *symbol_icon, lv_event_cb_t event_cb,
+                        lv_event_code_t event_filter, void *user_data) {
+  lv_obj_t *btn;
+  btn = lv_list_add_button(list, symbol_icon, text);
+  lv_obj_set_style_bg_opa(btn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_add_event_cb(btn, event_cb, event_filter /*LV_EVENT_CLICKED*/,
+                      user_data /*NULL*/);
+}
+
+void ui_event_list_event_callback(lv_event_t *e) {
+  lv_event_code_t event_code = lv_event_get_code(e);
+  lv_obj_t *target = lv_event_get_target(e);
+  //   lv_obj_t *list = lv_obj_get_parent(target);
+
+  const char *buttonText = lv_list_get_button_text(listSettingsOptions, target);
+
+  if (event_code == LV_EVENT_CLICKED) {
+    if (strcmp(buttonText, "Connectivity")) {
+      if (screenStackPush(SCREEN_SETTINGS,
+                          LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
+        _ui_screen_change(&ui_settingsConnectivityScreen,
+                          LV_SCR_LOAD_ANIM_MOVE_LEFT, UI_ANIMATION_DURATION, 0,
+                          &ui_settingsConnectivityScreen_screen_init);
+      }
+    } else if (strcmp(buttonText, "Network and Internet")) {
+      if (screenStackPush(SCREEN_SETTINGS,
+                          LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
+        _ui_screen_change(&ui_settingsNetworkInternetScreen,
+                          LV_SCR_LOAD_ANIM_MOVE_LEFT, UI_ANIMATION_DURATION, 0,
+                          &ui_settingsNetworkInternetScreen_screen_init);
+      }
+    } else if (strcmp(buttonText, "Display")) {
+      if (screenStackPush(SCREEN_SETTINGS,
+                          LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
+        _ui_screen_change(&ui_settingsDisplayScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT,
+                          UI_ANIMATION_DURATION, 0,
+                          &ui_settingsDisplayScreen_screen_init);
+      }
+    } else if (strcmp(buttonText, "Wallpapers and Themes")) {
+      if (screenStackPush(SCREEN_SETTINGS,
+                          LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
+        _ui_screen_change(&ui_settingsThemesScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT,
+                          UI_ANIMATION_DURATION, 0,
+                          &ui_settingsThemesScreen_screen_init);
+      }
+    } else if (strcmp(buttonText, "Lock Screen and Security")) {
+      if (screenStackPush(SCREEN_SETTINGS,
+                          LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
+        _ui_screen_change(&ui_settingsLockSecurityScreen,
+                          LV_SCR_LOAD_ANIM_MOVE_LEFT, UI_ANIMATION_DURATION, 0,
+                          &ui_settingsLockSecurityScreen_screen_init);
+      }
+    } else if (strcmp(buttonText, "Sounds")) {
+      if (screenStackPush(SCREEN_SETTINGS, LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
+        _ui_screen_change(&ui_settingsSoundScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT,
+                          UI_ANIMATION_DURATION, 0,
+                          &ui_settingsSoundScreen_screen_init);
+      }
+    } else if (strcmp(buttonText, "Storage")) {
+      if (screenStackPush(SCREEN_SETTINGS,
+                          LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
+        _ui_screen_change(&ui_settingsStorageScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT,
+                          UI_ANIMATION_DURATION, 0,
+                          &ui_settingsStorageScreen_screen_init);
+      }
+    } else if (strcmp(buttonText, "System")) {
+      if (screenStackPush(SCREEN_SETTINGS,
+                          LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
+        _ui_screen_change(&ui_settingsSystemScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT,
+                          UI_ANIMATION_DURATION, 0,
+                          &ui_settingsSystemScreen_screen_init);
+      }
+    } else if (strcmp(buttonText, "About")) {
+      if (screenStackPush(SCREEN_SETTINGS, LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
+        _ui_screen_change(&ui_settingsAboutScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT,
+                          UI_ANIMATION_DURATION, 0,
+                          &ui_settingsAboutScreen_screen_init);
+      }
+    }
+  }
 }

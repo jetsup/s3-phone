@@ -214,6 +214,10 @@ void ui_event_evtBottombar(lv_event_t* e) {
           _ui_screen_change(
               &ui_contactsScreen, poppedScreen.transitionAnimation,
               UI_ANIMATION_DURATION, 0, &ui_contactsScreen_screen_init);
+        } else if (poppedScreen.screen == SCREEN_SETTINGS) {
+          _ui_screen_change(
+              &ui_settingsMainScreen, poppedScreen.transitionAnimation,
+              UI_ANIMATION_DURATION, 0, &ui_settingsMainScreen_screen_init);
         }
       } else {
         if (screenStackPush(SCREEN_HOME, LV_SCR_LOAD_ANIM_NONE)) {

@@ -61,7 +61,7 @@ void GSM::init() {
   DEBUG_PRINTLN("GSM module initialized");
 }
 
-void GSM::sendSMS(const char *number, const char *message) {
+void GSM::sendSMS(const char* number, const char* message) {
   _sendCommand("AT+CMGS=\"");
   _sendCommand(number);
   _sendCommandLn("\"");
@@ -74,7 +74,7 @@ void GSM::sendSMS(const char *number, const char *message) {
   _processResponse();
 }
 
-void GSM::call(const char *number) {
+void GSM::call(const char* number) {
   _sendCommand("ATD");  // ATD+<number>; eg. ATD+1234567890;
   _sendCommand(number);
   _sendCommandLn(";");
@@ -104,27 +104,27 @@ void GSM::_processResponse() {
   DEBUG_PRINTF("Response: %s\n", response.c_str());
 }
 
-void GSM::_sendCommand(const char *command) { _gsmSerial->print(command); }
+void GSM::_sendCommand(const char* command) { _gsmSerial->print(command); }
 
 void GSM::_sendCommandW(const int value) { _gsmSerial->write(value); }
 
-void GSM::_sendCommandLn(const char *command) { _gsmSerial->println(command); }
+void GSM::_sendCommandLn(const char* command) { _gsmSerial->println(command); }
 
 void GSM::_sendCommandLn(const int value) { _gsmSerial->println(value); }
 
-void GSM::_sendCommandLn(const char *command1, const char *command2) {
+void GSM::_sendCommandLn(const char* command1, const char* command2) {
   _gsmSerial->print(command1);
   _gsmSerial->println(command2);
 }
 
-void GSM::_sendCommandLn(const char *command1, const char *command2,
-                         const char *command3) {
+void GSM::_sendCommandLn(const char* command1, const char* command2,
+                         const char* command3) {
   _gsmSerial->print(command1);
   _gsmSerial->print(command2);
   _gsmSerial->println(command3);
 }
 
-void GSM::readSMS(uint8_t index, char *message) {
+void GSM::readSMS(uint8_t index, char* message) {
   _sendCommand("AT+CMGR=");
   _sendCommandLn(index);
   delay(100);

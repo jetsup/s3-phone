@@ -12,12 +12,12 @@ static void evtComputeCalculations(lv_event_t *e);
 
 void ui_calculatorScreen_screen_init(void) {
   ui_calculatorScreen = lv_obj_create(NULL);
-  lv_obj_remove_flag(ui_calculatorScreen, LV_OBJ_FLAG_SCROLLABLE);  /// Flags
+  lv_obj_remove_flag(ui_calculatorScreen, LV_OBJ_FLAG_SCROLLABLE); /// Flags
 
   ui_panelCalculatorMain = lv_obj_create(ui_calculatorScreen);
   lv_obj_set_width(ui_panelCalculatorMain, 240);
   lv_obj_set_height(ui_panelCalculatorMain, 320);
-  lv_obj_remove_flag(ui_panelCalculatorMain, LV_OBJ_FLAG_SCROLLABLE);  /// Flags
+  lv_obj_remove_flag(ui_panelCalculatorMain, LV_OBJ_FLAG_SCROLLABLE); /// Flags
   lv_obj_set_style_bg_image_src(ui_panelCalculatorMain, &ui_img_bg1_png,
                                 LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_bg_image_opa(ui_panelCalculatorMain, 100,
@@ -63,7 +63,7 @@ void ui_calculatorScreen_screen_init(void) {
   lv_obj_set_y(calculationResults, 30);
   lv_obj_add_state(calculationResults, LV_STATE_DISABLED);
   lv_obj_remove_state(calculationResults, LV_STATE_FOCUSED);
-  lv_obj_remove_flag(calculationResults, LV_OBJ_FLAG_CLICKABLE);  /// Flags
+  lv_obj_remove_flag(calculationResults, LV_OBJ_FLAG_CLICKABLE); /// Flags
 
   lv_obj_add_state(calculationArea, LV_STATE_FOCUSED);
 

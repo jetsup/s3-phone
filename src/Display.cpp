@@ -83,4 +83,3 @@ Display::Display(uint8_t tftCLK, uint8_t tftMOSI, uint8_t tftMISO,
   }
   setPanel(&_panel_instance);
 }
-

@@ -23,10 +23,10 @@ void ui_utils_updateTimeDate() {
 void lv_utils_getDate(char *buffer) { lv_strncpy(buffer, lvCurrentDate, 11); }
 
 void lv_utils_setDate(int year, int month, int day) {
-    newYear = year;
-    newMonth = month;
-    newDay = day;
-    dateChanged = true;
+  newYear = year;
+  newMonth = month;
+  newDay = day;
+  dateChanged = true;
 }
 
 void ui_add_bottom_bar(lv_obj_t *parent, int colorRGB, int marginBottom) {

@@ -33,7 +33,7 @@ void ui_calendarScreen_screen_init(void) {
   lv_label_set_text(lblCalendar, "Calendar");
   lv_obj_set_align(lblCalendar, LV_ALIGN_TOP_MID);
   lv_obj_set_x(lblCalendar, 0);
-  lv_obj_set_y(lblCalendar, -15);
+  lv_obj_set_y(lblCalendar, UI_ALIGN_TOP_LEFT_Y_OFFSET);
   lv_obj_set_style_text_font(lblCalendar, &lv_font_montserrat_18, 0);
 
   calendar = lv_calendar_create(ui_panelCalendarMain);
@@ -62,7 +62,7 @@ void ui_calendarScreen_screen_init(void) {
                       "update date");
   lv_obj_set_align(btnUpdateDate, LV_ALIGN_BOTTOM_RIGHT);
   lv_obj_set_x(btnUpdateDate, -5);
-  lv_obj_set_y(btnUpdateDate, -15);
+  lv_obj_set_y(btnUpdateDate, UI_ALIGN_TOP_LEFT_Y_OFFSET);
   lv_obj_add_state(btnUpdateDate, LV_STATE_DISABLED);
   lv_color_t btnColor = {.red = 50, .green = 255, .blue = 50};
   lv_obj_set_style_bg_color(btnUpdateDate, btnColor, NULL);
@@ -79,7 +79,7 @@ void ui_calendarScreen_screen_init(void) {
                       "discard");
   lv_obj_set_align(btnDiscard, LV_ALIGN_BOTTOM_LEFT);
   lv_obj_set_x(btnDiscard, 5);
-  lv_obj_set_y(btnDiscard, -15);
+  lv_obj_set_y(btnDiscard, UI_ALIGN_TOP_LEFT_Y_OFFSET);
   lv_obj_add_state(btnDiscard, LV_STATE_DISABLED);
   btnColor.red = 255;
   btnColor.green = 50;

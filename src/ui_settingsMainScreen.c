@@ -42,7 +42,7 @@ void ui_settingsMainScreen_screen_init(void) {
   lv_obj_t *lblTitle = lv_label_create(ui_panelSettingsMain);
   lv_obj_set_align(lblTitle, LV_ALIGN_TOP_MID);
   lv_obj_set_x(lblTitle, 0);
-  lv_obj_set_y(lblTitle, -10);
+  lv_obj_set_y(lblTitle, UI_ALIGN_TOP_LEFT_Y_OFFSET);
   lv_label_set_text(lblTitle, "Settings");
   lv_obj_set_style_text_color(lblTitle, lv_color_hex(0x000000),
                               LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -61,9 +61,9 @@ void ui_settingsMainScreen_screen_init(void) {
   // list for settings menu
   listSettingsOptions = lv_list_create(ui_panelSettingsMain);
   lv_obj_set_width(listSettingsOptions, 240);
-  lv_obj_set_height(listSettingsOptions, 255);
+  lv_obj_set_height(listSettingsOptions, 265);
   lv_obj_set_x(listSettingsOptions, 0);
-  lv_obj_set_y(listSettingsOptions, 20);
+  lv_obj_set_y(listSettingsOptions, 5);
   lv_obj_set_align(listSettingsOptions, LV_ALIGN_TOP_LEFT);
   lv_obj_set_style_radius(listSettingsOptions, 0,
                           LV_PART_MAIN | LV_STATE_DEFAULT);

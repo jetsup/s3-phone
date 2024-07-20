@@ -39,7 +39,7 @@ void ui_contactsScreen_screen_init(void) {
   // lv_obj_set_width(ui_lblContactTitle, 40);
   // lv_obj_set_height(ui_lblContactTitle, 20);
   lv_obj_set_x(ui_lblContactTitle, 0);
-  lv_obj_set_y(ui_lblContactTitle, -5);
+  lv_obj_set_y(ui_lblContactTitle, UI_ALIGN_TOP_LEFT_Y_OFFSET);
   lv_obj_set_align(ui_lblContactTitle, LV_ALIGN_TOP_MID);
   lv_obj_set_style_text_color(ui_lblContactTitle, lv_color_hex(0x000000),
                               LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -58,9 +58,9 @@ void ui_contactsScreen_screen_init(void) {
 
   ui_listContact = lv_list_create(ui_panelContactMain);
   lv_obj_set_width(ui_listContact, 240);
-  lv_obj_set_height(ui_listContact, 255);
+  lv_obj_set_height(ui_listContact, 265);
   lv_obj_set_x(ui_listContact, 0);
-  lv_obj_set_y(ui_listContact, 20);
+  lv_obj_set_y(ui_listContact, 5);
   lv_obj_set_align(ui_listContact, LV_ALIGN_TOP_LEFT);
   lv_obj_set_style_radius(ui_listContact, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
   // lv_obj_set_style_bg_color(ui_listContact, lv_color_hex(0xF00000),

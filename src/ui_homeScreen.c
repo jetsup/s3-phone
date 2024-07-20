@@ -39,7 +39,7 @@ void ui_homeScreen_screen_init(void) {
   lv_obj_set_width(ui_homeContainerTopBar, 240);
   lv_obj_set_height(ui_homeContainerTopBar, 15);
   lv_obj_set_x(ui_homeContainerTopBar, -16);
-  lv_obj_set_y(ui_homeContainerTopBar, -10);
+  lv_obj_set_y(ui_homeContainerTopBar, UI_ALIGN_TOP_LEFT_Y_OFFSET);
   lv_obj_remove_flag(ui_homeContainerTopBar,
                      LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);  /// Flags
 

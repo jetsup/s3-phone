@@ -25,7 +25,7 @@ void ui_contactOptionsScreen_screen_init(void) {
   lv_obj_set_width(ui_lblContactDetailsTitle, LV_SIZE_CONTENT);   /// 1
   lv_obj_set_height(ui_lblContactDetailsTitle, LV_SIZE_CONTENT);  /// 1
   lv_obj_set_x(ui_lblContactDetailsTitle, 0);
-  lv_obj_set_y(ui_lblContactDetailsTitle, -5);
+  lv_obj_set_y(ui_lblContactDetailsTitle, UI_ALIGN_TOP_LEFT_Y_OFFSET);
   lv_obj_set_align(ui_lblContactDetailsTitle, LV_ALIGN_TOP_MID);
   lv_label_set_text(ui_lblContactDetailsTitle, (const char*)contactName);
   lv_obj_set_style_text_opa(ui_lblContactDetailsTitle, 255,
@@ -43,9 +43,9 @@ void ui_contactOptionsScreen_screen_init(void) {
 
   ui_listContactDetailsOptions = lv_list_create(ui_panelContactDetails);
   lv_obj_set_width(ui_listContactDetailsOptions, 240);
-  lv_obj_set_height(ui_listContactDetailsOptions, 265);
+  lv_obj_set_height(ui_listContactDetailsOptions, 275);
   lv_obj_set_x(ui_listContactDetailsOptions, 0);
-  lv_obj_set_y(ui_listContactDetailsOptions, 20);
+  lv_obj_set_y(ui_listContactDetailsOptions, 5);
   lv_obj_set_align(ui_listContactDetailsOptions, LV_ALIGN_TOP_LEFT);
   lv_obj_set_style_radius(ui_listContactDetailsOptions, 0,
                           LV_PART_MAIN | LV_STATE_DEFAULT);

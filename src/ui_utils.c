@@ -18,10 +18,12 @@ int screenBrightnessLevel = 100;
 bool brightnessChanged = false;
 
 const char screenTimeoutSeparationDelimeter[] = " - ";
-unsigned int screenTimeout = 15; // Initial: if 0 set screenInteractive false
+unsigned int screenTimeout = 15;  // Initial: if 0 set screenInteractive false
 bool timeoutChanged = false;
 bool screenInteractive = true;
 unsigned long previousScreenTouch = 0;
+
+uint8_t dropdownSelectedTimeout = 0;
 
 //================================UI Update===============================
 void ui_utils_updateTimeDate() {
@@ -45,7 +47,31 @@ void lv_utils_setBrightness(int brightness) {
 
 void lv_utils_setScreenTimeout(unsigned int timeout) {
   screenTimeout = timeout;
+  dropdownSelectedTimeout = lv_set_selected_timeout();
   timeoutChanged = true;
+}
+
+uint8_t lv_set_selected_timeout() {
+  switch (screenTimeout) {
+    case TIMEOUT_NEVER:
+      return DROP_TIMEOUT_NEVER;
+    case TIMEOUT_5_SEC:
+      return DROP_TIMEOUT_5_SEC;
+    case TIMEOUT_10_SEC:
+      return DROP_TIMEOUT_10_SEC;
+    case TIMEOUT_15_SEC:
+      return DROP_TIMEOUT_15_SEC;
+    case TIMEOUT_30_SEC:
+      return DROP_TIMEOUT_30_SEC;
+    case TIMEOUT_1_MIN:
+      return DROP_TIMEOUT_1_MIN;
+    case TIMEOUT_2_MIN:
+      return DROP_TIMEOUT_2_MIN;
+    case TIMEOUT_5_MIN:
+      return DROP_TIMEOUT_5_MIN;
+    case TIMEOUT_10_MIN:
+      return DROP_TIMEOUT_10_MIN;
+  }
 }
 
 void ui_add_bottom_bar(lv_obj_t *parent, int colorRGB, int marginBottom) {
@@ -117,7 +143,7 @@ bool screenStackIsEmpty() { return screenStack.top == -1; }
 
 bool screenStackIsFull() { return screenStack.top == SCREEN_STACK_SIZE - 1; }
 
-bool screenStackPush(enum SCREENS screen, lv_obj_t *previousScreen,
+bool screenStackPush(enum eSCREENS screen, lv_obj_t *previousScreen,
                      void (*previousScreenInit)(void),
                      lv_screen_load_anim_t transitionAnimation) {
   if (screenStackIsFull()) {

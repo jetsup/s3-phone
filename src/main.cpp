@@ -24,7 +24,7 @@ GSM gsm(GSM_RX, GSM_TX, GSM_BAUD);
 static Display display(TFT_CLK, TFT_MOSI, TFT_MISO, TFT_CS, TFT_DC, TFT_RST,
                        TFT_LED, TOUCH_CS, TOUCH_CLK, TOUCH_DIN, TOUCH_DO);
 S3Time s3Time("2024-11-01 14:40:56", 3);
-FileSystem fileSystem;
+FileSystem fileSystem(LittleFS);
 
 unsigned int lastTickMillis = 0;
 
@@ -48,10 +48,16 @@ void setup() {
 
   gsm.init();
   fileSystem.init();
-  // TODO: initialize all variables from settings data
+  // Initialize all variables from settings data
+  //=============================================================================
+  lv_utils_setBrightness(
+      fileSystem.readSetting(FS_VAR_SYSTEM_DISPLAY_BRIGHTNESS).toInt());
+
+  lv_utils_setScreenTimeout(
+      fileSystem.readSetting(FS_VAR_SYSTEM_DISPLAY_TIMEOUT).toInt());
+  //=============================================================================
   display.init();
   display.setRotation(2);
-  display.setBrightness(255);
   display.fillScreen(TFT_BLACK);
   uint16_t calibrationData[8] = CALIBRATION_DATA;
   display.setTouchCalibrate(calibrationData);
@@ -100,7 +106,7 @@ void setup() {
   lv_indev_set_read_cb(indev, my_touchpad_read);
 
   for (int i = 0; i < 4; i++) {
-    DEBUG_PRINTF(">> %s %s", names[i], numbers[i]);
+    DEBUG_PRINTF(">> %s %s\n", names[i], numbers[i]);
   }
 
   contactsCount = 4;
@@ -147,17 +153,24 @@ void loop() {
   }
 
   if (brightnessChanged) {
-    display.updateBrightness(screenBrightnessLevel);
     brightnessChanged = false;
-    // TODO: update saved settings
+    display.updateBrightness(screenBrightnessLevel);
+    fileSystem.editSetting(FS_VAR_SYSTEM_DISPLAY_BRIGHTNESS,
+                           String(screenBrightnessLevel).c_str());
   }
 
-  if ((millis() - previousScreenTouch) / 1000 /*to seconds*/ >= screenTimeout) {
+  if (timeoutChanged) {
+    timeoutChanged = false;
+    fileSystem.editSetting(FS_VAR_SYSTEM_DISPLAY_TIMEOUT,
+                           String(screenTimeout).c_str());
+  }
+
+  if ((millis() - previousScreenTouch) / 1000 /*seconds*/ >= screenTimeout &&
+      screenTimeout != TIMEOUT_NEVER) {
     display.sleep();
     screenInteractive = false;
   }
 }
-
 // ----------------------------------------------------------
 void lv_flush_cb(lv_display_t *disp, const lv_area_t *area,
                  unsigned char *data) {

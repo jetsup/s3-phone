@@ -35,12 +35,14 @@ extern bool timeoutChanged;
 extern bool screenInteractive;
 extern unsigned long previousScreenTouch;
 
+extern uint8_t dropdownSelectedTimeout;
+
 //========================Screen Stack========================
 /**
  * @brief Holds the data to be stored in the stack
  */
 typedef struct {
-  enum SCREENS screen;
+  enum eSCREENS screen;
   lv_obj_t *previousScreen;
   lv_screen_load_anim_t transitionAnimation;
   void (*previousScreenInit)(void);
@@ -79,7 +81,7 @@ bool screenStackIsFull();
  * screen
  * @return true if the screen was pushed
  */
-bool screenStackPush(enum SCREENS screen, lv_obj_t *previousScreen,
+bool screenStackPush(enum eSCREENS screen, lv_obj_t *previousScreen,
                      void (*previousScreenInit)(void),
                      lv_screen_load_anim_t transitionAnimation);
 
@@ -96,15 +98,15 @@ ScreenStackElement screenStackPop();
 ScreenStackElement screenStackPeek();
 
 /**
- * @brief Clears the screen stack by continuously popping the screens
+ * @brief Clears the screen stack by continuously popping the eSCREENS
  * until the stack is empty. This means that the user will be taken back to
  * the home screen.
  */
 void screenStackEmpty();
 
 /**
- * @brief Gets number of screens in the screen stack
- * @return The number of screens in the screen stack
+ * @brief Gets number of eSCREENS in the screen stack
+ * @return The number of eSCREENS in the screen stack
  */
 int screenStackSize();
 
@@ -141,6 +143,11 @@ void lv_utils_setBrightness(int brightness);
  * @param timeout Timeout in seconds
  */
 void lv_utils_setScreenTimeout(unsigned int timeout);
+
+/**
+ * @brief Get the index of the selected timeout
+ */
+uint8_t lv_set_selected_timeout();
 
 /**
  * @brief Creates a bottom bar with navigation buttons

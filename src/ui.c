@@ -143,7 +143,7 @@ lv_obj_t* ui_lblContactAddBack;
 void ui_settingsMainScreen_screen_init(void);
 lv_obj_t* ui_settingsMainScreen;
 lv_obj_t* ui_panelSettingsMain;
-lv_obj_t *listSettingsOptions;
+lv_obj_t* listSettingsOptions;
 
 // SCREEN: ui_settingsDisplayScreen
 void ui_settingsDisplayScreen_screen_init(void);
@@ -338,7 +338,7 @@ const lv_image_dsc_t* ui_imgset_video[1] = {&ui_img_video40_png};
 ///////////////////// FUNCTIONS ////////////////////
 
 // General events
-///////////////////// SCREENS ////////////////////
+///////////////////// eSCREENS ////////////////////
 
 void ui_init(void) {
   lv_disp_t* dispp = lv_display_get_default();

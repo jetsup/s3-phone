@@ -31,8 +31,12 @@
 
 // File System
 #define FILESYSTEM_FORMAT_ON_FAIL 1
-#define UI_SETTINGS_FILE_PATH "/settings/ui.json"
-// WiFi, GSM, Bluetooth etc.
-#define CONNECTIVITY_SETTINGS_FILE_PATH "/settings/connectivity.json"
+
+#define FS_SETTINGS_PARENT_DIRECTORY "/system/settings/"
+#define FS_SETTINGS_DISPLAY_FILEPATH "/display.json"
+#define FS_VAR_SYSTEM_DISPLAY_BRIGHTNESS "brightness"
+#define FS_DEF_SYSTEM_DISPLAY_BRIGHTNESS "120"
+#define FS_VAR_SYSTEM_DISPLAY_TIMEOUT "timeout"
+#define FS_DEF_SYSTEM_DISPLAY_TIMEOUT "15"
 
 #endif  // CONFIG_HPP_

@@ -7,8 +7,7 @@ void ui_event_lblHomeTime(lv_event_t* e) {
     if (screenStackPush(SCREEN_HOME, ui_homeScreen, &ui_homeScreen_screen_init,
                         LV_SCR_LOAD_ANIM_MOVE_BOTTOM)) {
       _ui_screen_change(&ui_timeScreen, LV_SCR_LOAD_ANIM_FADE_ON,
-                        UI_ANIMATION_DURATION, 0,
-                        &ui_timeScreen_screen_init);
+                        UI_ANIMATION_DURATION, 0, &ui_timeScreen_screen_init);
     }
   }
 }
@@ -492,6 +491,10 @@ void ui_event_dropdown_cb(lv_event_t* e) {
 
       if (strcmp(bufSelection, "Never") == 0) {
         lv_utils_setScreenTimeout(0);
+      } else if (strcmp(bufSelection, "5 sec") == 0) {
+        lv_utils_setScreenTimeout(5);
+      } else if (strcmp(bufSelection, "10 sec") == 0) {
+        lv_utils_setScreenTimeout(10);
       } else if (strcmp(bufSelection, "15 sec") == 0) {
         lv_utils_setScreenTimeout(15);
       } else if (strcmp(bufSelection, "30 sec") == 0) {
@@ -505,6 +508,8 @@ void ui_event_dropdown_cb(lv_event_t* e) {
       } else if (strcmp(bufSelection, "10 min") == 0) {
         lv_utils_setScreenTimeout(10 * 60);
       }
+
+      dropdownSelectedTimeout = lv_set_selected_timeout();
     }
   }
 }

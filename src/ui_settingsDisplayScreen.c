@@ -65,8 +65,9 @@ void ui_settingsDisplayScreen_screen_init(void) {
 
   ui_dropDownSettingsScreenTimeout =
       lv_dropdown_create(ui_panelSettingsDisplayMain);
-  lv_dropdown_set_options(ui_dropDownSettingsScreenTimeout,
-                          "15 sec\n30 Sec\n1 min\n2 min\n5 min\n10 min\nNever");
+  lv_dropdown_set_options(
+      ui_dropDownSettingsScreenTimeout,
+      "5 sec\n10 sec\n15 sec\n30 Sec\n1 min\n2 min\n5 min\n10 min\nNever");
   lv_obj_set_width(ui_dropDownSettingsScreenTimeout, 230);
   lv_obj_set_height(ui_dropDownSettingsScreenTimeout, 36);
   lv_obj_set_x(ui_dropDownSettingsScreenTimeout,
@@ -77,6 +78,8 @@ void ui_settingsDisplayScreen_screen_init(void) {
                   LV_OBJ_FLAG_SCROLL_ON_FOCUS);  /// Flags
   lv_obj_set_style_bg_opa(ui_dropDownSettingsScreenTimeout, 0,
                           LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_dropdown_set_selected(ui_dropDownSettingsScreenTimeout,
+                           dropdownSelectedTimeout);
 
   yOffset += 20;
 

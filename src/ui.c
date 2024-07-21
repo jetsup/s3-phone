@@ -143,11 +143,15 @@ lv_obj_t* ui_lblContactAddBack;
 void ui_settingsMainScreen_screen_init(void);
 lv_obj_t* ui_settingsMainScreen;
 lv_obj_t* ui_panelSettingsMain;
+lv_obj_t *listSettingsOptions;
 
 // SCREEN: ui_settingsDisplayScreen
 void ui_settingsDisplayScreen_screen_init(void);
 lv_obj_t* ui_settingsDisplayScreen;
 lv_obj_t* ui_panelSettingsDisplayMain;
+lv_obj_t* sliderBrightness;
+lv_obj_t* ui_lblBrightnessValue;
+lv_obj_t* ui_dropDownSettingsScreenTimeout;
 
 // SCREEN: ui_settingsThemesScreen
 void ui_settingsThemesScreen_screen_init(void);

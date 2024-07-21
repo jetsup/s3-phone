@@ -157,10 +157,14 @@ extern lv_obj_t* ui_lblContactAddBack;
 void ui_settingsMainScreen_screen_init(void);
 extern lv_obj_t* ui_settingsMainScreen;
 extern lv_obj_t* ui_panelSettingsMain;
+extern lv_obj_t *listSettingsOptions;
 // SCREEN: ui_settingsDisplayScreen
 void ui_settingsDisplayScreen_screen_init(void);
 extern lv_obj_t* ui_settingsDisplayScreen;
 extern lv_obj_t* ui_panelSettingsDisplayMain;
+extern lv_obj_t* sliderBrightness;
+extern lv_obj_t* ui_lblBrightnessValue;
+extern lv_obj_t* ui_dropDownSettingsScreenTimeout;
 // SCREEN: ui_settingsThemesScreen
 void ui_settingsThemesScreen_screen_init(void);
 extern lv_obj_t* ui_settingsThemesScreen;
@@ -292,6 +296,8 @@ void ui_event_evtBottombar(lv_event_t* e);
 void ui_event_lblHomeTime(lv_event_t* e);
 void ui_event_imbClickEvent(lv_event_t* e);
 void ui_event_uiComponentsChangeEvent(lv_event_t* e);
+void ui_event_slider_cb(lv_event_t* e);
+void ui_event_dropdown_cb(lv_event_t* e);
 
 extern lv_obj_t* ui____initial_actions0;
 

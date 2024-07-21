@@ -3,6 +3,7 @@
 #define UI_ANIMATION_DURATION 150  //< Animation duration in milliseconds>
 #define UI_TRANSPARENCY 100        //< Transparency level>
 
+#define UI_ALIGN_TOP_LEFT_X_OFFSET -15
 #define UI_ALIGN_TOP_LEFT_Y_OFFSET -15
 
 /**

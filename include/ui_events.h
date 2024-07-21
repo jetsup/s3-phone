@@ -28,6 +28,8 @@ void ui_event_textArea_full_cb(lv_event_t* e);
 void ui_event_textArea_num_cb(lv_event_t* e);
 void ui_event_keyboard_full_event_cb(lv_event_t* e);
 void ui_event_keyboard_num_event_cb(lv_event_t* e);
+void ui_event_slider_cb(lv_event_t* e);
+void ui_event_dropdown_cb(lv_event_t* e);
 
 #ifdef __cplusplus
 } /*extern "C"*/

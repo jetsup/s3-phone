@@ -14,7 +14,6 @@ char settingsOptions[][30] = {"Connectivity",
                               "Storage",
                               "System",
                               "About"};
-lv_obj_t *listSettingsOptions;
 
 void populate_list_from_array(lv_obj_t *list);
 void ui_event_list_event_callback(lv_event_t *e);
@@ -82,8 +81,6 @@ void ui_settingsMainScreen_screen_init(void) {
   lv_obj_center(listSettingsOptions);
 
   // populate list
-  int arrayLength = sizeof(settingsOptions) / sizeof(settingsOptions[0]);
-  LV_LOG_USER("Data %d: %s", arrayLength, settingsOptions[0]);
   populate_list_from_array(listSettingsOptions);
 
   ui_add_bottom_bar(ui_panelSettingsMain, 0xFFFFFF, 10);
@@ -91,7 +88,6 @@ void ui_settingsMainScreen_screen_init(void) {
 
 void populate_list_from_array(lv_obj_t *list) {
   int arrayLength = sizeof(settingsOptions) / sizeof(settingsOptions[0]);
-  LV_LOG_USER("Data %d: %s", arrayLength, settingsOptions[0]);
   for (int i = 0; i < arrayLength; i++) {
     option_add_to_list(list, settingsOptions[i], LV_SYMBOL_LIST,
                        ui_event_list_event_callback, LV_EVENT_CLICKED, NULL);
@@ -116,7 +112,7 @@ void ui_event_list_event_callback(lv_event_t *e) {
   const char *buttonText = lv_list_get_button_text(listSettingsOptions, target);
 
   if (event_code == LV_EVENT_CLICKED) {
-    if (strcmp(buttonText, "Connectivity")) {
+    if (strcmp(buttonText, "Connectivity") == 0) {
       if (screenStackPush(SCREEN_SETTINGS, ui_settingsMainScreen,
                           &ui_settingsMainScreen_screen_init,
                           LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
@@ -124,7 +120,7 @@ void ui_event_list_event_callback(lv_event_t *e) {
                           LV_SCR_LOAD_ANIM_MOVE_LEFT, UI_ANIMATION_DURATION, 0,
                           &ui_settingsConnectivityScreen_screen_init);
       }
-    } else if (strcmp(buttonText, "Network and Internet")) {
+    } else if (strcmp(buttonText, "Network and Internet") == 0) {
       if (screenStackPush(SCREEN_SETTINGS, ui_settingsMainScreen,
                           &ui_settingsMainScreen_screen_init,
                           LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
@@ -132,7 +128,7 @@ void ui_event_list_event_callback(lv_event_t *e) {
                           LV_SCR_LOAD_ANIM_MOVE_LEFT, UI_ANIMATION_DURATION, 0,
                           &ui_settingsNetworkInternetScreen_screen_init);
       }
-    } else if (strcmp(buttonText, "Display")) {
+    } else if (strcmp(buttonText, "Display") == 0) {
       if (screenStackPush(SCREEN_SETTINGS, ui_settingsMainScreen,
                           &ui_settingsMainScreen_screen_init,
                           LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
@@ -140,7 +136,7 @@ void ui_event_list_event_callback(lv_event_t *e) {
                           UI_ANIMATION_DURATION, 0,
                           &ui_settingsDisplayScreen_screen_init);
       }
-    } else if (strcmp(buttonText, "Wallpapers and Themes")) {
+    } else if (strcmp(buttonText, "Wallpapers and Themes") == 0) {
       if (screenStackPush(SCREEN_SETTINGS, ui_settingsMainScreen,
                           &ui_settingsMainScreen_screen_init,
                           LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
@@ -148,7 +144,7 @@ void ui_event_list_event_callback(lv_event_t *e) {
                           UI_ANIMATION_DURATION, 0,
                           &ui_settingsThemesScreen_screen_init);
       }
-    } else if (strcmp(buttonText, "Lock Screen and Security")) {
+    } else if (strcmp(buttonText, "Lock Screen and Security") == 0) {
       if (screenStackPush(SCREEN_SETTINGS, ui_settingsMainScreen,
                           &ui_settingsMainScreen_screen_init,
                           LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
@@ -156,7 +152,7 @@ void ui_event_list_event_callback(lv_event_t *e) {
                           LV_SCR_LOAD_ANIM_MOVE_LEFT, UI_ANIMATION_DURATION, 0,
                           &ui_settingsLockSecurityScreen_screen_init);
       }
-    } else if (strcmp(buttonText, "Sounds")) {
+    } else if (strcmp(buttonText, "Sounds") == 0) {
       if (screenStackPush(SCREEN_SETTINGS, ui_settingsMainScreen,
                           &ui_settingsMainScreen_screen_init,
                           LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
@@ -164,7 +160,7 @@ void ui_event_list_event_callback(lv_event_t *e) {
                           UI_ANIMATION_DURATION, 0,
                           &ui_settingsSoundScreen_screen_init);
       }
-    } else if (strcmp(buttonText, "Storage")) {
+    } else if (strcmp(buttonText, "Storage") == 0) {
       if (screenStackPush(SCREEN_SETTINGS, ui_settingsMainScreen,
                           &ui_settingsMainScreen_screen_init,
                           LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
@@ -172,7 +168,7 @@ void ui_event_list_event_callback(lv_event_t *e) {
                           UI_ANIMATION_DURATION, 0,
                           &ui_settingsStorageScreen_screen_init);
       }
-    } else if (strcmp(buttonText, "System")) {
+    } else if (strcmp(buttonText, "System") == 0) {
       if (screenStackPush(SCREEN_SETTINGS, ui_settingsMainScreen,
                           &ui_settingsMainScreen_screen_init,
                           LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
@@ -180,7 +176,7 @@ void ui_event_list_event_callback(lv_event_t *e) {
                           UI_ANIMATION_DURATION, 0,
                           &ui_settingsSystemScreen_screen_init);
       }
-    } else if (strcmp(buttonText, "About")) {
+    } else if (strcmp(buttonText, "About") == 0) {
       if (screenStackPush(SCREEN_SETTINGS, ui_settingsMainScreen,
                           &ui_settingsMainScreen_screen_init,
                           LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {

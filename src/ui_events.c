@@ -4,9 +4,12 @@ void ui_event_lblHomeTime(lv_event_t* e) {
   lv_event_code_t event_code = lv_event_get_code(e);
   lv_obj_t* target = lv_event_get_target(e);
   if (event_code == LV_EVENT_CLICKED) {
-    _ui_screen_change(&ui_alarmMainScreen, LV_SCR_LOAD_ANIM_FADE_ON,
-                      UI_ANIMATION_DURATION, 0,
-                      &ui_alarmMainScreen_screen_init);
+    if (screenStackPush(SCREEN_HOME, ui_homeScreen, &ui_homeScreen_screen_init,
+                        LV_SCR_LOAD_ANIM_MOVE_BOTTOM)) {
+      _ui_screen_change(&ui_timeScreen, LV_SCR_LOAD_ANIM_FADE_ON,
+                        UI_ANIMATION_DURATION, 0,
+                        &ui_timeScreen_screen_init);
+    }
   }
 }
 void ui_event_imbClickEvent(lv_event_t* e) {
@@ -449,5 +452,59 @@ void ui_event_keyboard_num_event_cb(lv_event_t* e) {
   if (code == LV_EVENT_READY || code == LV_EVENT_CANCEL) {
     lv_obj_del(ui_keyboard_num);
     ui_keyboard_num = NULL;
+  }
+}
+
+void ui_event_slider_cb(lv_event_t* e) {
+  lv_event_code_t code = lv_event_get_code(e);
+  lv_obj_t* target = lv_event_get_target(e);
+  const char* sliderData = (const char*)e->user_data;
+
+  if (code == LV_EVENT_VALUE_CHANGED) {
+    if (strcmp(sliderData, "settings brightness") == 0) {
+      lv_utils_setBrightness(lv_slider_get_value(target));
+
+      uint8_t brightnessPercentage =
+          ((float)screenBrightnessLevel / (float)UI_BRIGHTNESS_SLIDER_MAX) *
+          100;
+      char sBrightness[5];
+      lv_snprintf(sBrightness, 5, "%d%%", brightnessPercentage);
+
+      lv_label_set_text(ui_lblBrightnessValue, sBrightness);
+
+      LV_LOG_USER("Slider: %d -> %d", (uint8_t)lv_slider_get_value(target),
+                  brightnessPercentage);
+    }
+  }
+}
+
+void ui_event_dropdown_cb(lv_event_t* e) {
+  lv_event_code_t code = lv_event_get_code(e);
+  lv_obj_t* target = lv_event_get_target(e);
+  const char* dropdownData = (const char*)e->user_data;
+
+  int selected = lv_dropdown_get_selected(target);
+
+  if (code == LV_EVENT_VALUE_CHANGED) {
+    if (strcmp(dropdownData, "settings screen timeout") == 0) {
+      char bufSelection[7];
+      lv_dropdown_get_selected_str(target, bufSelection, 7);
+
+      if (strcmp(bufSelection, "Never") == 0) {
+        lv_utils_setScreenTimeout(0);
+      } else if (strcmp(bufSelection, "15 sec") == 0) {
+        lv_utils_setScreenTimeout(15);
+      } else if (strcmp(bufSelection, "30 sec") == 0) {
+        lv_utils_setScreenTimeout(30);
+      } else if (strcmp(bufSelection, "1 min") == 0) {
+        lv_utils_setScreenTimeout(1 * 60);
+      } else if (strcmp(bufSelection, "2 min") == 0) {
+        lv_utils_setScreenTimeout(2 * 60);
+      } else if (strcmp(bufSelection, "5 min") == 0) {
+        lv_utils_setScreenTimeout(5 * 60);
+      } else if (strcmp(bufSelection, "10 min") == 0) {
+        lv_utils_setScreenTimeout(10 * 60);
+      }
+    }
   }
 }

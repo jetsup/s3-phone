@@ -22,7 +22,23 @@ extern int newDay;
 
 #define SCREEN_STACK_SIZE 20
 
+#define UI_BRIGHTNESS_SLIDER_MAX 4096
+#define UI_BRIGHTNESS_SLIDER_MIN 100
+extern int screenBrightnessLevel;
+extern bool brightnessChanged;
+
+extern const char screenTimeoutSeparationDelimeter[2];
+// in seconds
+extern unsigned int screenTimeout;
+extern bool timeoutChanged;
+// true when baclight on
+extern bool screenInteractive;
+extern unsigned long previousScreenTouch;
+
 //========================Screen Stack========================
+/**
+ * @brief Holds the data to be stored in the stack
+ */
 typedef struct {
   enum SCREENS screen;
   lv_obj_t *previousScreen;
@@ -56,6 +72,9 @@ bool screenStackIsFull();
 /**
  * @brief Pushes a screen to the screen stack
  * @param screen The screen you are transitioning from
+ * @param previousScreen The object of the screen you are transitioning from
+ * @param previousScreenInit The initialization function prototupe of the screen
+ * you are leaving
  * @param transitionAnimation The animation used when transitioning to the
  * screen
  * @return true if the screen was pushed
@@ -109,6 +128,19 @@ void lv_utils_getDate(char *buffer);
  * @param day The day
  */
 void lv_utils_setDate(int year, int month, int day);
+
+/**
+ * @brief Update the screen brightness variable monitored to change the LCD
+ * brightness
+ * @param brightness The brightness to set
+ */
+void lv_utils_setBrightness(int brightness);
+
+/**
+ * @brief Update the timeout to darken the screen
+ * @param timeout Timeout in seconds
+ */
+void lv_utils_setScreenTimeout(unsigned int timeout);
 
 /**
  * @brief Creates a bottom bar with navigation buttons

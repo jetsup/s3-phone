@@ -3,7 +3,8 @@
 Display::Display(uint8_t tftCLK, uint8_t tftMOSI, uint8_t tftMISO,
                  uint8_t tftCS, uint8_t tftDC, uint8_t tftRST, uint8_t tftLED,
                  uint8_t touchCS, uint8_t touchCLK, uint8_t touchDIN,
-                 uint8_t touchDO) {
+                 uint8_t touchDO)
+    : _backlightPin(tftLED) {
   {
     auto cfg = _bus_instance.config();
     cfg.spi_host = SPI3_HOST;
@@ -82,4 +83,15 @@ Display::Display(uint8_t tftCLK, uint8_t tftMOSI, uint8_t tftMISO,
     _panel_instance.setTouch(&_touch_instance);
   }
   setPanel(&_panel_instance);
+
+  // TODO: revisit this after adding lottie support
+  pinMode(TFT_LED, OUTPUT);
 }
+
+void Display::updateBrightness(int brightness) {
+  analogWrite(_backlightPin, brightness);
+}
+
+void Display::sleep() { analogWrite(_backlightPin, 0); }
+
+void Display::wake() { analogWrite(_backlightPin, screenBrightnessLevel); }

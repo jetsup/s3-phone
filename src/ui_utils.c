@@ -14,6 +14,15 @@ int newDay = 0;
 
 ScreenStack screenStack;
 
+int screenBrightnessLevel = 100;
+bool brightnessChanged = false;
+
+const char screenTimeoutSeparationDelimeter[] = " - ";
+unsigned int screenTimeout = 15; // Initial: if 0 set screenInteractive false
+bool timeoutChanged = false;
+bool screenInteractive = true;
+unsigned long previousScreenTouch = 0;
+
 //================================UI Update===============================
 void ui_utils_updateTimeDate() {
   lv_label_set_text(ui_lblHomeTime, lvCurrentTime);
@@ -27,6 +36,16 @@ void lv_utils_setDate(int year, int month, int day) {
   newMonth = month;
   newDay = day;
   dateChanged = true;
+}
+
+void lv_utils_setBrightness(int brightness) {
+  screenBrightnessLevel = brightness;
+  brightnessChanged = true;
+}
+
+void lv_utils_setScreenTimeout(unsigned int timeout) {
+  screenTimeout = timeout;
+  timeoutChanged = true;
 }
 
 void ui_add_bottom_bar(lv_obj_t *parent, int colorRGB, int marginBottom) {

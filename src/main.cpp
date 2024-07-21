@@ -43,8 +43,12 @@ void setup() {
   if (DEBUG) {
     Serial.begin(115200);
   }
+  analogReadResolution(S3_PHONE_ANALOG_RESOLUTION);
+  analogWriteResolution(S3_PHONE_ANALOG_RESOLUTION);
+
   gsm.init();
   fileSystem.init();
+  // TODO: initialize all variables from settings data
   display.init();
   display.setRotation(2);
   display.setBrightness(255);
@@ -96,10 +100,7 @@ void setup() {
   lv_indev_set_read_cb(indev, my_touchpad_read);
 
   for (int i = 0; i < 4; i++) {
-    DEBUG_PRINT(">> ");
-    DEBUG_PRINT(names[i]);
-    DEBUG_PRINT(" ");
-    DEBUG_PRINTLN(numbers[i]);
+    DEBUG_PRINTF(">> %s %s", names[i], numbers[i]);
   }
 
   contactsCount = 4;
@@ -144,6 +145,17 @@ void loop() {
     DEBUG_PRINTF("New Time: %s", s3Time.getTime());
     dateChanged = false;
   }
+
+  if (brightnessChanged) {
+    display.updateBrightness(screenBrightnessLevel);
+    brightnessChanged = false;
+    // TODO: update saved settings
+  }
+
+  if ((millis() - previousScreenTouch) / 1000 /*to seconds*/ >= screenTimeout) {
+    display.sleep();
+    screenInteractive = false;
+  }
 }
 
 // ----------------------------------------------------------
@@ -170,12 +182,17 @@ void my_touchpad_read(lv_indev_t *indev_driver, lv_indev_data_t *data) {
   if (!touched) {
     data->state = LV_INDEV_STATE_REL;
   } else {
-    data->state = LV_INDEV_STATE_PR;
+    if (!screenInteractive) {
+      display.wake();
+      screenInteractive = true;
+    } else {
+      data->state = LV_INDEV_STATE_PR;
 
-    /*Set the coordinates*/
-    data->point.x = touchX;
-    data->point.y = touchY;
+      /*Set the coordinates*/
+      data->point.x = touchX;
+      data->point.y = touchY;
+    }
 
-    DEBUG_PRINTF("Touch: %d, %d\n", data->point.x, data->point.y);
+    previousScreenTouch = millis();
   }
 }

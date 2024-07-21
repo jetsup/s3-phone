@@ -1,6 +1,9 @@
 #ifndef CONFIG_HPP_
 #define CONFIG_HPP_
 
+// IO
+#define S3_PHONE_ANALOG_RESOLUTION 12
+
 // GSM
 #define GSM_RX 4
 #define GSM_TX 5

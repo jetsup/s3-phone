@@ -79,5 +79,4 @@ void ui_simPinScreen_screen_init(void) {
                      LV_OBJ_FLAG_CLICK_FOCUSABLE); /*To keep the text area
                                                       focused on button clicks*/
   lv_buttonmatrix_set_map(ui_btnMatrixNumPinScreen, btnMatrixNumMap);
-  ;
 }

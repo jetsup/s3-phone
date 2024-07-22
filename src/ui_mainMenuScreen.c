@@ -20,7 +20,7 @@ void ui_mainMenuScreen_screen_init(void) {
                             LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_bg_opa(ui_panelMainMenu, 100,
                           LV_PART_MAIN | LV_STATE_DEFAULT);
-  lv_obj_set_style_bg_image_src(ui_panelMainMenu, &ui_img_bg1_png,
+  lv_obj_set_style_bg_image_src(ui_panelMainMenu, screenWallpaperImg,
                                 LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_bg_image_opa(ui_panelMainMenu, 100,
                                 LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -246,7 +246,7 @@ void ui_mainMenuScreen_screen_init(void) {
   lv_obj_set_x(ui_menuSettingsContainer, 5);
   lv_obj_set_y(ui_menuSettingsContainer, 120);
   lv_obj_remove_flag(ui_menuSettingsContainer,
-                     LV_OBJ_FLAG_SCROLLABLE);                        /// Flags
+                     LV_OBJ_FLAG_SCROLLABLE);  /// Flags
 
   ui_imbSettings = lv_imagebutton_create(ui_menuSettingsContainer);
   lv_imagebutton_set_src(ui_imbSettings, LV_IMAGEBUTTON_STATE_RELEASED, NULL,
@@ -531,44 +531,43 @@ void ui_mainMenuScreen_screen_init(void) {
   ui_add_bottom_bar(ui_mainMenuScreen, 0xFFFFFF, -5);
 
   // Register events callbacks
-  lv_obj_add_event_cb(ui_imbPhone, ui_event_imbClickEvent,
-                      LV_EVENT_ALL, "phone");
-  lv_obj_add_event_cb(ui_imbMessages, ui_event_imbClickEvent,
-                      LV_EVENT_ALL, "messages");
-  lv_obj_add_event_cb(ui_imbMultimedia, ui_event_imbClickEvent,
-                      LV_EVENT_ALL, "multimedia");
-  lv_obj_add_event_cb(ui_imbExtra, ui_event_imbClickEvent,
-                      LV_EVENT_ALL, "extra");
-  lv_obj_add_event_cb(ui_imbGames, ui_event_imbClickEvent,
-                      LV_EVENT_ALL, "games");
-  lv_obj_add_event_cb(ui_imbMyZone, ui_event_imbClickEvent,
-                      LV_EVENT_ALL, "my-zone");
-  lv_obj_add_event_cb(ui_imbAbout, ui_event_imbClickEvent,
-                      LV_EVENT_ALL, "about");
-  lv_obj_add_event_cb(ui_imbTools, ui_event_imbClickEvent,
-                      LV_EVENT_ALL, "tools");
-  lv_obj_add_event_cb(ui_imbSettings, ui_event_imbClickEvent,
-                      LV_EVENT_ALL, "settings");
-  lv_obj_add_event_cb(ui_imbClock, ui_event_imbClickEvent,
-                      LV_EVENT_ALL, "clock");
-  lv_obj_add_event_cb(ui_imbCalculator, ui_event_imbClickEvent,
-                      LV_EVENT_ALL, "calculator");
-  lv_obj_add_event_cb(ui_imbCalendar, ui_event_imbClickEvent,
-                      LV_EVENT_ALL, "calendar");
-  lv_obj_add_event_cb(ui_imbFiles, ui_event_imbClickEvent,
-                      LV_EVENT_ALL, "files");
-  lv_obj_add_event_cb(ui_imbTodo, ui_event_imbClickEvent,
-                      LV_EVENT_ALL, "todo");
-  lv_obj_add_event_cb(ui_imbSTK, ui_event_imbClickEvent, LV_EVENT_ALL,
-                      "stk");
-  lv_obj_add_event_cb(ui_imbMenuContacts, ui_event_imbClickEvent,
-                      LV_EVENT_ALL, "contacts");
-  lv_obj_add_event_cb(ui_imbGallery, ui_event_imbClickEvent,
-                      LV_EVENT_ALL, "gallery");
-  lv_obj_add_event_cb(ui_imbMusic, ui_event_imbClickEvent,
-                      LV_EVENT_ALL, "music");
-  lv_obj_add_event_cb(ui_imbRadio, ui_event_imbClickEvent,
-                      LV_EVENT_ALL, "radio");
-  lv_obj_add_event_cb(ui_imbVideos, ui_event_imbClickEvent,
-                      LV_EVENT_ALL, "video");
+  lv_obj_add_event_cb(ui_imbPhone, ui_event_imagebutton_cb, LV_EVENT_ALL,
+                      "phone");
+  lv_obj_add_event_cb(ui_imbMessages, ui_event_imagebutton_cb, LV_EVENT_ALL,
+                      "messages");
+  lv_obj_add_event_cb(ui_imbMultimedia, ui_event_imagebutton_cb, LV_EVENT_ALL,
+                      "multimedia");
+  lv_obj_add_event_cb(ui_imbExtra, ui_event_imagebutton_cb, LV_EVENT_ALL,
+                      "extra");
+  lv_obj_add_event_cb(ui_imbGames, ui_event_imagebutton_cb, LV_EVENT_ALL,
+                      "games");
+  lv_obj_add_event_cb(ui_imbMyZone, ui_event_imagebutton_cb, LV_EVENT_ALL,
+                      "my-zone");
+  lv_obj_add_event_cb(ui_imbAbout, ui_event_imagebutton_cb, LV_EVENT_ALL,
+                      "about");
+  lv_obj_add_event_cb(ui_imbTools, ui_event_imagebutton_cb, LV_EVENT_ALL,
+                      "tools");
+  lv_obj_add_event_cb(ui_imbSettings, ui_event_imagebutton_cb, LV_EVENT_ALL,
+                      "settings");
+  lv_obj_add_event_cb(ui_imbClock, ui_event_imagebutton_cb, LV_EVENT_ALL,
+                      "clock");
+  lv_obj_add_event_cb(ui_imbCalculator, ui_event_imagebutton_cb, LV_EVENT_ALL,
+                      "calculator");
+  lv_obj_add_event_cb(ui_imbCalendar, ui_event_imagebutton_cb, LV_EVENT_ALL,
+                      "calendar");
+  lv_obj_add_event_cb(ui_imbFiles, ui_event_imagebutton_cb, LV_EVENT_ALL,
+                      "files");
+  lv_obj_add_event_cb(ui_imbTodo, ui_event_imagebutton_cb, LV_EVENT_ALL,
+                      "todo");
+  lv_obj_add_event_cb(ui_imbSTK, ui_event_imagebutton_cb, LV_EVENT_ALL, "stk");
+  lv_obj_add_event_cb(ui_imbMenuContacts, ui_event_imagebutton_cb, LV_EVENT_ALL,
+                      "contacts");
+  lv_obj_add_event_cb(ui_imbGallery, ui_event_imagebutton_cb, LV_EVENT_ALL,
+                      "gallery");
+  lv_obj_add_event_cb(ui_imbMusic, ui_event_imagebutton_cb, LV_EVENT_ALL,
+                      "music");
+  lv_obj_add_event_cb(ui_imbRadio, ui_event_imagebutton_cb, LV_EVENT_ALL,
+                      "radio");
+  lv_obj_add_event_cb(ui_imbVideos, ui_event_imagebutton_cb, LV_EVENT_ALL,
+                      "video");
 }

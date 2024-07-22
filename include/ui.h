@@ -157,7 +157,7 @@ extern lv_obj_t* ui_lblContactAddBack;
 void ui_settingsMainScreen_screen_init(void);
 extern lv_obj_t* ui_settingsMainScreen;
 extern lv_obj_t* ui_panelSettingsMain;
-extern lv_obj_t *listSettingsOptions;
+extern lv_obj_t* listSettingsOptions;
 // SCREEN: ui_settingsDisplayScreen
 void ui_settingsDisplayScreen_screen_init(void);
 extern lv_obj_t* ui_settingsDisplayScreen;
@@ -169,6 +169,12 @@ extern lv_obj_t* ui_dropDownSettingsScreenTimeout;
 void ui_settingsThemesScreen_screen_init(void);
 extern lv_obj_t* ui_settingsThemesScreen;
 extern lv_obj_t* ui_panelSettingsTheme;
+extern lv_obj_t* ui_switchTheme;
+// SCREEN: ui_settingsThemeWallpaperScreen
+void ui_settingsThemeWallpaperScreen_screen_init(void);
+extern lv_obj_t* ui_settingsThemeWallpaperScreen;
+extern lv_obj_t* ui_panelSettingsThemeWallpaper;
+extern lv_obj_t* ui_imageViewWallpaper;
 // SCREEN: ui_settingsLockSecurityScreen
 void ui_settingsLockSecurityScreen_screen_init(void);
 extern lv_obj_t* ui_settingsLockSecurityScreen;
@@ -209,6 +215,9 @@ extern lv_obj_t* ui_panelCalculatorMain;
 void ui_calendarScreen_screen_init(void);
 extern lv_obj_t* ui_calendarScreen;
 extern lv_obj_t* ui_panelCalendarMain;
+extern lv_obj_t* ui_calendar;
+extern lv_obj_t* ui_btnCalendarApply;
+extern lv_obj_t* ui_btnCalendarDiscard;
 // SCREEN: ui_filesScreen
 void ui_filesScreen_screen_init(void);
 extern lv_obj_t* ui_filesScreen;
@@ -261,10 +270,6 @@ extern lv_obj_t* ui_panelGamesMain;
 void ui_myZoneScreen_screen_init(void);
 extern lv_obj_t* ui_myZoneScreen;
 extern lv_obj_t* ui_panelMyZoneMain;
-// SCREEN: ui_aboutScreen
-void ui_aboutScreen_screen_init(void);
-extern lv_obj_t* ui_aboutScreen;
-extern lv_obj_t* ui_panelAboutMain;
 // SCREEN: ui_toolsScreen
 void ui_toolsScreen_screen_init(void);
 extern lv_obj_t* ui_toolsScreen;
@@ -279,25 +284,15 @@ extern lv_obj_t* ui_keyboard_full;
 extern lv_obj_t* ui_keyboard_num;
 
 // Events handlers
-void ui_event_textArea_full_cb(lv_event_t* e);
-void ui_event_textArea_num_cb(lv_event_t* e);
-void ui_event_keyboard_full_event_cb(lv_event_t* e);
-void ui_event_keyboard_num_event_cb(lv_event_t* e);
-void ui_event_fabContactAdd(lv_event_t* e);
-void ui_event_lblContactAddSave(lv_event_t* e);
-void ui_event_lblContactAddDiscard(lv_event_t* e);
-extern void ui_event_btnMatrixNumHandler(lv_event_t* e);
-void ui_event_btnOkPinPinScreen(lv_event_t* e);
-void ui_event_listContactDetailsOptions(lv_event_t* e);
-void ui_event_lblContactDetailsBack(lv_event_t* e);
-void ui_event_lblContactBack(lv_event_t* e);
-extern void ui_event_listContact(lv_event_t* e);
+void ui_event_textarea_cb(lv_event_t* e);
+void ui_event_keyboard_cb(lv_event_t* e);
+void ui_event_fab_cb(lv_event_t* e);
 void ui_event_evtBottombar(lv_event_t* e);
-void ui_event_lblHomeTime(lv_event_t* e);
-void ui_event_imbClickEvent(lv_event_t* e);
+void ui_event_imagebutton_cb(lv_event_t* e);
 void ui_event_uiComponentsChangeEvent(lv_event_t* e);
 void ui_event_slider_cb(lv_event_t* e);
 void ui_event_dropdown_cb(lv_event_t* e);
+void ui_event_label_cb(lv_event_t* e);
 
 extern lv_obj_t* ui____initial_actions0;
 

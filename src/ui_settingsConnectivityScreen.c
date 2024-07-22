@@ -15,7 +15,8 @@ void ui_settingsConnectivityScreen_screen_init(void) {
   lv_obj_set_height(ui_panelSettingsConnectivity, 320);
   lv_obj_remove_flag(ui_panelSettingsConnectivity,
                      LV_OBJ_FLAG_SCROLLABLE);  /// Flags
-  lv_obj_set_style_bg_image_src(ui_panelSettingsConnectivity, &ui_img_bg1_png,
+  lv_obj_set_style_bg_image_src(ui_panelSettingsConnectivity,
+                                screenWallpaperImg,
                                 LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_bg_image_opa(ui_panelSettingsConnectivity, 100,
                                 LV_PART_MAIN | LV_STATE_DEFAULT);

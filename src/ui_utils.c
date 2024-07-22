@@ -14,6 +14,7 @@ int newDay = 0;
 
 ScreenStack screenStack;
 
+// Settings Display
 int screenBrightnessLevel = 100;
 bool brightnessChanged = false;
 
@@ -25,6 +26,18 @@ unsigned long previousScreenTouch = 0;
 
 uint8_t dropdownSelectedTimeout = 0;
 
+// Settings Theme
+bool darkThemeSelected = false;
+bool themeChanged = false;
+char selectedWallpaper[20];
+uint8_t screenWallpaperID = 1;
+int clickedWallpaperImage = -1;
+lv_image_dsc_t *screenWallpaperImg;
+bool wallpaperChanged = false;
+
+//================================Prototypes==============================
+s3_resource_num_t lv_utils_getResourceByID(int id);
+void lv_utils_refreshUI();
 //================================UI Update===============================
 void ui_utils_updateTimeDate() {
   lv_label_set_text(ui_lblHomeTime, lvCurrentTime);
@@ -71,6 +84,14 @@ uint8_t lv_set_selected_timeout() {
       return DROP_TIMEOUT_5_MIN;
     case TIMEOUT_10_MIN:
       return DROP_TIMEOUT_10_MIN;
+  }
+}
+
+void lv_utils_setTheme(bool themeDark) {
+  if (darkThemeSelected != themeDark) {
+    themeChanged = true;
+    darkThemeSelected = themeDark;
+    // TODO: Refresh the UI
   }
 }
 
@@ -143,7 +164,7 @@ bool screenStackIsEmpty() { return screenStack.top == -1; }
 
 bool screenStackIsFull() { return screenStack.top == SCREEN_STACK_SIZE - 1; }
 
-bool screenStackPush(enum eSCREENS screen, lv_obj_t *previousScreen,
+bool screenStackPush(s3_screens_t screen, lv_obj_t *previousScreen,
                      void (*previousScreenInit)(void),
                      lv_screen_load_anim_t transitionAnimation) {
   if (screenStackIsFull()) {
@@ -186,3 +207,218 @@ void screenStackEmpty() {
 }
 
 int screenStackSize() { return screenStack.top + 1; }
+
+lv_image_dsc_t *lv_utils_getImage(s3_resource_num_t imageID) {
+  switch (imageID) {
+    case 1:
+      return &ui_img_bg1_png;
+    case 2:
+      return &ui_img_bg2_png;
+    case 3:
+      return &ui_img_bg3_png;
+    case 4:
+      return &ui_img_bg4_png;
+    case 5:
+      return &ui_img_bg5_png;
+  }
+}
+
+void lv_utils_getResourceName(int resID, char *nameBuf) {
+  s3_resource_num_t resS3ID = lv_utils_getResourceByID(resID);
+
+  switch (resS3ID) {
+    case S3_IMG_BACKGROUND_BEAUTIFUL_SUNSET: {
+      strcpy(nameBuf, "Beautiful Sunset");
+      return;
+    }
+    case S3_IMG_BACKGROUND_DOCK_SUNSET: {
+      strcpy(nameBuf, "Dock Sunset");
+      return;
+    }
+    case S3_IMG_BACKGROUND_NATURE_FOOTPATH: {
+      strcpy(nameBuf, "Nature Pathway");
+      return;
+    }
+    case S3_IMG_BACKGROUND_GREEN_LAKE: {
+      strcpy(nameBuf, "Green Lake");
+      return;
+    }
+    case S3_IMG_BACKGROUND_GREEN_FOREST: {
+      strcpy(nameBuf, "Green Forest");
+      return;
+    }
+  }
+}
+
+void lv_utils_setWallpaper(uint8_t wallpaperID, bool refreshUI) {
+  s3_resource_num_t resId = lv_utils_getResourceByID(wallpaperID);
+  screenWallpaperImg = lv_utils_getImage(resId);
+  screenWallpaperID = wallpaperID;
+  wallpaperChanged = true;
+
+  lv_utils_getResourceName(wallpaperID, selectedWallpaper);
+  // TODO: refresh the UI
+  if (refreshUI) {
+    lv_utils_refreshUI();
+  }
+}
+
+s3_resource_num_t lv_utils_getResourceByID(int id) {
+  switch (id) {
+    case 1:
+      return S3_IMG_BACKGROUND_BEAUTIFUL_SUNSET;
+    case 2:
+      return S3_IMG_BACKGROUND_DOCK_SUNSET;
+    case 3:
+      return S3_IMG_BACKGROUND_NATURE_FOOTPATH;
+    case 4:
+      return S3_IMG_BACKGROUND_GREEN_LAKE;
+    case 5:
+      return S3_IMG_BACKGROUND_GREEN_FOREST;
+  }
+}
+
+void lv_utils_refreshUI() {
+  // TODO: register all main pannels with translucent background here. Find a
+  // better way of doing this
+
+  //   lv_obj_set_style_bg_image_src(ui_panelBrowserMain, screenWallpaperImg,
+  //                                 LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  //   lv_obj_set_style_bg_image_src(ui_panelCalculatorMain, screenWallpaperImg,
+  //                                 LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  //   lv_obj_set_style_bg_image_src(ui_panelCalendarMain, screenWallpaperImg,
+  //                                 LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  //   lv_obj_set_style_bg_image_src(ui_panelContactAdd, screenWallpaperImg,
+  //                                 LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  //   lv_obj_set_style_bg_image_src(ui_panelContactDetails, screenWallpaperImg,
+  //                                 LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  //   lv_obj_set_style_bg_image_src(ui_panelContactMain, screenWallpaperImg,
+  //                                 LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  //   lv_obj_set_style_bg_image_src(ui_panelExtraMain, screenWallpaperImg,
+  //                                 LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  //   lv_obj_set_style_bg_image_src(ui_panelFilesMain, screenWallpaperImg,
+  //                                 LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  //   lv_obj_set_style_bg_image_src(ui_panelGalleryMain, screenWallpaperImg,
+  //                                 LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  //   lv_obj_set_style_bg_image_src(ui_panelGamesMain, screenWallpaperImg,
+  //                                 LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  //   lv_obj_set_style_bg_image_src(ui_panelPhoneMain, screenWallpaperImg,
+  //                                 LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  //   lv_obj_set_style_bg_image_src(ui_panelMainMenu, screenWallpaperImg,
+  //                                 LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  //   lv_obj_set_style_bg_image_src(ui_panelMessagesMain, screenWallpaperImg,
+  //                                 LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  //   lv_obj_set_style_bg_image_src(ui_panelMultimediaMain, screenWallpaperImg,
+  //                                 LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  //   lv_obj_set_style_bg_image_src(ui_panelMusicMain, screenWallpaperImg,
+  //                                 LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  //   lv_obj_set_style_bg_image_src(ui_panelMyZoneMain, screenWallpaperImg,
+  //                                 LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  //   lv_obj_set_style_bg_image_src(ui_panelPhoneMain, screenWallpaperImg,
+  //                                 LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  //   lv_obj_set_style_bg_image_src(ui_panelRadioMain, screenWallpaperImg,
+  //                                 LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  //   lv_obj_set_style_bg_image_src(ui_panelSettingsAbout, screenWallpaperImg,
+  //                                 LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  //   lv_obj_set_style_bg_image_src(ui_panelSettingsConnectivity,
+  //                                 screenWallpaperImg,
+  //                                 LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  //   lv_obj_set_style_bg_image_src(ui_panelSettingsDisplayMain,
+  //   screenWallpaperImg,
+  //                                 LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  //   lv_obj_set_style_bg_image_src(ui_panelSettingsLockSecurity,
+  //                                 screenWallpaperImg,
+  //                                 LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  //   lv_obj_set_style_bg_image_src(ui_panelSettingsMain, screenWallpaperImg,
+  //                                 LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  //   lv_obj_set_style_bg_image_src(ui_panelSettingsNetworkInternet,
+  //                                 screenWallpaperImg,
+  //                                 LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  //   lv_obj_set_style_bg_image_src(ui_panelSettingsSound, screenWallpaperImg,
+  //                                 LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  //   lv_obj_set_style_bg_image_src(ui_panelSettingsStorage,
+  //   screenWallpaperImg,
+  //                                 LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  //   lv_obj_set_style_bg_image_src(ui_panelSettingsSystem, screenWallpaperImg,
+  //                                 LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  //   lv_obj_set_style_bg_image_src(ui_panelSettingsTheme, screenWallpaperImg,
+  //                                 LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  //   lv_obj_set_style_bg_image_src(ui_panelSettingsThemeWallpaper,
+  //                                 screenWallpaperImg,
+  //                                 LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  //   lv_obj_set_style_bg_image_src(ui_panelSTKMain, screenWallpaperImg,
+  //                                 LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  //   lv_obj_set_style_bg_image_src(ui_panelTimeMain, screenWallpaperImg,
+  //                                 LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  //   lv_obj_set_style_bg_image_src(ui_panelTodoMain, screenWallpaperImg,
+  //                                 LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  //   lv_obj_set_style_bg_image_src(ui_panelToolsMain, screenWallpaperImg,
+  //                                 LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  //   lv_obj_set_style_bg_image_src(ui_panelVideoMain, screenWallpaperImg,
+  //                                 LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  //   ui_homeScreen_screen_init();
+  //   ui_mainMenuScreen_screen_init();
+  //   ui_contactsScreen_screen_init();
+  //   ui_alarmMainScreen_screen_init();
+  //   ui_simPinScreen_screen_init();
+  //   ui_splashScreen_screen_init();
+  //   ui_contactAddScreen_screen_init();
+  //   ui_contactOptionsScreen_screen_init();
+  //   ui_settingsMainScreen_screen_init();
+  //   ui_settingsDisplayScreen_screen_init();
+  //   ui_settingsThemesScreen_screen_init();
+  //   ui_settingsThemeWallpaperScreen_screen_init();
+  //   ui_settingsLockSecurityScreen_screen_init();
+  //   ui_settingsNetworkInternetScreen_screen_init();
+  //   ui_settingsConnectivityScreen_screen_init();
+  //   ui_settingsStorageScreen_screen_init();
+  //   ui_settingsSoundScreen_screen_init();
+  //   ui_settingsSystemScreen_screen_init();
+  //   ui_settingsAboutScreen_screen_init();
+  //   ui_timeScreen_screen_init();
+  //   ui_calculatorScreen_screen_init();
+  //   ui_calendarScreen_screen_init();
+  //   ui_filesScreen_screen_init();
+  //   ui_todoScreen_screen_init();
+  //   ui_stkScreen_screen_init();
+  //   ui_galleryScreen_screen_init();
+  //   ui_musicScreen_screen_init();
+  //   ui_radioScreen_screen_init();
+  //   ui_videoScreen_screen_init();
+
+//   ui_init();
+}

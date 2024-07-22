@@ -101,10 +101,12 @@ void FileSystem::writeFile(const char* filename, const char* content,
 
 void FileSystem::_loadSettings(bool createIfUnavailable) {
   // load display settings
-  String settingsParameters[] = {FS_VAR_SYSTEM_DISPLAY_BRIGHTNESS,
-                                 FS_VAR_SYSTEM_DISPLAY_TIMEOUT};
-  String settingsParDefaults[] = {FS_DEF_SYSTEM_DISPLAY_BRIGHTNESS,
-                                  FS_DEF_SYSTEM_DISPLAY_TIMEOUT};
+  String settingsParameters[] = {
+      FS_VAR_SETTINGS_DISPLAY_BRIGHTNESS, FS_VAR_SETTINGS_DISPLAY_TIMEOUT,
+      FS_VAR_SETTINGS_THEMES_THEME_DARK, FS_VAR_SETTINGS_THEMES_WALLPAPER};
+  String settingsParDefaults[] = {
+      FS_DEF_SETTINGS_DISPLAY_BRIGHTNESS, FS_DEF_SETTINGS_DISPLAY_TIMEOUT,
+      FS_DEF_SETTINGS_THEMES_THEME_DARK, FS_DEF_SETTINGS_THEMES_WALLPAPER};
 
   for (int i = 0;
        i < sizeof(settingsParameters) / sizeof(settingsParameters[0]); i++) {
@@ -117,9 +119,12 @@ void FileSystem::_loadSettings(bool createIfUnavailable) {
 
 String FileSystem::readSetting(const char* variable) {
   String filename = "";
-  if (String(variable).equals(FS_VAR_SYSTEM_DISPLAY_BRIGHTNESS) ||
-      String(variable).equals(FS_VAR_SYSTEM_DISPLAY_TIMEOUT)) {
+  if (String(variable).equals(FS_VAR_SETTINGS_DISPLAY_BRIGHTNESS) ||
+      String(variable).equals(FS_VAR_SETTINGS_DISPLAY_TIMEOUT)) {
     filename = FS_SETTINGS_DISPLAY_FILEPATH;
+  } else if (String(variable).equals(FS_VAR_SETTINGS_THEMES_THEME_DARK) ||
+             String(variable).equals(FS_VAR_SETTINGS_THEMES_WALLPAPER)) {
+    filename = FS_SETTINGS_THEMES_FILEPATH;
   }
   File file = _mFs.open(filename, FILE_READ);
 
@@ -134,25 +139,52 @@ String FileSystem::readSetting(const char* variable) {
   String value = doc[variable];
 
   file.close();
+
+  DEBUG_PRINTF("%s: %s\n", variable, value);
   return value;
 }
 
 String FileSystem::_readSetting(const char* variable, const char* defaultValue,
                                 bool createIfUnavailable) {
   String filename = "";
-  if (String(variable).equals(FS_VAR_SYSTEM_DISPLAY_BRIGHTNESS) ||
-      String(variable).equals(FS_VAR_SYSTEM_DISPLAY_TIMEOUT)) {
+  JsonDocument doc;
+
+  if (String(variable).equals(FS_VAR_SETTINGS_DISPLAY_BRIGHTNESS) ||
+      String(variable).equals(FS_VAR_SETTINGS_DISPLAY_TIMEOUT)) {
     filename = FS_SETTINGS_DISPLAY_FILEPATH;
+  } else if (String(variable).equals(FS_VAR_SETTINGS_THEMES_THEME_DARK) ||
+             String(variable).equals(FS_VAR_SETTINGS_THEMES_WALLPAPER)) {
+    filename = FS_SETTINGS_THEMES_FILEPATH;
   }
 
   File file = _mFs.open(filename, FILE_READ, createIfUnavailable);
 
-  if (!file || file.isDirectory()) {
-    DEBUG_PRINTLN("Failed to open file");
-    return "Failed to open " + String(filename);
+  if (!file) {
+    if (file.isDirectory()) {
+      DEBUG_PRINTLN("The Path is a directory");
+      return "Failed to open " + String(filename);
+    }
+
+    file = _mFs.open(filename, FILE_WRITE, createIfUnavailable);
+
+    if (!file || file.isDirectory()) {
+      DEBUG_PRINTLN("Failed to open file for writing");
+      return "Failed to open " + String(filename);
+    }
+    deserializeJson(doc, file);
+
+    doc[variable] = defaultValue;
+    String value = defaultValue;
+
+    file.seek(0);
+    if (serializeJson(doc, file) == 0) {
+      DEBUG_PRINTLN("Failed to write to file");
+    }
+
+    file.close();
+    return value;
   }
 
-  JsonDocument doc;
   deserializeJson(doc, file);
 
   String value = doc[variable];
@@ -182,9 +214,12 @@ String FileSystem::_readSetting(const char* variable, const char* defaultValue,
 
 void FileSystem::editSetting(const char* variable, const char* value) {
   String filename = "";
-  if (String(variable).equals(FS_VAR_SYSTEM_DISPLAY_BRIGHTNESS) ||
-      String(variable).equals(FS_VAR_SYSTEM_DISPLAY_TIMEOUT)) {
+  if (String(variable).equals(FS_VAR_SETTINGS_DISPLAY_BRIGHTNESS) ||
+      String(variable).equals(FS_VAR_SETTINGS_DISPLAY_TIMEOUT)) {
     filename = FS_SETTINGS_DISPLAY_FILEPATH;
+  } else if (String(variable).equals(FS_VAR_SETTINGS_THEMES_THEME_DARK) ||
+             String(variable).equals(FS_VAR_SETTINGS_THEMES_WALLPAPER)) {
+    filename = FS_SETTINGS_THEMES_FILEPATH;
   }
 
   File file = _mFs.open(filename, FILE_READ);

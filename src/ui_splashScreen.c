@@ -14,7 +14,7 @@ void ui_splashScreen_screen_init(void)
     lv_obj_set_style_bg_opa(ui_splashScreen, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     // FIXME: find a way to work with lottie animations
-    lv_obj_t *loadingGIF = lv_gif_create(ui_splashScreen);
-    lv_gif_set_src(loadingGIF, "A:/load_circular.gif");
-    lv_obj_set_align(loadingGIF, LV_ALIGN_CENTER);
+    // lv_obj_t *loadingGIF = lv_gif_create(ui_splashScreen);
+    // lv_gif_set_src(loadingGIF, "A:/load_circular.gif");
+    // lv_obj_set_align(loadingGIF, LV_ALIGN_CENTER);
 }

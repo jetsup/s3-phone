@@ -19,19 +19,18 @@ void ui_homeScreen_screen_init(void) {
   lv_obj_set_style_bg_color(ui_panelMain, lv_color_hex(0xFFFFFF),
                             LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_bg_opa(ui_panelMain, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-  lv_obj_set_style_bg_image_src(ui_panelMain, &ui_img_bg1_png,
+  lv_obj_set_style_bg_image_src(ui_panelMain, screenWallpaperImg,
                                 LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_border_color(ui_panelMain, lv_color_hex(0x000000),
                                 LV_PART_MAIN | LV_STATE_DEFAULT);
-  lv_obj_set_style_border_opa(ui_panelMain, 0,
-                              LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_border_opa(ui_panelMain, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_radius(ui_panelMain, 0,
                           LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
   lv_obj_set_style_bg_color(ui_panelMain, lv_color_hex(0xFFFFFF),
                             LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
   lv_obj_set_style_bg_opa(ui_panelMain, 0,
                           LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
-  lv_obj_set_style_bg_image_src(ui_panelMain, &ui_img_bg1_png,
+  lv_obj_set_style_bg_image_src(ui_panelMain, screenWallpaperImg,
                                 LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
 
   ui_homeContainerTopBar = lv_obj_create(ui_panelMain);
@@ -49,7 +48,8 @@ void ui_homeScreen_screen_init(void) {
   lv_obj_set_x(ui_lblHomeBatteryLevel, -5);
   lv_obj_set_y(ui_lblHomeBatteryLevel, 0);
   lv_obj_set_align(ui_lblHomeBatteryLevel, LV_ALIGN_TOP_RIGHT);
-  lv_label_set_text(ui_lblHomeBatteryLevel, LV_SYMBOL_BATTERY_2 "65");
+  lv_label_set_text_fmt(ui_lblHomeBatteryLevel, "%s%s%%", LV_SYMBOL_BATTERY_2,
+                        "65");
   lv_obj_set_style_text_color(ui_lblHomeBatteryLevel, lv_color_hex(0xFFFFFF),
                               LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_text_opa(ui_lblHomeBatteryLevel, 255,
@@ -80,7 +80,7 @@ void ui_homeScreen_screen_init(void) {
   lv_obj_set_width(ui_lblHomeTime, LV_SIZE_CONTENT);       /// 1
   lv_obj_set_height(ui_lblHomeTime, LV_SIZE_CONTENT);      /// 1
   lv_obj_add_flag(ui_lblHomeTime, LV_OBJ_FLAG_CLICKABLE);  /// Flags
-  lv_label_set_text(ui_lblHomeTime, "05:00");
+  lv_label_set_text(ui_lblHomeTime, lvCurrentTime);
   lv_obj_set_style_text_color(ui_lblHomeTime, lv_color_hex(0xFFFFFF),
                               LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_text_opa(ui_lblHomeTime, 255,
@@ -99,7 +99,7 @@ void ui_homeScreen_screen_init(void) {
   lv_obj_set_height(ui_lblHomeDate, LV_SIZE_CONTENT);  /// 1
   lv_obj_set_x(ui_lblHomeDate, 0);
   lv_obj_set_y(ui_lblHomeDate, 45);
-  lv_label_set_text(ui_lblHomeDate, "07/07/2024 Sun");
+  lv_label_set_text(ui_lblHomeDate, lvCurrentDate);
   lv_obj_set_style_text_color(ui_lblHomeDate, lv_color_hex(0xF0F0F0),
                               LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_text_opa(ui_lblHomeDate, 255,
@@ -168,15 +168,16 @@ void ui_homeScreen_screen_init(void) {
   lv_obj_set_height(ui_imbHomeContacts, 40);
   lv_obj_set_align(ui_imbHomeContacts, LV_ALIGN_TOP_MID);
 
-  lv_obj_add_event_cb(ui_lblHomeTime, ui_event_lblHomeTime, LV_EVENT_ALL, NULL);
-  lv_obj_add_event_cb(ui_imbHomePhone, ui_event_imbClickEvent, LV_EVENT_ALL,
+  lv_obj_add_event_cb(ui_lblHomeTime, ui_event_label_cb, LV_EVENT_CLICKED,
+                      "time home");
+  lv_obj_add_event_cb(ui_imbHomePhone, ui_event_imagebutton_cb, LV_EVENT_ALL,
                       "home phone");
-  lv_obj_add_event_cb(ui_imbHomeMessages, ui_event_imbClickEvent, LV_EVENT_ALL,
+  lv_obj_add_event_cb(ui_imbHomeMessages, ui_event_imagebutton_cb, LV_EVENT_ALL,
                       "home messages");
-  lv_obj_add_event_cb(ui_imbHomeApps, ui_event_imbClickEvent, LV_EVENT_ALL,
+  lv_obj_add_event_cb(ui_imbHomeApps, ui_event_imagebutton_cb, LV_EVENT_ALL,
                       "apps");
-  lv_obj_add_event_cb(ui_imbHomeBrowser, ui_event_imbClickEvent, LV_EVENT_ALL,
+  lv_obj_add_event_cb(ui_imbHomeBrowser, ui_event_imagebutton_cb, LV_EVENT_ALL,
                       "home browser");
-  lv_obj_add_event_cb(ui_imbHomeContacts, ui_event_imbClickEvent, LV_EVENT_ALL,
+  lv_obj_add_event_cb(ui_imbHomeContacts, ui_event_imagebutton_cb, LV_EVENT_ALL,
                       "home contacts");
 }

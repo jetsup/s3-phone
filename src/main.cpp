@@ -51,10 +51,19 @@ void setup() {
   // Initialize all variables from settings data
   //=============================================================================
   lv_utils_setBrightness(
-      fileSystem.readSetting(FS_VAR_SYSTEM_DISPLAY_BRIGHTNESS).toInt());
+      fileSystem.readSetting(FS_VAR_SETTINGS_DISPLAY_BRIGHTNESS).toInt());
 
   lv_utils_setScreenTimeout(
-      fileSystem.readSetting(FS_VAR_SYSTEM_DISPLAY_TIMEOUT).toInt());
+      fileSystem.readSetting(FS_VAR_SETTINGS_DISPLAY_TIMEOUT).toInt());
+
+  lv_utils_setTheme(
+      fileSystem.readSetting(FS_VAR_SETTINGS_THEMES_THEME_DARK).toInt());
+
+  lv_utils_setWallpaper(
+      (uint8_t)fileSystem.readSetting(FS_VAR_SETTINGS_THEMES_WALLPAPER)
+          .toInt(), false);
+
+  DEBUG_PRINTLN("Settings Loaded");
   //=============================================================================
   display.init();
   display.setRotation(2);
@@ -155,13 +164,13 @@ void loop() {
   if (brightnessChanged) {
     brightnessChanged = false;
     display.updateBrightness(screenBrightnessLevel);
-    fileSystem.editSetting(FS_VAR_SYSTEM_DISPLAY_BRIGHTNESS,
+    fileSystem.editSetting(FS_VAR_SETTINGS_DISPLAY_BRIGHTNESS,
                            String(screenBrightnessLevel).c_str());
   }
 
   if (timeoutChanged) {
     timeoutChanged = false;
-    fileSystem.editSetting(FS_VAR_SYSTEM_DISPLAY_TIMEOUT,
+    fileSystem.editSetting(FS_VAR_SETTINGS_DISPLAY_TIMEOUT,
                            String(screenTimeout).c_str());
   }
 
@@ -169,6 +178,18 @@ void loop() {
       screenTimeout != TIMEOUT_NEVER) {
     display.sleep();
     screenInteractive = false;
+  }
+
+  if (themeChanged) {
+    themeChanged = false;
+    fileSystem.editSetting(FS_VAR_SETTINGS_THEMES_THEME_DARK,
+                           String(darkThemeSelected).c_str());
+  }
+
+  if (wallpaperChanged) {
+    wallpaperChanged = false;
+    fileSystem.editSetting(FS_VAR_SETTINGS_THEMES_WALLPAPER,
+                           String(screenWallpaperID).c_str());
   }
 }
 // ----------------------------------------------------------

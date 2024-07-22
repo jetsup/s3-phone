@@ -8,7 +8,7 @@ void ui_videoScreen_screen_init(void) {
   lv_obj_set_width(ui_panelVideoMain, 240);
   lv_obj_set_height(ui_panelVideoMain, 320);
   lv_obj_remove_flag(ui_panelVideoMain, LV_OBJ_FLAG_SCROLLABLE);  /// Flags
-  lv_obj_set_style_bg_image_src(ui_panelVideoMain, &ui_img_bg1_png,
+  lv_obj_set_style_bg_image_src(ui_panelVideoMain, screenWallpaperImg,
                                 LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_bg_image_opa(ui_panelVideoMain, 100,
                                 LV_PART_MAIN | LV_STATE_DEFAULT);

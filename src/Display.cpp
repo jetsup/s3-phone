@@ -27,8 +27,8 @@ Display::Display(uint8_t tftCLK, uint8_t tftMOSI, uint8_t tftMISO,
   {
     auto cfg = _panel_instance.config();
 
-    cfg.pin_cs = 15;
-    cfg.pin_rst = 16;
+    cfg.pin_cs = tftCS;
+    cfg.pin_rst = tftRST;
     cfg.pin_busy = -1;
 
     cfg.panel_width = 240;
@@ -53,7 +53,7 @@ Display::Display(uint8_t tftCLK, uint8_t tftMOSI, uint8_t tftMISO,
   {
     auto cfg = _light_instance.config();
 
-    cfg.pin_bl = 3;
+    cfg.pin_bl = tftLED;
     cfg.invert = false;
     cfg.freq = 44100;
     cfg.pwm_channel = 7;
@@ -74,10 +74,10 @@ Display::Display(uint8_t tftCLK, uint8_t tftMOSI, uint8_t tftMISO,
 
     cfg.spi_host = SPI3_HOST;
     cfg.freq = 1000000;
-    cfg.pin_sclk = 8;
-    cfg.pin_mosi = 18;
-    cfg.pin_miso = 9;
-    cfg.pin_cs = 10;
+    cfg.pin_sclk = touchCLK;
+    cfg.pin_mosi = touchDIN;
+    cfg.pin_miso = touchDO;
+    cfg.pin_cs = touchCS;
 
     _touch_instance.config(cfg);
     _panel_instance.setTouch(&_touch_instance);

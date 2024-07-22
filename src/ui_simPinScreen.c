@@ -73,8 +73,8 @@ void ui_simPinScreen_screen_init(void) {
   lv_obj_set_size(ui_btnMatrixNumPinScreen, 240, 264);
   lv_obj_set_y(ui_btnMatrixNumPinScreen, 35);
   lv_obj_set_align(ui_btnMatrixNumPinScreen, LV_ALIGN_CENTER);
-  lv_obj_add_event_cb(ui_btnMatrixNumPinScreen, ui_event_btnMatrixNumHandler,
-                      LV_EVENT_VALUE_CHANGED, ui_txtPinPinScreen);
+  lv_obj_add_event_cb(ui_btnMatrixNumPinScreen, ui_event_keyboard_cb,
+                      LV_EVENT_VALUE_CHANGED, "sim unlock");
   lv_obj_remove_flag(ui_btnMatrixNumPinScreen,
                      LV_OBJ_FLAG_CLICK_FOCUSABLE); /*To keep the text area
                                                       focused on button clicks*/

@@ -22,27 +22,35 @@ extern int newDay;
 
 #define SCREEN_STACK_SIZE 20
 
+// Settings Display
 #define UI_BRIGHTNESS_SLIDER_MAX 4096
 #define UI_BRIGHTNESS_SLIDER_MIN 100
 extern int screenBrightnessLevel;
 extern bool brightnessChanged;
 
 extern const char screenTimeoutSeparationDelimeter[2];
-// in seconds
-extern unsigned int screenTimeout;
+extern unsigned int screenTimeout;  // in seconds
 extern bool timeoutChanged;
-// true when baclight on
-extern bool screenInteractive;
+extern bool screenInteractive;  // true when baclight on
 extern unsigned long previousScreenTouch;
-
 extern uint8_t dropdownSelectedTimeout;
+
+// Settings Theme
+extern bool darkThemeSelected;
+extern bool themeChanged;
+
+extern char selectedWallpaper[20];  // e.g. beautiful sunset
+extern int clickedWallpaperImage;
+extern uint8_t screenWallpaperID;
+extern lv_image_dsc_t *screenWallpaperImg;
+extern bool wallpaperChanged;
 
 //========================Screen Stack========================
 /**
  * @brief Holds the data to be stored in the stack
  */
 typedef struct {
-  enum eSCREENS screen;
+  s3_screens_t screen;
   lv_obj_t *previousScreen;
   lv_screen_load_anim_t transitionAnimation;
   void (*previousScreenInit)(void);
@@ -81,7 +89,7 @@ bool screenStackIsFull();
  * screen
  * @return true if the screen was pushed
  */
-bool screenStackPush(enum eSCREENS screen, lv_obj_t *previousScreen,
+bool screenStackPush(s3_screens_t screen, lv_obj_t *previousScreen,
                      void (*previousScreenInit)(void),
                      lv_screen_load_anim_t transitionAnimation);
 
@@ -98,15 +106,15 @@ ScreenStackElement screenStackPop();
 ScreenStackElement screenStackPeek();
 
 /**
- * @brief Clears the screen stack by continuously popping the eSCREENS
+ * @brief Clears the screen stack by continuously popping the `s3_screens_t`
  * until the stack is empty. This means that the user will be taken back to
  * the home screen.
  */
 void screenStackEmpty();
 
 /**
- * @brief Gets number of eSCREENS in the screen stack
- * @return The number of eSCREENS in the screen stack
+ * @brief Gets number of `s3_screens_t` in the screen stack
+ * @return The number of `s3_screens_t` in the screen stack
  */
 int screenStackSize();
 
@@ -148,6 +156,34 @@ void lv_utils_setScreenTimeout(unsigned int timeout);
  * @brief Get the index of the selected timeout
  */
 uint8_t lv_set_selected_timeout();
+
+/**
+ * @brief Set update the system theme
+ * @param themeDark Dark theme if set to `true` else light theme
+ */
+void lv_utils_setTheme(bool themeDark);
+
+/**
+ * @brief Get the defined image using the `imageID`
+ * @param imageID the ID of the image
+ */
+lv_image_dsc_t *lv_utils_getImage(s3_resource_num_t imageID);
+
+/**
+ * @brief Get the name of the resource specified with the 'resID'
+ * @param resID The ID of the image
+ * @param nameBuf The buffer to store the retrieved name
+ */
+void lv_utils_getResourceName(int resID, char *nameBuf);
+
+
+/**
+ * @brief Update the wallpaper
+ * @param wallpaperID The ID of the image to be used
+ * @param refreshUI Refresh the UI. Should only be set if the UI is already
+ * loaded.
+ */
+void lv_utils_setWallpaper(uint8_t wallpaperID, bool refreshUI);
 
 /**
  * @brief Creates a bottom bar with navigation buttons

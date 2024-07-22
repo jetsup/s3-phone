@@ -1,18 +1,18 @@
 #include "ui.h"
 
-int yOffset = UI_ALIGN_TOP_LEFT_Y_OFFSET;
-
 void ui_settingsDisplayScreen_screen_init(void) {
   ui_settingsDisplayScreen = lv_obj_create(NULL);
   lv_obj_remove_flag(ui_settingsDisplayScreen,
                      LV_OBJ_FLAG_SCROLLABLE);  /// Flags
+
+  int yOffset = UI_ALIGN_TOP_LEFT_Y_OFFSET;
 
   ui_panelSettingsDisplayMain = lv_obj_create(ui_settingsDisplayScreen);
   lv_obj_set_width(ui_panelSettingsDisplayMain, 240);
   lv_obj_set_height(ui_panelSettingsDisplayMain, 320);
   lv_obj_remove_flag(ui_panelSettingsDisplayMain,
                      LV_OBJ_FLAG_SCROLLABLE);  /// Flags
-  lv_obj_set_style_bg_image_src(ui_panelSettingsDisplayMain, &ui_img_bg1_png,
+  lv_obj_set_style_bg_image_src(ui_panelSettingsDisplayMain, screenWallpaperImg,
                                 LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_bg_image_opa(ui_panelSettingsDisplayMain, 100,
                                 LV_PART_MAIN | LV_STATE_DEFAULT);

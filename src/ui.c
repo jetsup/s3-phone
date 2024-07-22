@@ -157,6 +157,13 @@ lv_obj_t* ui_dropDownSettingsScreenTimeout;
 void ui_settingsThemesScreen_screen_init(void);
 lv_obj_t* ui_settingsThemesScreen;
 lv_obj_t* ui_panelSettingsTheme;
+lv_obj_t* ui_switchTheme;
+
+// SCREEN: ui_settingsThemeWallpaperScreen
+void ui_settingsThemeWallpaperScreen_screen_init(void);
+lv_obj_t* ui_settingsThemeWallpaperScreen;
+lv_obj_t* ui_panelSettingsThemeWallpaper;
+lv_obj_t* ui_imageViewWallpaper;
 
 // SCREEN: ui_settingsLockSecurityScreen
 void ui_settingsLockSecurityScreen_screen_init(void);
@@ -207,6 +214,9 @@ lv_obj_t* ui_panelCalculatorMain;
 void ui_calendarScreen_screen_init(void);
 lv_obj_t* ui_calendarScreen;
 lv_obj_t* ui_panelCalendarMain;
+lv_obj_t* ui_calendar;
+lv_obj_t* ui_btnCalendarApply;
+lv_obj_t* ui_btnCalendarDiscard;
 
 // SCREEN: ui_filesScreen
 void ui_filesScreen_screen_init(void);
@@ -361,6 +371,7 @@ void ui_init(void) {
   ui_settingsMainScreen_screen_init();
   ui_settingsDisplayScreen_screen_init();
   ui_settingsThemesScreen_screen_init();
+  ui_settingsThemeWallpaperScreen_screen_init();
   ui_settingsLockSecurityScreen_screen_init();
   ui_settingsNetworkInternetScreen_screen_init();
   ui_settingsConnectivityScreen_screen_init();
@@ -380,4 +391,5 @@ void ui_init(void) {
   ui_videoScreen_screen_init();
   ui____initial_actions0 = lv_obj_create(NULL);
   lv_disp_load_scr(ui_homeScreen);
+  //   lv_disp_load_scr(ui_settingsThemesScreen);
 }

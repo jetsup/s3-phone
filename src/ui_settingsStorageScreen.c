@@ -15,7 +15,7 @@ void ui_settingsStorageScreen_screen_init(void) {
   lv_obj_set_height(ui_panelSettingsStorage, 320);
   lv_obj_remove_flag(ui_panelSettingsStorage,
                      LV_OBJ_FLAG_SCROLLABLE);  /// Flags
-  lv_obj_set_style_bg_image_src(ui_panelSettingsStorage, &ui_img_bg1_png,
+  lv_obj_set_style_bg_image_src(ui_panelSettingsStorage, screenWallpaperImg,
                                 LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_bg_image_opa(ui_panelSettingsStorage, 100,
                                 LV_PART_MAIN | LV_STATE_DEFAULT);

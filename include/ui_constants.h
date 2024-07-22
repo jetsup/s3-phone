@@ -1,4 +1,5 @@
-#pragma once
+#ifndef UI_CONSTANTS_H_
+#define UI_CONSTANTS_H_
 
 #define UI_ANIMATION_DURATION 150  //< Animation duration in milliseconds>
 #define UI_TRANSPARENCY 100        //< Transparency level>
@@ -9,7 +10,7 @@
 /**
  *@brief For events handling and screen navigation
  */
-enum eSCREENS {
+typedef enum {
   SCREEN_SPLASH = 0,  //< Splash screen when booting>
   SCREEN_HOME,
   SCREEN_MAIN_MENU,
@@ -42,9 +43,9 @@ enum eSCREENS {
   SCREEN_SETTINGS_RESET_FAIL,
   SCREEN_SETTINGS_RESET_FAIL_NO_SIM,
   SCREEN_SETTINGS_RESET_FAIL_NO_SD
-};
+} s3_screens_t;
 
-enum eSCREEN_TIMEOUTS {
+typedef enum {
   TIMEOUT_5_SEC = 5,
   TIMEOUT_10_SEC = 10,
   TIMEOUT_15_SEC = 15,
@@ -54,9 +55,9 @@ enum eSCREEN_TIMEOUTS {
   TIMEOUT_5_MIN = 5 * 60,
   TIMEOUT_10_MIN = 10 * 60,
   TIMEOUT_NEVER = 0,
-};
+} s3_screen_timeout_t;
 
-enum eDROP_DOWN_TIMEOUT_INDEX {
+typedef enum  {
   DROP_TIMEOUT_5_SEC = 0,
   DROP_TIMEOUT_10_SEC = 1,
   DROP_TIMEOUT_15_SEC = 2,
@@ -66,4 +67,14 @@ enum eDROP_DOWN_TIMEOUT_INDEX {
   DROP_TIMEOUT_5_MIN = 6,
   DROP_TIMEOUT_10_MIN = 7,
   DROP_TIMEOUT_NEVER = 8,
-};
+} s3_screen_timeout_index_t;
+
+typedef enum {
+  S3_IMG_BACKGROUND_BEAUTIFUL_SUNSET = 1,
+  S3_IMG_BACKGROUND_DOCK_SUNSET,
+  S3_IMG_BACKGROUND_NATURE_FOOTPATH,
+  S3_IMG_BACKGROUND_GREEN_LAKE,
+  S3_IMG_BACKGROUND_GREEN_FOREST,
+} s3_resource_num_t;
+
+#endif  // UI_CONSTANTS_H_

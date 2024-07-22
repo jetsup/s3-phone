@@ -13,7 +13,7 @@ void ui_extraScreen_screen_init(void) {
   lv_obj_set_width(ui_panelExtraMain, 240);
   lv_obj_set_height(ui_panelExtraMain, 320);
   lv_obj_remove_flag(ui_panelExtraMain, LV_OBJ_FLAG_SCROLLABLE);  /// Flags
-  lv_obj_set_style_bg_image_src(ui_panelExtraMain, &ui_img_bg1_png,
+  lv_obj_set_style_bg_image_src(ui_panelExtraMain, screenWallpaperImg,
                                 LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_bg_image_opa(ui_panelExtraMain, 100,
                                 LV_PART_MAIN | LV_STATE_DEFAULT);

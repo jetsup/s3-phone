@@ -13,7 +13,7 @@ void ui_myZoneScreen_screen_init(void) {
   lv_obj_set_width(ui_panelMyZoneMain, 240);
   lv_obj_set_height(ui_panelMyZoneMain, 320);
   lv_obj_remove_flag(ui_panelMyZoneMain, LV_OBJ_FLAG_SCROLLABLE);  /// Flags
-  lv_obj_set_style_bg_image_src(ui_panelMyZoneMain, &ui_img_bg1_png,
+  lv_obj_set_style_bg_image_src(ui_panelMyZoneMain, screenWallpaperImg,
                                 LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_bg_image_opa(ui_panelMyZoneMain, 100,
                                 LV_PART_MAIN | LV_STATE_DEFAULT);

@@ -18,7 +18,7 @@ void ui_contactAddScreen_screen_init(void) {
                                 LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_border_opa(ui_panelContactAdd, 0,
                               LV_PART_MAIN | LV_STATE_DEFAULT);
-  lv_obj_set_style_bg_image_src(ui_panelContactAdd, &ui_img_bg1_png,
+  lv_obj_set_style_bg_image_src(ui_panelContactAdd, screenWallpaperImg,
                                 LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_bg_image_opa(ui_panelContactAdd, 100,
                                 LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -38,9 +38,10 @@ void ui_contactAddScreen_screen_init(void) {
   lv_obj_set_y(ui_txtContactAddName, -130);
   lv_obj_set_align(ui_txtContactAddName, LV_ALIGN_CENTER);
   lv_textarea_set_placeholder_text(ui_txtContactAddName, "Name...");
-  lv_obj_set_style_bg_opa(ui_txtContactAddName, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-  lv_obj_add_event_cb(ui_txtContactAddName, ui_event_textArea_full_cb,
-                      LV_EVENT_ALL, NULL);
+  lv_obj_set_style_bg_opa(ui_txtContactAddName, 0,
+                          LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_add_event_cb(ui_txtContactAddName, ui_event_textarea_cb, LV_EVENT_ALL,
+                      "contact add name");
 
   ui_lblContactAddNumber = lv_label_create(ui_panelContactAdd);
   lv_obj_set_width(ui_lblContactAddNumber, LV_SIZE_CONTENT);   /// 1
@@ -59,8 +60,8 @@ void ui_contactAddScreen_screen_init(void) {
   lv_textarea_set_placeholder_text(ui_txtContactAddNumber, "Number...");
   lv_obj_set_style_bg_opa(ui_txtContactAddNumber, 0,
                           LV_PART_MAIN | LV_STATE_DEFAULT);
-  lv_obj_add_event_cb(ui_txtContactAddNumber, ui_event_textArea_num_cb,
-                      LV_EVENT_ALL, NULL);
+  lv_obj_add_event_cb(ui_txtContactAddNumber, ui_event_textarea_cb,
+                      LV_EVENT_ALL, "contact add num");
 
   ui_lblContactAddSaveTo = lv_label_create(ui_panelContactAdd);
   lv_obj_set_width(ui_lblContactAddSaveTo, LV_SIZE_CONTENT);   /// 1
@@ -90,8 +91,8 @@ void ui_contactAddScreen_screen_init(void) {
   lv_label_set_text(ui_lblContactAddSave, "Save");
   lv_obj_set_style_text_color(ui_lblContactAddSave, lv_color_hex(0x20FF13),
                               LV_PART_MAIN | LV_STATE_DEFAULT);
-  lv_obj_add_event_cb(ui_lblContactAddSave, ui_event_lblContactAddSave,
-                      LV_EVENT_ALL, NULL);
+  lv_obj_add_event_cb(ui_lblContactAddSave, ui_event_label_cb, LV_EVENT_CLICKED,
+                      "contact save");
 
   ui_lblContactAddBack = lv_label_create(ui_panelContactAdd);
   lv_obj_set_align(ui_lblContactAddBack, LV_ALIGN_BOTTOM_RIGHT);
@@ -99,6 +100,6 @@ void ui_contactAddScreen_screen_init(void) {
   lv_label_set_text(ui_lblContactAddBack, "Discard");
   lv_obj_set_style_text_color(ui_lblContactAddBack, lv_color_hex(0xFF0000),
                               LV_PART_MAIN | LV_STATE_DEFAULT);
-  lv_obj_add_event_cb(ui_lblContactAddBack, ui_event_lblContactAddDiscard,
-                      LV_EVENT_ALL, NULL);
+  lv_obj_add_event_cb(ui_lblContactAddBack, ui_event_label_cb, LV_EVENT_CLICKED,
+                      "contact discard");
 }

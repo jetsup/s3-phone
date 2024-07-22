@@ -37,7 +37,7 @@ void contact_set_contact_list(lv_obj_t* list) {
   for (int i = 0; i < cCount; i++) {
     char nameNumber[55];
     strcpy(nameNumber, cNames[i]);
-    strcat(nameNumber, " - ");
+    strcat(nameNumber, "-");
     strcat(nameNumber, cNumbers[i]);
 
     contact_add_to_list(list, nameNumber, LVC_SYMBOL_SD_CARD,

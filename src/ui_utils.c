@@ -3,7 +3,7 @@
 char lvCurrentTime[6] = {};   // 10:15
 char lvCurrentDate[15] = {};  // 15/03/2021 Fri
 
-const char contactSeparationDelimeter[] = " - ";
+const char contactSeparationDelimeter[] = "-";
 char contactName[30] = {};
 char contactNumber[14] = {};
 

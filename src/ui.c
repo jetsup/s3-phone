@@ -361,35 +361,6 @@ void ui_init(void) {
   screenStackInit();
 
   ui_homeScreen_screen_init();
-  ui_mainMenuScreen_screen_init();
-  ui_contactsScreen_screen_init();
-  ui_alarmMainScreen_screen_init();
-  ui_simPinScreen_screen_init();
-  ui_splashScreen_screen_init();
-  ui_contactAddScreen_screen_init();
-  ui_contactOptionsScreen_screen_init();
-  ui_settingsMainScreen_screen_init();
-  ui_settingsDisplayScreen_screen_init();
-  ui_settingsThemesScreen_screen_init();
-  ui_settingsThemeWallpaperScreen_screen_init();
-  ui_settingsLockSecurityScreen_screen_init();
-  ui_settingsNetworkInternetScreen_screen_init();
-  ui_settingsConnectivityScreen_screen_init();
-  ui_settingsStorageScreen_screen_init();
-  ui_settingsSoundScreen_screen_init();
-  ui_settingsSystemScreen_screen_init();
-  ui_settingsAboutScreen_screen_init();
-  ui_timeScreen_screen_init();
-  ui_calculatorScreen_screen_init();
-  ui_calendarScreen_screen_init();
-  ui_filesScreen_screen_init();
-  ui_todoScreen_screen_init();
-  ui_stkScreen_screen_init();
-  ui_galleryScreen_screen_init();
-  ui_musicScreen_screen_init();
-  ui_radioScreen_screen_init();
-  ui_videoScreen_screen_init();
   ui____initial_actions0 = lv_obj_create(NULL);
-  lv_disp_load_scr(ui_homeScreen);
-  //   lv_disp_load_scr(ui_settingsThemesScreen);
+  lv_screen_load(ui_homeScreen);
 }

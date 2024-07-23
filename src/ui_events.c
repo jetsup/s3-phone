@@ -246,10 +246,30 @@ void ui_event_evtBottombar(lv_event_t* e) {
       }
     } else if (strcmp(btnData, "navbar back") == 0) {
       if (!screenStackIsEmpty() && screenStackSize() > 0) {
+        // lv_obj_t* prevNowScreen = lv_screen_active();
+
         ScreenStackElement poppedScreen = screenStackPop();
+        // lv_obj_invalidate(poppedScreen.previousScreen);
+        // (*poppedScreen.previousScreenInit)();
         _ui_screen_change(
-            &poppedScreen.previousScreen, poppedScreen.transitionAnimation,
+            &(poppedScreen.previousScreen), poppedScreen.transitionAnimation,
             UI_ANIMATION_DURATION, 0, poppedScreen.previousScreenInit);
+
+        // ui_homeScreen_screen_init();
+        // _ui_screen_change(
+        //     &ui_homeScreen, LV_SCR_LOAD_ANIM_MOVE_RIGHT,
+        //     UI_ANIMATION_DURATION, 0, &ui_homeScreen_screen_init);
+
+        // lv_screen_load(poppedScreen.previousScreen);
+
+        // (poppedScreen.previousScreenInit)();
+        // lv_screen_load_anim(poppedScreen.previousScreen,
+        //                     poppedScreen.transitionAnimation,
+        //                     UI_ANIMATION_DURATION, 0, true);
+
+        // _ui_screen_change()
+
+        // lv_obj_delete(prevNowScreen);
       } else {
         if (screenStackPush(SCREEN_HOME, ui_homeScreen,
                             &ui_homeScreen_screen_init,
@@ -260,8 +280,7 @@ void ui_event_evtBottombar(lv_event_t* e) {
         }
       }
     } else if (strcmp(btnData, "navbar tasks") == 0) {
-      // complex for now
-      _ui_screen_change(&ui_homeScreen, LV_SCR_LOAD_ANIM_MOVE_TOP,
+      _ui_screen_change(&ui_homeScreen, LV_SCR_LOAD_ANIM_NONE,
                         UI_ANIMATION_DURATION, 0, &ui_homeScreen_screen_init);
     }
   }
@@ -328,13 +347,13 @@ void ui_event_keyboard_cb(lv_event_t* e) {
   const char* keyboardData = (const char*)e->user_data;
 
   if (code == LV_EVENT_READY || code == LV_EVENT_CANCEL) {
-    if (strcmp(keyboardData, "keyboard full" == 0) == 0) {
+    if (strcmp(keyboardData, "keyboard full") == 0) {
       lv_obj_del(ui_keyboard_full);
       ui_keyboard_full = NULL;
-    } else if (strcmp(keyboardData, "keyboard num" == 0) == 0) {
+    } else if (strcmp(keyboardData, "keyboard num") == 0) {
       lv_obj_del(ui_keyboard_num);
       ui_keyboard_num = NULL;
-    } else if (strcmp(keyboardData, "sim unlock" == 0) == 0) {
+    } else if (strcmp(keyboardData, "sim unlock") == 0) {
       lv_obj_t* uData = lv_event_get_user_data(e);
 
       const char* txt = lv_buttonmatrix_get_button_text(
@@ -366,9 +385,6 @@ void ui_event_slider_cb(lv_event_t* e) {
       lv_snprintf(sBrightness, 5, "%d%%", brightnessPercentage);
 
       lv_label_set_text(ui_lblBrightnessValue, sBrightness);
-
-      LV_LOG_USER("Slider: %d -> %d", (uint8_t)lv_slider_get_value(target),
-                  brightnessPercentage);
     }
   }
 }
@@ -416,7 +432,6 @@ void ui_event_switch_cb(lv_event_t* e) {
   const char* switchData = (const char*)e->user_data;
 
   bool switchOn = lv_obj_has_state(target, LV_STATE_CHECKED);
-  LV_LOG_USER("Switch: %d", switchOn);
 
   if (code == LV_EVENT_VALUE_CHANGED) {
     if (strcmp(switchData, "theme switch") == 0) {
@@ -429,8 +444,6 @@ void ui_event_image_cb(lv_event_t* e) {
   lv_event_code_t code = lv_event_get_code(e);
   lv_obj_t* target = lv_event_get_target(e);
   const char* switchData = (const char*)e->user_data;
-
-  LV_LOG_USER("Image Clicked: %d", code);
 }
 
 void ui_event_label_cb(lv_event_t* e) {
@@ -473,17 +486,12 @@ void ui_event_label_cb(lv_event_t* e) {
 
           if (screenStackPush(SCREEN_SETTINGS_WALLPAPERS_THEMES,
                               ui_settingsThemesScreen,
-                              ui_settingsThemesScreen_screen_init,
+                              &ui_settingsThemesScreen_screen_init,
                               LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
-            lv_image_set_src(ui_imageViewWallpaper,
-                             lv_utils_getImage(clickedWallpaperImage));
-
             _ui_screen_change(&ui_settingsThemeWallpaperScreen,
                               LV_SCR_LOAD_ANIM_MOVE_LEFT, UI_ANIMATION_DURATION,
                               0, &ui_settingsThemeWallpaperScreen_screen_init);
           }
-
-          LV_LOG_USER("WallPaper ID: [%d]", atoi(token));
         }
       }
     }
@@ -516,6 +524,8 @@ void ui_event_button_cb(lv_event_t* e) {
       lv_obj_add_state(ui_btnCalendarApply, LV_STATE_DISABLED);
       lv_obj_add_state(ui_btnCalendarDiscard, LV_STATE_DISABLED);
     } else if (strcmp(buttonData, "wallpaper apply") == 0) {
+      lv_image_cache_drop(screenWallpaperImg);
+
       lv_utils_setWallpaper(clickedWallpaperImage, true);
 
       ScreenStackElement prevScreen = screenStackPop();
@@ -523,8 +533,6 @@ void ui_event_button_cb(lv_event_t* e) {
                         prevScreen.transitionAnimation, UI_ANIMATION_DURATION,
                         0, prevScreen.previousScreenInit);
     } else if (strcmp(buttonData, "contact option") == 0) {
-      LV_LOG_USER("Clicked: %s",
-                  lv_list_get_button_text(lv_obj_get_parent(target), target));
     } else if (strcmp(buttonData, "contact list") == 0) {
       const char* contact = lv_list_get_button_text(ui_listContact, target);
       char contactData[CONTACT_NAME_NUMBER_LENGTH];

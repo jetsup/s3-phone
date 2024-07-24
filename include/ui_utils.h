@@ -42,11 +42,22 @@ extern bool darkThemeSelected;
 extern bool themeChanged;
 extern lv_theme_t *screenTheme;
 
+extern lv_font_t *systemFontSmall;
+extern lv_font_t *systemFontMedium;
+extern lv_font_t *systemFontLarge;
+extern uint8_t sFont, mFont, lFont;
+extern bool fontChanged;
+
 extern char selectedWallpaper[20];  // e.g. beautiful sunset
 extern int clickedWallpaperImage;
 extern uint8_t screenWallpaperID;
 extern lv_image_dsc_t *screenWallpaperImg;
 extern bool wallpaperChanged;
+
+// Settings Connectivity
+extern bool bluetoothClassicEnabled;
+extern bool bluetoothLEEnabled;
+extern bool bluetoothStatusChanged;
 
 //========================Screen Stack========================
 /**
@@ -161,6 +172,14 @@ void lv_utils_setScreenTimeout(unsigned int timeout);
 uint8_t lv_set_selected_timeout();
 
 /**
+ * @brief Set the size of the fonts
+ * @param sFont font size for small font
+ * @param sFont font size for medium font
+ * @param sFont font size for large font
+ */
+void lv_utils_setFonts(uint8_t sFont, uint8_t mFont, uint8_t lFont);
+
+/**
  * @brief Set update the system theme
  * @param themeDark Dark theme if set to `true` else light theme
  */
@@ -197,6 +216,13 @@ void lv_utils_setWallpaper(uint8_t wallpaperID, bool refreshUI);
  * @param screen The screen to initialize
  */
 void lv_utils_initScreen(s3_screens_t screen);
+
+/**
+ * @brief Update the status of bluetooth for the dependent UI components
+ * @param blcEnabled Set the status of bluetooth classic to active
+ * @param bleEnabled Set the status of bluetooth LE to active
+ */
+void lv_utils_setBluetooth(bool blcEnabled, bool bleEnabled);
 
 /**
  * @brief Creates a bottom bar with navigation buttons

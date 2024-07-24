@@ -46,7 +46,7 @@ void ui_settingsMainScreen_screen_init(void) {
   lv_obj_set_style_text_color(lblTitle, lv_color_hex(0x000000),
                               LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_text_opa(lblTitle, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-  lv_obj_set_style_text_font(lblTitle, &lv_font_montserrat_18,
+  lv_obj_set_style_text_font(lblTitle, systemFontLarge,
                              LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_text_letter_space(lblTitle, 2,
                                      LV_PART_MAIN | LV_STATE_DEFAULT);

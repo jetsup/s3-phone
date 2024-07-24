@@ -19,8 +19,21 @@ void setup() {
   lv_utils_setTheme(
       fileSystem.readSetting(FS_VAR_SETTINGS_THEMES_THEME_DARK).toInt());
 
+  uint8_t fontSmall =
+      fileSystem.readSetting(FS_VAR_SETTINGS_THEMES_FONT_SMALL).toInt();
+  uint8_t fontMedium =
+      fileSystem.readSetting(FS_VAR_SETTINGS_THEMES_FONT_MEDIUM).toInt();
+  uint8_t fontLarge =
+      fileSystem.readSetting(FS_VAR_SETTINGS_THEMES_FONT_LARGE).toInt();
+
+  lv_utils_setFonts(fontSmall, fontMedium, fontLarge);
+
   lv_utils_setWallpaper(
       fileSystem.readSetting(FS_VAR_SETTINGS_THEMES_WALLPAPER).toInt(), false);
+
+      bool blcEnabled=fileSystem.readSetting(FS_VAR_SETTINGS_CONNECTIVITY_BLC).toInt();
+      bool bleEnabled=fileSystem.readSetting(FS_VAR_SETTINGS_CONNECTIVITY_BLE).toInt();
+      lv_utils_setBluetooth(blcEnabled, bleEnabled);
   //=============================================================================
   display.init();
   display.setRotation(2);
@@ -37,7 +50,6 @@ void setup() {
     DEBUG_PRINTLN("Failed to create display");
     while (1);
   }
-  lv_utils_applyTheme();  // so that new objects have the saved theme
 
   lv_display_set_color_format(lv_display, LV_COLOR_FORMAT_RGB565);
 
@@ -134,6 +146,23 @@ void loop() {
     wallpaperChanged = false;
     fileSystem.editSetting(FS_VAR_SETTINGS_THEMES_WALLPAPER,
                            String(screenWallpaperID).c_str());
+  }
+
+  if (fontChanged) {
+    fontChanged = false;
+    fileSystem.editSetting(FS_VAR_SETTINGS_THEMES_FONT_SMALL,
+                           String(sFont).c_str());
+    fileSystem.editSetting(FS_VAR_SETTINGS_THEMES_FONT_MEDIUM,
+                           String(mFont).c_str());
+    fileSystem.editSetting(FS_VAR_SETTINGS_THEMES_FONT_LARGE,
+                           String(lFont).c_str());
+  }
+
+  if (bluetoothStatusChanged) {
+    fileSystem.editSetting(FS_VAR_SETTINGS_CONNECTIVITY_BLC,
+                           String(bluetoothClassicEnabled).c_str());
+    fileSystem.editSetting(FS_VAR_SETTINGS_CONNECTIVITY_BLE,
+                           String(bluetoothLEEnabled).c_str());
   }
 }
 // ----------------------------------------------------------

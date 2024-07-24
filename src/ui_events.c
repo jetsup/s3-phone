@@ -417,6 +417,12 @@ void ui_event_switch_cb(lv_event_t* e) {
   if (code == LV_EVENT_VALUE_CHANGED) {
     if (strcmp(switchData, "theme switch") == 0) {
       lv_utils_setTheme(switchOn);
+    } else if (strcmp(switchData, "bt classic switch") == 0) {
+      bluetoothClassicEnabled = switchOn;
+      bluetoothStatusChanged = true;
+    } else if (strcmp(switchData, "bt ble switch") == 0) {
+      bluetoothLEEnabled = switchOn;
+      bluetoothStatusChanged = true;
     }
   }
 }

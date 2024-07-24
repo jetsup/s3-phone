@@ -32,14 +32,26 @@ bool themeChanged = false;
 lv_theme_t *screenTheme;
 bool themeApplied = false;
 
+lv_font_t *systemFontSmall;
+lv_font_t *systemFontMedium;
+lv_font_t *systemFontLarge;
+uint8_t sFont, mFont, lFont;
+bool fontChanged = false;
+
 char selectedWallpaper[20];
 uint8_t screenWallpaperID = 1;
 int clickedWallpaperImage = -1;
 lv_image_dsc_t *screenWallpaperImg;
 bool wallpaperChanged = false;
 
+// Settings Connectivity
+bool bluetoothClassicEnabled = false;
+bool bluetoothLEEnabled = false;
+bool bluetoothStatusChanged = false;
+
 //================================Prototypes==============================
 s3_resource_num_t lv_utils_getResourceByID(int id);
+lv_font_t *lv_utils_getFont(uint8_t fontSize);
 //================================UI Update===============================
 void ui_utils_updateTimeDate() {
   lv_label_set_text(ui_lblHomeTime, lvCurrentTime);
@@ -89,6 +101,61 @@ uint8_t lv_set_selected_timeout() {
   }
 }
 
+void lv_utils_setFonts(uint8_t sFont, uint8_t mFont, uint8_t lFont) {
+  systemFontSmall = lv_utils_getFont(sFont);
+  systemFontMedium = lv_utils_getFont(mFont);
+  systemFontLarge = lv_utils_getFont(lFont);
+}
+
+lv_font_t *lv_utils_getFont(uint8_t fontSize) {
+  switch (fontSize) {
+    case 8:
+      return &lv_font_montserrat_8;
+    case 10:
+      return &lv_font_montserrat_10;
+    case 12:
+      return &lv_font_montserrat_12;
+    case 14:
+      return &lv_font_montserrat_14;
+    case 16:
+      return &lv_font_montserrat_16;
+    case 18:
+      return &lv_font_montserrat_18;
+    case 20:
+      return &lv_font_montserrat_20;
+    case 22:
+      return &lv_font_montserrat_22;
+    case 24:
+      return &lv_font_montserrat_24;
+    case 26:
+      return &lv_font_montserrat_26;
+    case 28:
+      return &lv_font_montserrat_28;
+    case 30:
+      return &lv_font_montserrat_30;
+    case 32:
+      return &lv_font_montserrat_32;
+    case 34:
+      return &lv_font_montserrat_34;
+    case 36:
+      return &lv_font_montserrat_38;
+    case 38:
+      return &lv_font_montserrat_38;
+    case 40:
+      return &lv_font_montserrat_40;
+    case 42:
+      return &lv_font_montserrat_42;
+    case 44:
+      return &lv_font_montserrat_44;
+    case 46:
+      return &lv_font_montserrat_46;
+    case 48:
+      return &lv_font_montserrat_48;
+    default:
+      return &lv_font_montserrat_10;
+  }
+}
+
 void lv_utils_setTheme(bool themeDark) {
   if (darkThemeSelected != themeDark) {
     themeChanged = true;
@@ -105,7 +172,7 @@ void lv_utils_applyTheme() {
   themeApplied = true;
 
   lv_color_t themeColorPrimary, themeColorSecondary;
-  lv_font_t *themeFont = &lv_font_montserrat_14;
+  systemFontMedium = &lv_font_montserrat_14;
   if (darkThemeSelected) {
     themeColorPrimary.red = 5;
     themeColorPrimary.green = 2;
@@ -125,7 +192,7 @@ void lv_utils_applyTheme() {
   }
   screenTheme =
       lv_theme_default_init(lv_display, themeColorPrimary, themeColorPrimary,
-                            darkThemeSelected, themeFont);
+                            darkThemeSelected, systemFontMedium);
 }
 
 void ui_add_bottom_bar(lv_obj_t *parent, int colorRGB, int marginBottom) {
@@ -424,4 +491,10 @@ void lv_utils_initScreen(s3_screens_t screen) {
       LV_LOG_USER("Screen nod defined");
       while (1);
   }
+}
+
+void lv_utils_setBluetooth(bool blcEnabled, bool bleEnabled) {
+  bluetoothClassicEnabled = blcEnabled;
+  bluetoothLEEnabled = bleEnabled;
+  bluetoothStatusChanged=true;
 }

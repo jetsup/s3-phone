@@ -1,43 +1,4 @@
-#include <Arduino.h>
-#include <lvgl.h>
-
-#include <Display.hpp>
-#include <FileSystem.hpp>
-#include <GSM.hpp>
-#include <Helpers.hpp>
-
-#include "ui.h"
-#include "ui_contacts.h"
-// #include "ui_utils.h"
-
-int contactsCount = 0;
-String names[] = {"George Ngigi", "John", "Joe", "Brandon"};
-String numbers[] = {"0714430347", "0788965432", "0709765432", "0787653434"};
-char *cStrNames[] = {};
-char *cStrNumbers[] = {};
-
-char *cNames[] = {};
-char *cNumbers[] = {};
-int cCount = 0;
-
-GSM gsm(GSM_RX, GSM_TX, GSM_BAUD);
-static Display display(TFT_CLK, TFT_MOSI, TFT_MISO, TFT_CS, TFT_DC, TFT_RST,
-                       TFT_LED, TOUCH_CS, TOUCH_CLK, TOUCH_DIN, TOUCH_DO);
-S3Time s3Time("2024-11-01 14:40:56", 3);
-FileSystem fileSystem(LittleFS);
-
-unsigned int lastTickMillis = 0;
-
-void *drawBuffer;
-const unsigned int lvBufferSize = TFT_DRAW_BUF_SIZE;
-uint8_t lvBuffer[lvBufferSize];
-
-/* Display flushing*/
-void lv_flush_cb(lv_display_t *disp, const lv_area_t *area,
-                 unsigned char *data);
-
-/* Read the touchpad*/
-void my_touchpad_read(lv_indev_t *indev_driver, lv_indev_data_t *data);
+#include <Main.hpp>
 
 void setup() {
   if (DEBUG) {
@@ -61,21 +22,17 @@ void setup() {
 
   lv_utils_setWallpaper(
       fileSystem.readSetting(FS_VAR_SETTINGS_THEMES_WALLPAPER).toInt(), false);
-
-  DEBUG_PRINTLN("Settings Loaded");
   //=============================================================================
   display.init();
   display.setRotation(2);
   display.fillScreen(TFT_BLACK);
   uint16_t calibrationData[8] = CALIBRATION_DATA;
   display.setTouchCalibrate(calibrationData);
-  DEBUG_PRINTLN("Calibration done");
 
   lv_init();
-  DEBUG_PRINTLN("LVGL initialized");
   lv_tick_set_cb((lv_tick_get_cb_t)millis);
 
-  static auto *lv_display = lv_display_create(TFT_WIDTH, TFT_HEIGHT);
+  lv_display = lv_display_create(TFT_WIDTH, TFT_HEIGHT);
 
   if (lv_display == NULL) {
     DEBUG_PRINTLN("Failed to create display");
@@ -84,21 +41,9 @@ void setup() {
 
   lv_display_set_color_format(lv_display, LV_COLOR_FORMAT_RGB565);
 
-  lv_display_set_flush_cb(
-      lv_display,
-      [](lv_display_t *l_display, const lv_area_t *area, unsigned char *data) {
-        uint32_t w = lv_area_get_width(area);
-        uint32_t h = lv_area_get_height(area);
-        lv_draw_sw_rgb565_swap(data, w * h);
-        display.pushImage(area->x1, area->y1, w, h, (uint16_t *)data);
-        lv_display_flush_ready(l_display);
-      });
-  DEBUG_PRINTLN("Display flush callback set");
-  lv_display_set_buffers(lv_display, lvBuffer, nullptr, lvBufferSize,
+  lv_display_set_flush_cb(lv_display, lv_flush_cb);
+  lv_display_set_buffers(lv_display, lvBuffer, lvBuffer2, lvBufferSize * 2,
                          LV_DISPLAY_RENDER_MODE_PARTIAL);
-  DEBUG_PRINTLN("Display buffers set");
-
-  // lv_display_set_flush_cb(lv_display, lv_flush_cb);
 
   drawBuffer =
       heap_caps_malloc(TFT_DRAW_BUF_SIZE, MALLOC_CAP_DMA | MALLOC_CAP_INTERNAL);
@@ -118,7 +63,6 @@ void setup() {
   }
 
   contactsCount = 4;
-  DEBUG_PRINTF("Contacts count: %d\n", contactsCount);
 
   for (int i = 0; i < 4; i++) {
     cNames[i] = (char *)names[i].c_str();
@@ -194,16 +138,16 @@ void loop() {
 // ----------------------------------------------------------
 void lv_flush_cb(lv_display_t *disp, const lv_area_t *area,
                  unsigned char *data) {
-  uint32_t w = (area->x2 - area->x1 + 1);
-  uint32_t h = (area->y2 - area->y1 + 1);
-
+  uint32_t w = lv_area_get_width(area);
+  uint32_t h = lv_area_get_height(area);
   display.startWrite();
   display.setAddrWindow(area->x1, area->y1, w, h);
-  // display.pushColors((uint16_t *)color_p, w * h, true);
+  lv_draw_sw_rgb565_swap(data, w * h);
+  display.pushImage(area->x1, area->y1, w, h, (uint16_t *)data);
   display.writePixels((uint16_t *)data, w * h);
   display.endWrite();
 
-  lv_disp_flush_ready(disp);
+  lv_display_flush_ready(disp);
 }
 
 /* Read the touchpad*/

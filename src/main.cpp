@@ -60,8 +60,7 @@ void setup() {
       fileSystem.readSetting(FS_VAR_SETTINGS_THEMES_THEME_DARK).toInt());
 
   lv_utils_setWallpaper(
-      (uint8_t)fileSystem.readSetting(FS_VAR_SETTINGS_THEMES_WALLPAPER)
-          .toInt(), false);
+      fileSystem.readSetting(FS_VAR_SETTINGS_THEMES_WALLPAPER).toInt(), false);
 
   DEBUG_PRINTLN("Settings Loaded");
   //=============================================================================

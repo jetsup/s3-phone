@@ -113,7 +113,7 @@ void FileSystem::_loadSettings(bool createIfUnavailable) {
     String setting =
         _readSetting(settingsParameters[i].c_str(),
                      settingsParDefaults[i].c_str(), createIfUnavailable);
-    DEBUG_PRINTF("Load: %s\n", setting);
+    DEBUG_PRINTF("%s: %s\n", settingsParameters[i], setting);
   }
 }
 

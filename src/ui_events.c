@@ -246,30 +246,11 @@ void ui_event_evtBottombar(lv_event_t* e) {
       }
     } else if (strcmp(btnData, "navbar back") == 0) {
       if (!screenStackIsEmpty() && screenStackSize() > 0) {
-        // lv_obj_t* prevNowScreen = lv_screen_active();
-
         ScreenStackElement poppedScreen = screenStackPop();
-        // lv_obj_invalidate(poppedScreen.previousScreen);
-        // (*poppedScreen.previousScreenInit)();
+        lv_utils_initScreen(poppedScreen.screen);
         _ui_screen_change(
             &(poppedScreen.previousScreen), poppedScreen.transitionAnimation,
             UI_ANIMATION_DURATION, 0, poppedScreen.previousScreenInit);
-
-        // ui_homeScreen_screen_init();
-        // _ui_screen_change(
-        //     &ui_homeScreen, LV_SCR_LOAD_ANIM_MOVE_RIGHT,
-        //     UI_ANIMATION_DURATION, 0, &ui_homeScreen_screen_init);
-
-        // lv_screen_load(poppedScreen.previousScreen);
-
-        // (poppedScreen.previousScreenInit)();
-        // lv_screen_load_anim(poppedScreen.previousScreen,
-        //                     poppedScreen.transitionAnimation,
-        //                     UI_ANIMATION_DURATION, 0, true);
-
-        // _ui_screen_change()
-
-        // lv_obj_delete(prevNowScreen);
       } else {
         if (screenStackPush(SCREEN_HOME, ui_homeScreen,
                             &ui_homeScreen_screen_init,
@@ -484,8 +465,7 @@ void ui_event_label_cb(lv_event_t* e) {
         if (token != NULL) {
           clickedWallpaperImage = atoi(token);
 
-          if (screenStackPush(SCREEN_SETTINGS_WALLPAPERS_THEMES,
-                              ui_settingsThemesScreen,
+          if (screenStackPush(SCREEN_SETTINGS_THEMES, ui_settingsThemesScreen,
                               &ui_settingsThemesScreen_screen_init,
                               LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
             _ui_screen_change(&ui_settingsThemeWallpaperScreen,
@@ -524,11 +504,12 @@ void ui_event_button_cb(lv_event_t* e) {
       lv_obj_add_state(ui_btnCalendarApply, LV_STATE_DISABLED);
       lv_obj_add_state(ui_btnCalendarDiscard, LV_STATE_DISABLED);
     } else if (strcmp(buttonData, "wallpaper apply") == 0) {
-      lv_image_cache_drop(screenWallpaperImg);
+      lv_image_cache_drop(NULL);
 
       lv_utils_setWallpaper(clickedWallpaperImage, true);
 
       ScreenStackElement prevScreen = screenStackPop();
+      lv_utils_initScreen(prevScreen.screen);
       _ui_screen_change(&prevScreen.previousScreen,
                         prevScreen.transitionAnimation, UI_ANIMATION_DURATION,
                         0, prevScreen.previousScreenInit);

@@ -176,7 +176,6 @@ lv_image_dsc_t *lv_utils_getImage(s3_resource_num_t imageID);
  */
 void lv_utils_getResourceName(int resID, char *nameBuf);
 
-
 /**
  * @brief Update the wallpaper
  * @param wallpaperID The ID of the image to be used
@@ -184,6 +183,12 @@ void lv_utils_getResourceName(int resID, char *nameBuf);
  * loaded.
  */
 void lv_utils_setWallpaper(uint8_t wallpaperID, bool refreshUI);
+
+/**
+ * @brief call the initialization function fro the specified `screen`
+ * @param screen The screen to initialize
+ */
+void lv_utils_initScreen(s3_screens_t screen);
 
 /**
  * @brief Creates a bottom bar with navigation buttons

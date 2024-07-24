@@ -22,6 +22,8 @@ extern int newDay;
 
 #define SCREEN_STACK_SIZE 20
 
+static lv_display_t *lv_display;
+
 // Settings Display
 #define UI_BRIGHTNESS_SLIDER_MAX 4096
 #define UI_BRIGHTNESS_SLIDER_MIN 100
@@ -38,6 +40,7 @@ extern uint8_t dropdownSelectedTimeout;
 // Settings Theme
 extern bool darkThemeSelected;
 extern bool themeChanged;
+extern lv_theme_t *screenTheme;
 
 extern char selectedWallpaper[20];  // e.g. beautiful sunset
 extern int clickedWallpaperImage;
@@ -162,6 +165,11 @@ uint8_t lv_set_selected_timeout();
  * @param themeDark Dark theme if set to `true` else light theme
  */
 void lv_utils_setTheme(bool themeDark);
+
+/**
+ * @brief Apply the selected theme. This includes updating UI colors.
+ */
+void lv_utils_applyTheme();
 
 /**
  * @brief Get the defined image using the `imageID`

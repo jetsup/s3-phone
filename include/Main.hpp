@@ -33,7 +33,6 @@ void *drawBuffer;
 const unsigned int lvBufferSize = TFT_DRAW_BUF_SIZE;
 uint8_t lvBuffer[lvBufferSize * 2];
 uint8_t lvBuffer2[lvBufferSize * 2];
-static lv_display_t *lv_display;
 
 /* Display flushing*/
 void lv_flush_cb(lv_display_t *disp, const lv_area_t *area,

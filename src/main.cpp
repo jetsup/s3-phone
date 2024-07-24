@@ -9,8 +9,7 @@ void setup() {
 
   gsm.init();
   fileSystem.init();
-  // Initialize all variables from settings data
-  //=============================================================================
+  //================Initialize all variables from settings data=================
   lv_utils_setBrightness(
       fileSystem.readSetting(FS_VAR_SETTINGS_DISPLAY_BRIGHTNESS).toInt());
 
@@ -38,6 +37,7 @@ void setup() {
     DEBUG_PRINTLN("Failed to create display");
     while (1);
   }
+  lv_utils_applyTheme();  // so that new objects have the saved theme
 
   lv_display_set_color_format(lv_display, LV_COLOR_FORMAT_RGB565);
 
@@ -127,6 +127,7 @@ void loop() {
     themeChanged = false;
     fileSystem.editSetting(FS_VAR_SETTINGS_THEMES_THEME_DARK,
                            String(darkThemeSelected).c_str());
+    lv_utils_applyTheme();
   }
 
   if (wallpaperChanged) {

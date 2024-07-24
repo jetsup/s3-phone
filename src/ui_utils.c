@@ -29,6 +29,9 @@ uint8_t dropdownSelectedTimeout = 0;
 // Settings Theme
 bool darkThemeSelected = false;
 bool themeChanged = false;
+lv_theme_t *screenTheme;
+bool themeApplied = false;
+
 char selectedWallpaper[20];
 uint8_t screenWallpaperID = 1;
 int clickedWallpaperImage = -1;
@@ -90,8 +93,39 @@ void lv_utils_setTheme(bool themeDark) {
   if (darkThemeSelected != themeDark) {
     themeChanged = true;
     darkThemeSelected = themeDark;
+    themeApplied = false;
     // TODO: Refresh the UI
   }
+}
+
+void lv_utils_applyTheme() {
+  if (themeApplied) {
+    return;
+  }
+  themeApplied = true;
+
+  lv_color_t themeColorPrimary, themeColorSecondary;
+  lv_font_t *themeFont = &lv_font_montserrat_14;
+  if (darkThemeSelected) {
+    themeColorPrimary.red = 5;
+    themeColorPrimary.green = 2;
+    themeColorPrimary.blue = 5;
+
+    themeColorSecondary.red = 50;
+    themeColorSecondary.green = 20;
+    themeColorSecondary.blue = 50;
+  } else {
+    themeColorPrimary.red = 150;
+    themeColorPrimary.green = 120;
+    themeColorPrimary.blue = 150;
+
+    themeColorSecondary.red = 250;
+    themeColorSecondary.green = 220;
+    themeColorSecondary.blue = 250;
+  }
+  screenTheme =
+      lv_theme_default_init(lv_display, themeColorPrimary, themeColorPrimary,
+                            darkThemeSelected, themeFont);
 }
 
 void ui_add_bottom_bar(lv_obj_t *parent, int colorRGB, int marginBottom) {

@@ -11,226 +11,195 @@ void ui_event_imagebutton_cb(lv_event_t* e) {
       if (screenStackPush(SCREEN_MAIN_MENU, ui_mainMenuScreen,
                           &ui_mainMenuScreen_screen_init,
                           LV_SCR_LOAD_ANIM_MOVE_BOTTOM)) {
-        _ui_screen_change(&ui_phoneScreen, LV_SCR_LOAD_ANIM_MOVE_TOP,
-                          UI_ANIMATION_DURATION, 0,
-                          &ui_phoneScreen_screen_init);
+        _ui_screen_change(SCREEN_PHONE, LV_SCR_LOAD_ANIM_MOVE_TOP,
+                          UI_ANIMATION_DURATION, 0);
       }
     } else if (strcmp(btnData, "home phone") == 0) {
       if (screenStackPush(SCREEN_HOME, ui_homeScreen,
                           &ui_homeScreen_screen_init,
                           LV_SCR_LOAD_ANIM_MOVE_LEFT)) {
-        _ui_screen_change(&ui_phoneScreen, LV_SCR_LOAD_ANIM_MOVE_RIGHT,
-                          UI_ANIMATION_DURATION, 0,
-                          &ui_phoneScreen_screen_init);
+        _ui_screen_change(SCREEN_PHONE, LV_SCR_LOAD_ANIM_MOVE_RIGHT,
+                          UI_ANIMATION_DURATION, 0);
       }
     } else if (strcmp(btnData, "messages") == 0) {
       if (screenStackPush(SCREEN_MAIN_MENU, ui_mainMenuScreen,
                           &ui_mainMenuScreen_screen_init,
                           LV_SCR_LOAD_ANIM_MOVE_BOTTOM)) {
-        _ui_screen_change(&ui_messagesScreen, LV_SCR_LOAD_ANIM_MOVE_TOP,
-                          UI_ANIMATION_DURATION, 0,
-                          &ui_messagesScreen_screen_init);
+        _ui_screen_change(SCREEN_MESSAGES, LV_SCR_LOAD_ANIM_MOVE_TOP,
+                          UI_ANIMATION_DURATION, 0);
       }
     } else if (strcmp(btnData, "home messages") == 0) {
       if (screenStackPush(SCREEN_HOME, ui_homeScreen,
                           &ui_homeScreen_screen_init,
                           LV_SCR_LOAD_ANIM_MOVE_LEFT)) {
-        _ui_screen_change(&ui_messagesScreen, LV_SCR_LOAD_ANIM_MOVE_RIGHT,
-                          UI_ANIMATION_DURATION, 0,
-                          &ui_messagesScreen_screen_init);
+        _ui_screen_change(SCREEN_MESSAGES, LV_SCR_LOAD_ANIM_MOVE_RIGHT,
+                          UI_ANIMATION_DURATION, 0);
       }
     } else if (strcmp(btnData, "apps") == 0) {
       if (screenStackPush(SCREEN_HOME, ui_homeScreen,
                           &ui_homeScreen_screen_init,
                           LV_SCR_LOAD_ANIM_MOVE_BOTTOM)) {
-        _ui_screen_change(&ui_mainMenuScreen, LV_SCR_LOAD_ANIM_MOVE_TOP,
-                          UI_ANIMATION_DURATION, 0,
-                          &ui_mainMenuScreen_screen_init);
+        _ui_screen_change(SCREEN_MAIN_MENU, LV_SCR_LOAD_ANIM_MOVE_TOP,
+                          UI_ANIMATION_DURATION, 0);
       }
     } else if (strcmp(btnData, "browser") == 0) {
       if (screenStackPush(SCREEN_MAIN_MENU, ui_mainMenuScreen,
                           &ui_mainMenuScreen_screen_init,
                           LV_SCR_LOAD_ANIM_MOVE_BOTTOM)) {
-        _ui_screen_change(&ui_browserScreen, LV_SCR_LOAD_ANIM_MOVE_TOP,
-                          UI_ANIMATION_DURATION, 0,
-                          &ui_browserScreen_screen_init);
+        _ui_screen_change(SCREEN_BROWSER_MAIN, LV_SCR_LOAD_ANIM_MOVE_TOP,
+                          UI_ANIMATION_DURATION, 0);
       }
     } else if (strcmp(btnData, "home browser") == 0) {
       if (screenStackPush(SCREEN_HOME, ui_homeScreen,
                           &ui_homeScreen_screen_init,
                           LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
-        _ui_screen_change(&ui_browserScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT,
-                          UI_ANIMATION_DURATION, 0,
-                          &ui_browserScreen_screen_init);
+        _ui_screen_change(SCREEN_BROWSER_MAIN, LV_SCR_LOAD_ANIM_MOVE_LEFT,
+                          UI_ANIMATION_DURATION, 0);
       }
     } else if (strcmp(btnData, "contacts") == 0) {
       if (screenStackPush(SCREEN_MAIN_MENU, ui_mainMenuScreen,
                           &ui_mainMenuScreen_screen_init,
                           LV_SCR_LOAD_ANIM_MOVE_BOTTOM)) {
-        _ui_screen_change(&ui_contactsScreen, LV_SCR_LOAD_ANIM_MOVE_TOP,
-                          UI_ANIMATION_DURATION, 0,
-                          &ui_contactsScreen_screen_init);
+        _ui_screen_change(SCREEN_CONTACTS, LV_SCR_LOAD_ANIM_MOVE_TOP,
+                          UI_ANIMATION_DURATION, 0);
       }
     } else if (strcmp(btnData, "home contacts") == 0) {
       if (screenStackPush(SCREEN_HOME, ui_homeScreen,
                           &ui_homeScreen_screen_init,
                           LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
-        _ui_screen_change(&ui_contactsScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT,
-                          UI_ANIMATION_DURATION, 0,
-                          &ui_contactsScreen_screen_init);
+        _ui_screen_change(SCREEN_CONTACTS, LV_SCR_LOAD_ANIM_MOVE_LEFT,
+                          UI_ANIMATION_DURATION, 0);
       }
     } else if (strcmp(btnData, "multimedia") == 0) {
       if (screenStackPush(SCREEN_MAIN_MENU, ui_mainMenuScreen,
                           &ui_mainMenuScreen_screen_init,
                           LV_SCR_LOAD_ANIM_MOVE_BOTTOM)) {
-        _ui_screen_change(&ui_multimediaScreen, LV_SCR_LOAD_ANIM_MOVE_TOP,
-                          UI_ANIMATION_DURATION, 0,
-                          &ui_multimediaScreen_screen_init);
+        _ui_screen_change(SCREEN_MULTIMEDIA_MAIN, LV_SCR_LOAD_ANIM_MOVE_TOP,
+                          UI_ANIMATION_DURATION, 0);
       }
     } else if (strcmp(btnData, "extra") == 0) {
       if (screenStackPush(SCREEN_MAIN_MENU, ui_mainMenuScreen,
                           &ui_mainMenuScreen_screen_init,
                           LV_SCR_LOAD_ANIM_MOVE_BOTTOM)) {
-        _ui_screen_change(&ui_extraScreen, LV_SCR_LOAD_ANIM_MOVE_TOP,
-                          UI_ANIMATION_DURATION, 0,
-                          &ui_extraScreen_screen_init);
+        _ui_screen_change(SCREEN_EXTRA_MAIN, LV_SCR_LOAD_ANIM_MOVE_TOP,
+                          UI_ANIMATION_DURATION, 0);
       }
     } else if (strcmp(btnData, "games") == 0) {
       if (screenStackPush(SCREEN_MAIN_MENU, ui_mainMenuScreen,
                           &ui_mainMenuScreen_screen_init,
                           LV_SCR_LOAD_ANIM_MOVE_BOTTOM)) {
-        _ui_screen_change(&ui_gamesScreen, LV_SCR_LOAD_ANIM_MOVE_TOP,
-                          UI_ANIMATION_DURATION, 0,
-                          &ui_gamesScreen_screen_init);
+        _ui_screen_change(SCREEN_GAMES_MAIN, LV_SCR_LOAD_ANIM_MOVE_TOP,
+                          UI_ANIMATION_DURATION, 0);
       }
     } else if (strcmp(btnData, "my-zone") == 0) {
       if (screenStackPush(SCREEN_MAIN_MENU, ui_mainMenuScreen,
                           &ui_mainMenuScreen_screen_init,
                           LV_SCR_LOAD_ANIM_MOVE_TOP)) {
-        _ui_screen_change(&ui_myZoneScreen, LV_SCR_LOAD_ANIM_MOVE_TOP,
-                          UI_ANIMATION_DURATION, 0,
-                          &ui_myZoneScreen_screen_init);
+        _ui_screen_change(SCREEN_MY_ZONE_MAIN, LV_SCR_LOAD_ANIM_MOVE_TOP,
+                          UI_ANIMATION_DURATION, 0);
       }
     } else if (strcmp(btnData, "about") == 0) {
       if (screenStackPush(SCREEN_MAIN_MENU, ui_mainMenuScreen,
                           &ui_mainMenuScreen_screen_init,
                           LV_SCR_LOAD_ANIM_MOVE_BOTTOM)) {
-        _ui_screen_change(&ui_settingsAboutScreen, LV_SCR_LOAD_ANIM_MOVE_TOP,
-                          UI_ANIMATION_DURATION, 0,
-                          &ui_settingsAboutScreen_screen_init);
+        _ui_screen_change(SCREEN_SETTINGS_ABOUT, LV_SCR_LOAD_ANIM_MOVE_TOP,
+                          UI_ANIMATION_DURATION, 0);
       }
     } else if (strcmp(btnData, "tools") == 0) {
       if (screenStackPush(SCREEN_MAIN_MENU, ui_mainMenuScreen,
                           &ui_mainMenuScreen_screen_init,
                           LV_SCR_LOAD_ANIM_MOVE_BOTTOM)) {
-        _ui_screen_change(&ui_toolsScreen, LV_SCR_LOAD_ANIM_MOVE_TOP,
-                          UI_ANIMATION_DURATION, 0,
-                          &ui_toolsScreen_screen_init);
+        _ui_screen_change(SCREEN_TOOLS_MAIN, LV_SCR_LOAD_ANIM_MOVE_TOP,
+                          UI_ANIMATION_DURATION, 0);
       }
     } else if (strcmp(btnData, "settings") == 0) {
       if (screenStackPush(SCREEN_MAIN_MENU, ui_mainMenuScreen,
                           &ui_mainMenuScreen_screen_init,
                           LV_SCR_LOAD_ANIM_MOVE_BOTTOM)) {
-        _ui_screen_change(&ui_settingsMainScreen, LV_SCR_LOAD_ANIM_MOVE_TOP,
-                          UI_ANIMATION_DURATION, 0,
-                          &ui_settingsMainScreen_screen_init);
+        _ui_screen_change(SCREEN_SETTINGS, LV_SCR_LOAD_ANIM_MOVE_TOP,
+                          UI_ANIMATION_DURATION, 0);
       }
     } else if (strcmp(btnData, "clock") == 0) {
       if (screenStackPush(SCREEN_MAIN_MENU, ui_mainMenuScreen,
                           &ui_mainMenuScreen_screen_init,
                           LV_SCR_LOAD_ANIM_MOVE_BOTTOM)) {
-        _ui_screen_change(&ui_timeScreen, LV_SCR_LOAD_ANIM_MOVE_TOP,
-                          UI_ANIMATION_DURATION, 0, &ui_timeScreen_screen_init);
+        _ui_screen_change(SCREEN_TIME_MAIN, LV_SCR_LOAD_ANIM_MOVE_TOP,
+                          UI_ANIMATION_DURATION, 0);
       }
     } else if (strcmp(btnData, "calculator") == 0) {
       if (screenStackPush(SCREEN_MAIN_MENU, ui_mainMenuScreen,
                           &ui_mainMenuScreen_screen_init,
                           LV_SCR_LOAD_ANIM_MOVE_BOTTOM)) {
-        _ui_screen_change(&ui_calculatorScreen, LV_SCR_LOAD_ANIM_MOVE_TOP,
-                          UI_ANIMATION_DURATION, 0,
-                          &ui_calculatorScreen_screen_init);
+        _ui_screen_change(SCREEN_CALCULATOR, LV_SCR_LOAD_ANIM_MOVE_TOP,
+                          UI_ANIMATION_DURATION, 0);
       }
     } else if (strcmp(btnData, "calendar") == 0) {
       if (screenStackPush(SCREEN_MAIN_MENU, ui_mainMenuScreen,
                           &ui_mainMenuScreen_screen_init,
                           LV_SCR_LOAD_ANIM_MOVE_BOTTOM)) {
-        _ui_screen_change(&ui_calendarScreen, LV_SCR_LOAD_ANIM_MOVE_TOP,
-                          UI_ANIMATION_DURATION, 0,
-                          &ui_calendarScreen_screen_init);
+        _ui_screen_change(SCREEN_CALENDAR, LV_SCR_LOAD_ANIM_MOVE_TOP,
+                          UI_ANIMATION_DURATION, 0);
       }
     } else if (strcmp(btnData, "files") == 0) {
       if (screenStackPush(SCREEN_MAIN_MENU, ui_mainMenuScreen,
                           &ui_mainMenuScreen_screen_init,
                           LV_SCR_LOAD_ANIM_MOVE_BOTTOM)) {
-        _ui_screen_change(&ui_filesScreen, LV_SCR_LOAD_ANIM_MOVE_TOP,
-                          UI_ANIMATION_DURATION, 0,
-                          &ui_filesScreen_screen_init);
+        _ui_screen_change(SCREEN_FILES_MAIN, LV_SCR_LOAD_ANIM_MOVE_TOP,
+                          UI_ANIMATION_DURATION, 0);
       }
     } else if (strcmp(btnData, "todo") == 0) {
       if (screenStackPush(SCREEN_MAIN_MENU, ui_mainMenuScreen,
                           &ui_mainMenuScreen_screen_init,
                           LV_SCR_LOAD_ANIM_MOVE_BOTTOM)) {
-        _ui_screen_change(&ui_todoScreen, LV_SCR_LOAD_ANIM_MOVE_TOP,
-                          UI_ANIMATION_DURATION, 0, &ui_todoScreen_screen_init);
+        _ui_screen_change(SCREEN_TODO_MAIN, LV_SCR_LOAD_ANIM_MOVE_TOP,
+                          UI_ANIMATION_DURATION, 0);
       }
     } else if (strcmp(btnData, "stk") == 0) {
       if (screenStackPush(SCREEN_MAIN_MENU, ui_mainMenuScreen,
                           &ui_mainMenuScreen_screen_init,
                           LV_SCR_LOAD_ANIM_MOVE_BOTTOM)) {
-        _ui_screen_change(&ui_stkScreen, LV_SCR_LOAD_ANIM_MOVE_TOP,
-                          UI_ANIMATION_DURATION, 0, &ui_stkScreen_screen_init);
+        _ui_screen_change(SCREEN_STK_MAIN, LV_SCR_LOAD_ANIM_MOVE_TOP,
+                          UI_ANIMATION_DURATION, 0);
       }
     } else if (strcmp(btnData, "contacts") == 0) {
       if (screenStackPush(SCREEN_MAIN_MENU, ui_mainMenuScreen,
                           &ui_mainMenuScreen_screen_init,
                           LV_SCR_LOAD_ANIM_MOVE_BOTTOM)) {
-        _ui_screen_change(&ui_contactsScreen, LV_SCR_LOAD_ANIM_MOVE_TOP,
-                          UI_ANIMATION_DURATION, 0,
-                          &ui_contactsScreen_screen_init);
+        _ui_screen_change(SCREEN_CONTACTS, LV_SCR_LOAD_ANIM_MOVE_TOP,
+                          UI_ANIMATION_DURATION, 0);
       }
     } else if (strcmp(btnData, "gallery") == 0) {
       if (screenStackPush(SCREEN_MAIN_MENU, ui_mainMenuScreen,
                           &ui_mainMenuScreen_screen_init,
                           LV_SCR_LOAD_ANIM_MOVE_BOTTOM)) {
-        _ui_screen_change(&ui_galleryScreen, LV_SCR_LOAD_ANIM_MOVE_TOP,
-                          UI_ANIMATION_DURATION, 0,
-                          &ui_galleryScreen_screen_init);
+        _ui_screen_change(SCREEN_GALLERY_MAIN, LV_SCR_LOAD_ANIM_MOVE_TOP,
+                          UI_ANIMATION_DURATION, 0);
       }
     } else if (strcmp(btnData, "music") == 0) {
       if (screenStackPush(SCREEN_MAIN_MENU, ui_mainMenuScreen,
                           &ui_mainMenuScreen_screen_init,
                           LV_SCR_LOAD_ANIM_MOVE_BOTTOM)) {
-        _ui_screen_change(&ui_musicScreen, LV_SCR_LOAD_ANIM_MOVE_TOP,
-                          UI_ANIMATION_DURATION, 0,
-                          &ui_musicScreen_screen_init);
+        _ui_screen_change(SCREEN_MUSIC_MAIN, LV_SCR_LOAD_ANIM_MOVE_TOP,
+                          UI_ANIMATION_DURATION, 0);
       }
     } else if (strcmp(btnData, "radio") == 0) {
       if (screenStackPush(SCREEN_MAIN_MENU, ui_mainMenuScreen,
                           &ui_mainMenuScreen_screen_init,
                           LV_SCR_LOAD_ANIM_MOVE_BOTTOM)) {
-        _ui_screen_change(&ui_radioScreen, LV_SCR_LOAD_ANIM_MOVE_TOP,
-                          UI_ANIMATION_DURATION, 0,
-                          &ui_radioScreen_screen_init);
+        _ui_screen_change(SCREEN_RADIO_MAIN, LV_SCR_LOAD_ANIM_MOVE_TOP,
+                          UI_ANIMATION_DURATION, 0);
       }
     } else if (strcmp(btnData, "video") == 0) {
       if (screenStackPush(SCREEN_MAIN_MENU, ui_mainMenuScreen,
                           &ui_mainMenuScreen_screen_init,
                           LV_SCR_LOAD_ANIM_MOVE_BOTTOM)) {
-        _ui_screen_change(&ui_videoScreen, LV_SCR_LOAD_ANIM_MOVE_TOP,
-                          UI_ANIMATION_DURATION, 0,
-                          &ui_videoScreen_screen_init);
+        _ui_screen_change(SCREEN_VIDEO_MAIN, LV_SCR_LOAD_ANIM_MOVE_TOP,
+                          UI_ANIMATION_DURATION, 0);
       }
     }
   }
 }
-void ui_event_lblHomeContacts(lv_event_t* e) {
-  lv_event_code_t event_code = lv_event_get_code(e);
-  lv_obj_t* target = lv_event_get_target(e);
-  if (event_code == LV_EVENT_CLICKED) {
-    _ui_screen_change(&ui_contactsScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT,
-                      UI_ANIMATION_DURATION, 0, &ui_contactsScreen_screen_init);
-  }
-}
+
 void ui_event_evtBottombar(lv_event_t* e) {
   lv_event_code_t event_code = lv_event_get_code(e);
   lv_obj_t* target = lv_event_get_target(e);
@@ -241,28 +210,26 @@ void ui_event_evtBottombar(lv_event_t* e) {
       if (!screenStackIsEmpty()) {
         ScreenStackElement previousScreen = screenStackPeek();
         screenStackEmpty();
-        _ui_screen_change(&ui_homeScreen, previousScreen.transitionAnimation,
-                          UI_ANIMATION_DURATION, 0, &ui_homeScreen_screen_init);
+        _ui_screen_change(SCREEN_HOME, previousScreen.transitionAnimation,
+                          UI_ANIMATION_DURATION, 0);
       }
     } else if (strcmp(btnData, "navbar back") == 0) {
       if (!screenStackIsEmpty() && screenStackSize() > 0) {
         ScreenStackElement poppedScreen = screenStackPop();
         lv_utils_initScreen(poppedScreen.screen);
-        _ui_screen_change(
-            &(poppedScreen.previousScreen), poppedScreen.transitionAnimation,
-            UI_ANIMATION_DURATION, 0, poppedScreen.previousScreenInit);
+        _ui_screen_change(poppedScreen.screen, poppedScreen.transitionAnimation,
+                          UI_ANIMATION_DURATION, 0);
       } else {
         if (screenStackPush(SCREEN_HOME, ui_homeScreen,
                             &ui_homeScreen_screen_init,
                             LV_SCR_LOAD_ANIM_NONE)) {
-          _ui_screen_change(&ui_homeScreen, LV_SCR_LOAD_ANIM_NONE,
-                            UI_ANIMATION_DURATION, 0,
-                            &ui_homeScreen_screen_init);
+          _ui_screen_change(SCREEN_HOME, LV_SCR_LOAD_ANIM_NONE,
+                            UI_ANIMATION_DURATION, 0);
         }
       }
     } else if (strcmp(btnData, "navbar tasks") == 0) {
-      _ui_screen_change(&ui_homeScreen, LV_SCR_LOAD_ANIM_NONE,
-                        UI_ANIMATION_DURATION, 0, &ui_homeScreen_screen_init);
+      _ui_screen_change(SCREEN_HOME, LV_SCR_LOAD_ANIM_NONE,
+                        UI_ANIMATION_DURATION, 0);
     }
   }
 }
@@ -275,9 +242,8 @@ void ui_event_fab_cb(lv_event_t* e) {
     if (screenStackPush(SCREEN_CONTACTS, ui_contactsScreen,
                         &ui_contactsScreen_screen_init,
                         LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
-      _ui_screen_change(&ui_contactAddScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT,
-                        UI_ANIMATION_DURATION, 0,
-                        &ui_contactAddScreen_screen_init);
+      _ui_screen_change(SCREEN_CONTACT_ADD, LV_SCR_LOAD_ANIM_MOVE_LEFT,
+                        UI_ANIMATION_DURATION, 0);
     }
   }
 }
@@ -443,21 +409,28 @@ void ui_event_label_cb(lv_event_t* e) {
       if (screenStackPush(SCREEN_HOME, ui_homeScreen,
                           &ui_homeScreen_screen_init,
                           LV_SCR_LOAD_ANIM_MOVE_BOTTOM)) {
-        _ui_screen_change(&ui_timeScreen, LV_SCR_LOAD_ANIM_FADE_ON,
-                          UI_ANIMATION_DURATION, 0, &ui_timeScreen_screen_init);
+        _ui_screen_change(SCREEN_TIME_MAIN, LV_SCR_LOAD_ANIM_FADE_ON,
+                          UI_ANIMATION_DURATION, 0);
       }
     } else if (strcmp(labelData, "contact discard") == 0) {
       ScreenStackElement prevScreen = screenStackPop();
 
-      _ui_screen_change(&prevScreen.previousScreen,
-                        prevScreen.transitionAnimation, UI_ANIMATION_DURATION,
-                        0, prevScreen.previousScreenInit);
+      //   _ui_screen_change(&prevScreen.previousScreen,
+      //                     prevScreen.transitionAnimation,
+      //                     UI_ANIMATION_DURATION, 0,
+      //                     prevScreen.previousScreenInit);
+
+      _ui_screen_change(prevScreen.screen, prevScreen.transitionAnimation,
+                        UI_ANIMATION_DURATION, 0);
     } else if (strcmp(labelData, "contact save") == 0) {
       ScreenStackElement prevScreen = screenStackPop();
 
-      _ui_screen_change(&prevScreen.previousScreen,
-                        prevScreen.transitionAnimation, UI_ANIMATION_DURATION,
-                        0, prevScreen.previousScreenInit);
+      //   _ui_screen_change(&prevScreen.previousScreen,
+      //                     prevScreen.transitionAnimation,
+      //                     UI_ANIMATION_DURATION, 0,
+      //                     prevScreen.previousScreenInit);
+      _ui_screen_change(prevScreen.screen, prevScreen.transitionAnimation,
+                        UI_ANIMATION_DURATION, 0);
     } else if (strcmp(labelData, "wallpaper select") > 0) {
       const char delimiter[] = " ";
 
@@ -474,9 +447,9 @@ void ui_event_label_cb(lv_event_t* e) {
           if (screenStackPush(SCREEN_SETTINGS_THEMES, ui_settingsThemesScreen,
                               &ui_settingsThemesScreen_screen_init,
                               LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
-            _ui_screen_change(&ui_settingsThemeWallpaperScreen,
+            _ui_screen_change(SCREEN_SETTINGS_THEMES_WALLPAPERS,
                               LV_SCR_LOAD_ANIM_MOVE_LEFT, UI_ANIMATION_DURATION,
-                              0, &ui_settingsThemeWallpaperScreen_screen_init);
+                              0);
           }
         }
       }
@@ -516,9 +489,13 @@ void ui_event_button_cb(lv_event_t* e) {
 
       ScreenStackElement prevScreen = screenStackPop();
       lv_utils_initScreen(prevScreen.screen);
-      _ui_screen_change(&prevScreen.previousScreen,
-                        prevScreen.transitionAnimation, UI_ANIMATION_DURATION,
-                        0, prevScreen.previousScreenInit);
+      //   _ui_screen_change(&prevScreen.previousScreen,
+      //                     prevScreen.transitionAnimation,
+      //                     UI_ANIMATION_DURATION, 0,
+      //                     prevScreen.previousScreenInit);
+
+      _ui_screen_change(prevScreen.screen, prevScreen.transitionAnimation,
+                        UI_ANIMATION_DURATION, 0);
     } else if (strcmp(buttonData, "contact option") == 0) {
     } else if (strcmp(buttonData, "contact list") == 0) {
       const char* contact = lv_list_get_button_text(ui_listContact, target);
@@ -537,9 +514,8 @@ void ui_event_button_cb(lv_event_t* e) {
       if (screenStackPush(SCREEN_CONTACTS, ui_contactsScreen,
                           &ui_contactsScreen_screen_init,
                           LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
-        _ui_screen_change(&ui_contactOptionsScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT,
-                          UI_ANIMATION_DURATION, 0,
-                          &ui_contactOptionsScreen_screen_init);
+        _ui_screen_change(SCREEN_CONTACT_OPTIONS, LV_SCR_LOAD_ANIM_MOVE_LEFT,
+                          UI_ANIMATION_DURATION, 0);
 
         lv_label_set_text(ui_lblContactDetailsTitle, (const char*)contactName);
       }

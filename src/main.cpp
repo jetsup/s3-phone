@@ -31,9 +31,11 @@ void setup() {
   lv_utils_setWallpaper(
       fileSystem.readSetting(FS_VAR_SETTINGS_THEMES_WALLPAPER).toInt(), false);
 
-      bool blcEnabled=fileSystem.readSetting(FS_VAR_SETTINGS_CONNECTIVITY_BLC).toInt();
-      bool bleEnabled=fileSystem.readSetting(FS_VAR_SETTINGS_CONNECTIVITY_BLE).toInt();
-      lv_utils_setBluetooth(blcEnabled, bleEnabled);
+  bool blcEnabled =
+      fileSystem.readSetting(FS_VAR_SETTINGS_CONNECTIVITY_BLC).toInt();
+  bool bleEnabled =
+      fileSystem.readSetting(FS_VAR_SETTINGS_CONNECTIVITY_BLE).toInt();
+  lv_utils_setBluetooth(blcEnabled, bleEnabled);
   //=============================================================================
   display.init();
   display.setRotation(2);
@@ -129,7 +131,7 @@ void loop() {
                            String(screenTimeout).c_str());
   }
 
-  if ((millis() - previousScreenTouch) / 1000 /*seconds*/ >= screenTimeout &&
+  if ((millis() - previousScreenTouch) / 1000 >= screenTimeout &&
       screenTimeout != TIMEOUT_NEVER) {
     display.sleep();
     screenInteractive = false;

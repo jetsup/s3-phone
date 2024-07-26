@@ -45,12 +45,11 @@ void _ui_slider_set_property(lv_obj_t *target, int id, int val) {
     lv_slider_set_value(target, val, LV_ANIM_OFF);
 }
 
-void _ui_screen_change(lv_obj_t **target, lv_scr_load_anim_t fademode, int spd,
-                       int delay, void (*target_init)(void)) {
-  // TODO: find a way to delete and reinitialize the screen afresh
-  target_init();
+void _ui_screen_change(s3_screens_t screen, lv_scr_load_anim_t fademode,
+                       int spd, int delay) {
+  lv_utils_initScreen(screen);
 
-  lv_screen_load_anim(*target, fademode, spd, delay, false);
+  lv_screen_load_anim(lv_utils_getScreen(screen), fademode, spd, delay, true);
 }
 
 void _ui_screen_delete(lv_obj_t **target) {

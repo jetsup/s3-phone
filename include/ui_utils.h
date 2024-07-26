@@ -7,6 +7,7 @@ extern "C" {
 
 #include "ui.h"
 #include "ui_constants.h"
+#include "ui_utils_screens.h"
 
 extern char lvCurrentTime[6];
 extern char lvCurrentDate[15];
@@ -210,12 +211,6 @@ void lv_utils_getResourceName(int resID, char *nameBuf);
  * loaded.
  */
 void lv_utils_setWallpaper(uint8_t wallpaperID, bool refreshUI);
-
-/**
- * @brief call the initialization function fro the specified `screen`
- * @param screen The screen to initialize
- */
-void lv_utils_initScreen(s3_screens_t screen);
 
 /**
  * @brief Update the status of bluetooth for the dependent UI components

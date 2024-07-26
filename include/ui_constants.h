@@ -1,6 +1,10 @@
 #ifndef UI_CONSTANTS_H_
 #define UI_CONSTANTS_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define UI_ANIMATION_DURATION 150  //< Animation duration in milliseconds>
 #define UI_TRANSPARENCY 100        //< Transparency level>
 
@@ -93,5 +97,9 @@ typedef enum {
   S3_IMG_BACKGROUND_GREEN_LAKE,
   S3_IMG_BACKGROUND_GREEN_FOREST,
 } s3_resource_num_t;
+
+#ifdef __cplusplus
+} /*extern "C"*/
+#endif
 
 #endif  // UI_CONSTANTS_H_

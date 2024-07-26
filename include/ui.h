@@ -19,6 +19,7 @@ extern "C" {
 
 #include <CustomSymbols.hpp>
 
+#include "ui_constants.h"
 #include "ui_events.h"
 #include "ui_helpers.h"
 #include "ui_utils.h"

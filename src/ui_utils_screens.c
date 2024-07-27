@@ -35,6 +35,9 @@ void lv_utils_initScreen(s3_screens_t screen) {
     case SCREEN_SETTINGS_CONNECTIVITY:
       ui_settingsConnectivityScreen_screen_init();
       return;
+    case SCREEN_SETTINGS_CONNECTIVITY_BLE:
+      ui_settingsConnectivityBLEScreen_screen_init();
+      return;
     case SCREEN_SETTINGS_NETWORK_INTERNET:
       ui_settingsNetworkInternetScreen_screen_init();
       return;
@@ -140,6 +143,8 @@ lv_obj_t* lv_utils_getScreen(s3_screens_t screen) {
       return ui_settingsMainScreen;
     case SCREEN_SETTINGS_CONNECTIVITY:
       return ui_settingsConnectivityScreen;
+    case SCREEN_SETTINGS_CONNECTIVITY_BLE:
+      return ui_settingsConnectivityBLEScreen;
     case SCREEN_SETTINGS_NETWORK_INTERNET:
       return ui_settingsNetworkInternetScreen;
     case SCREEN_SETTINGS_DISPLAY:
@@ -220,6 +225,8 @@ void* lv_utils_getScreenInit(s3_screens_t screen) {
       return &ui_settingsMainScreen_screen_init;
     case SCREEN_SETTINGS_CONNECTIVITY:
       return &ui_settingsConnectivityScreen_screen_init;
+    case SCREEN_SETTINGS_CONNECTIVITY_BLE:
+      return &ui_settingsConnectivityBLEScreen_screen_init;
     case SCREEN_SETTINGS_NETWORK_INTERNET:
       return &ui_settingsNetworkInternetScreen_screen_init;
     case SCREEN_SETTINGS_DISPLAY:

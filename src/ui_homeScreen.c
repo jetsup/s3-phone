@@ -51,7 +51,7 @@ void ui_homeScreen_screen_init(void) {
                             LV_PART_MAIN | LV_STATE_DEFAULT);
 
   //======label for bluetooth and other indicators beside battery======
-  bool activatedSettings[] = {bluetoothClassicEnabled || bluetoothLEEnabled};
+  bool activatedSettings[] = {bluetoothLEEnabled};
   char *activatedSettingsSymbols[] = {LV_SYMBOL_BLUETOOTH};
   char strSystemIndicators[21] = {};  // LV_SYMBOL_* 3bytes?
   uint8_t indicatorsAdded = 0;        // for spacing of the indicators

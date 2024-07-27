@@ -180,6 +180,12 @@ void ui_settingsConnectivityScreen_screen_init(void);
 lv_obj_t* ui_settingsConnectivityScreen;
 lv_obj_t* ui_panelSettingsConnectivity;
 
+// SCREEN: ui_settingsConnectivityBLEScreen
+void ui_settingsConnectivityBLEScreen_screen_init(void);
+lv_obj_t* ui_settingsConnectivityBLEScreen;
+lv_obj_t* ui_panelSettingsConnectivityBLE;
+lv_obj_t *ui_listBLEFoundDevices;
+
 // SCREEN: ui_settingsStorageScreen
 void ui_settingsStorageScreen_screen_init(void);
 lv_obj_t* ui_settingsStorageScreen;

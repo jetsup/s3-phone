@@ -105,14 +105,12 @@ void FileSystem::_loadSettings(bool createIfUnavailable) {
       FS_VAR_SETTINGS_DISPLAY_BRIGHTNESS, FS_VAR_SETTINGS_DISPLAY_TIMEOUT,
       FS_VAR_SETTINGS_THEMES_THEME_DARK,  FS_VAR_SETTINGS_THEMES_WALLPAPER,
       FS_VAR_SETTINGS_THEMES_FONT_SMALL,  FS_VAR_SETTINGS_THEMES_FONT_MEDIUM,
-      FS_VAR_SETTINGS_THEMES_FONT_LARGE,  FS_VAR_SETTINGS_CONNECTIVITY_BLC,
-      FS_VAR_SETTINGS_CONNECTIVITY_BLE};
+      FS_VAR_SETTINGS_THEMES_FONT_LARGE,  FS_VAR_SETTINGS_CONNECTIVITY_BLE};
   String settingsParDefaults[] = {
       FS_DEF_SETTINGS_DISPLAY_BRIGHTNESS, FS_DEF_SETTINGS_DISPLAY_TIMEOUT,
       FS_DEF_SETTINGS_THEMES_THEME_DARK,  FS_DEF_SETTINGS_THEMES_WALLPAPER,
       FS_DEF_SETTINGS_THEMES_FONT_SMALL,  FS_DEF_SETTINGS_THEMES_FONT_MEDIUM,
-      FS_DEF_SETTINGS_THEMES_FONT_LARGE,  FS_DEF_SETTINGS_CONNECTIVITY_BLC,
-      FS_DEF_SETTINGS_CONNECTIVITY_BLE};
+      FS_DEF_SETTINGS_THEMES_FONT_LARGE,  FS_DEF_SETTINGS_CONNECTIVITY_BLE};
 
   for (int i = 0;
        i < sizeof(settingsParameters) / sizeof(settingsParameters[0]); i++) {
@@ -134,8 +132,7 @@ String FileSystem::readSetting(const char* variable) {
              String(variable).equals(FS_VAR_SETTINGS_THEMES_FONT_MEDIUM) ||
              String(variable).equals(FS_VAR_SETTINGS_THEMES_FONT_LARGE)) {
     filename = FS_SETTINGS_THEMES_FILEPATH;
-  } else if (String(variable).equals(FS_VAR_SETTINGS_CONNECTIVITY_BLC) ||
-             String(variable).equals(FS_VAR_SETTINGS_CONNECTIVITY_BLE)) {
+  } else if (String(variable).equals(FS_VAR_SETTINGS_CONNECTIVITY_BLE)) {
     filename = FS_SETTINGS_CONNECTIVITY_FILEPATH;
   }
   File file = _mFs.open(filename, FILE_READ);
@@ -170,8 +167,7 @@ String FileSystem::_readSetting(const char* variable, const char* defaultValue,
              String(variable).equals(FS_VAR_SETTINGS_THEMES_FONT_MEDIUM) ||
              String(variable).equals(FS_VAR_SETTINGS_THEMES_FONT_LARGE)) {
     filename = FS_SETTINGS_THEMES_FILEPATH;
-  } else if (String(variable).equals(FS_VAR_SETTINGS_CONNECTIVITY_BLC) ||
-             String(variable).equals(FS_VAR_SETTINGS_CONNECTIVITY_BLE)) {
+  } else if (String(variable).equals(FS_VAR_SETTINGS_CONNECTIVITY_BLE)) {
     filename = FS_SETTINGS_CONNECTIVITY_FILEPATH;
   }
 
@@ -241,8 +237,7 @@ void FileSystem::editSetting(const char* variable, const char* value) {
              String(variable).equals(FS_VAR_SETTINGS_THEMES_FONT_MEDIUM) ||
              String(variable).equals(FS_VAR_SETTINGS_THEMES_FONT_LARGE)) {
     filename = FS_SETTINGS_THEMES_FILEPATH;
-  } else if (String(variable).equals(FS_VAR_SETTINGS_CONNECTIVITY_BLC) ||
-             String(variable).equals(FS_VAR_SETTINGS_CONNECTIVITY_BLE)) {
+  } else if (String(variable).equals(FS_VAR_SETTINGS_CONNECTIVITY_BLE)) {
     filename = FS_SETTINGS_CONNECTIVITY_FILEPATH;
   }
 

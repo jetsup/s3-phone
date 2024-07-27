@@ -45,7 +45,6 @@ lv_image_dsc_t *screenWallpaperImg;
 bool wallpaperChanged = false;
 
 // Settings Connectivity
-bool bluetoothClassicEnabled = false;
 bool bluetoothLEEnabled = false;
 bool bluetoothStatusChanged = false;
 
@@ -54,8 +53,11 @@ s3_resource_num_t lv_utils_getResourceByID(int id);
 lv_font_t *lv_utils_getFont(uint8_t fontSize);
 //================================UI Update===============================
 void ui_utils_updateTimeDate() {
-  lv_label_set_text(ui_lblHomeTime, lvCurrentTime);
-  lv_label_set_text(ui_lblHomeDate, lvCurrentDate);
+  if (lv_obj_has_class(ui_lblHomeTime, (&lv_label_class)) &&
+      lv_obj_has_class(ui_lblHomeDate, (&lv_label_class))) {
+    lv_label_set_text(ui_lblHomeTime, lvCurrentTime);
+    lv_label_set_text(ui_lblHomeDate, lvCurrentDate);
+  }
 }
 
 void lv_utils_getDate(char *buffer) { lv_strncpy(buffer, lvCurrentDate, 11); }
@@ -264,8 +266,7 @@ bool screenStackIsEmpty() { return screenStack.top == -1; }
 
 bool screenStackIsFull() { return screenStack.top == SCREEN_STACK_SIZE - 1; }
 
-bool screenStackPush(s3_screens_t screen, lv_obj_t *previousScreen,
-                     void (*previousScreenInit)(void),
+bool screenStackPush(s3_screens_t screen,
                      lv_screen_load_anim_t transitionAnimation) {
   if (screenStackIsFull()) {
     // TODO: update the SCREEN_STACK_SIZE to make this condition unreachable
@@ -274,10 +275,6 @@ bool screenStackPush(s3_screens_t screen, lv_obj_t *previousScreen,
 
   screenStack.top++;
   screenStack.screenStackElements[screenStack.top].screen = screen;
-  screenStack.screenStackElements[screenStack.top].previousScreen =
-      previousScreen;
-  screenStack.screenStackElements[screenStack.top].previousScreenInit =
-      previousScreenInit;
   screenStack.screenStackElements[screenStack.top].transitionAnimation =
       transitionAnimation;
   return true;
@@ -377,8 +374,7 @@ s3_resource_num_t lv_utils_getResourceByID(int id) {
   }
 }
 
-void lv_utils_setBluetooth(bool blcEnabled, bool bleEnabled) {
-  bluetoothClassicEnabled = blcEnabled;
+void lv_utils_setBluetooth(bool bleEnabled) {
   bluetoothLEEnabled = bleEnabled;
   bluetoothStatusChanged = true;
 }

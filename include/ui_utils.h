@@ -56,7 +56,6 @@ extern lv_image_dsc_t *screenWallpaperImg;
 extern bool wallpaperChanged;
 
 // Settings Connectivity
-extern bool bluetoothClassicEnabled;
 extern bool bluetoothLEEnabled;
 extern bool bluetoothStatusChanged;
 
@@ -97,15 +96,11 @@ bool screenStackIsFull();
 /**
  * @brief Pushes a screen to the screen stack
  * @param screen The screen you are transitioning from
- * @param previousScreen The object of the screen you are transitioning from
- * @param previousScreenInit The initialization function prototupe of the screen
- * you are leaving
  * @param transitionAnimation The animation used when transitioning to the
  * screen
  * @return true if the screen was pushed
  */
-bool screenStackPush(s3_screens_t screen, lv_obj_t *previousScreen,
-                     void (*previousScreenInit)(void),
+bool screenStackPush(s3_screens_t screen,
                      lv_screen_load_anim_t transitionAnimation);
 
 /**
@@ -217,7 +212,7 @@ void lv_utils_setWallpaper(uint8_t wallpaperID, bool refreshUI);
  * @param blcEnabled Set the status of bluetooth classic to active
  * @param bleEnabled Set the status of bluetooth LE to active
  */
-void lv_utils_setBluetooth(bool blcEnabled, bool bleEnabled);
+void lv_utils_setBluetooth(bool bleEnabled);
 
 /**
  * @brief Creates a bottom bar with navigation buttons

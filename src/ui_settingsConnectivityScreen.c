@@ -33,54 +33,17 @@ void ui_settingsConnectivityScreen_screen_init(void) {
                              LV_PART_MAIN | LV_STATE_DEFAULT);
 
   yOffset += 25;
-
-  // BT classic switch
+  // BLE Switch
   lv_obj_t *lblBluetooth = lv_label_create(ui_panelSettingsConnectivity);
   lv_obj_set_align(lblBluetooth, LV_ALIGN_TOP_LEFT);
   lv_obj_set_x(lblBluetooth, UI_ALIGN_TOP_LEFT_X_OFFSET + 5);
   lv_obj_set_y(lblBluetooth, yOffset);
-  lv_label_set_text(lblBluetooth, "Bluetooth Classic");
-  lv_obj_set_style_text_font(lblBluetooth, systemFontMedium,
-                             LV_PART_MAIN | LV_STATE_DEFAULT);
-
-  lv_obj_t *ui_switchBluetooth = lv_switch_create(ui_panelSettingsConnectivity);
-  lv_obj_set_height(ui_switchBluetooth, 20);
-  lv_obj_align_to(
-      ui_switchBluetooth, lblBluetooth, LV_ALIGN_LEFT_MID,
-      240 - (UI_ALIGN_TOP_LEFT_X_OFFSET +
-             lv_text_get_width("Bluetooth Classic", 10, systemFontMedium, 0) +
-             lv_obj_get_width(ui_switchBluetooth)),
-      0);
-  if (bluetoothClassicEnabled) {
-    lv_obj_add_state(ui_switchBluetooth, LV_STATE_CHECKED);
-  }
-  lv_obj_add_event_cb(ui_switchBluetooth, ui_event_switch_cb,
-                      LV_EVENT_VALUE_CHANGED, "bt classic switch");
-
-  yOffset += 25;
-
-  // BLE Switch
-  lblBluetooth = lv_label_create(ui_panelSettingsConnectivity);
-  lv_obj_set_align(lblBluetooth, LV_ALIGN_TOP_LEFT);
-  lv_obj_set_x(lblBluetooth, UI_ALIGN_TOP_LEFT_X_OFFSET + 5);
-  lv_obj_set_y(lblBluetooth, yOffset);
+  lv_obj_set_width(lblBluetooth, 240 - ((UI_ALIGN_TOP_LEFT_X_OFFSET + 5) * 2));
   lv_label_set_text(lblBluetooth, "Bluetooth LE");
   lv_obj_set_style_text_font(lblBluetooth, systemFontMedium,
                              LV_PART_MAIN | LV_STATE_DEFAULT);
-
-  ui_switchBluetooth = lv_switch_create(ui_panelSettingsConnectivity);
-  lv_obj_set_height(ui_switchBluetooth, 20);
-  lv_obj_align_to(
-      ui_switchBluetooth, lblBluetooth, LV_ALIGN_LEFT_MID,
-      240 - (UI_ALIGN_TOP_LEFT_X_OFFSET +
-             lv_text_get_width("Bluetooth LE", 10, systemFontMedium, 0) +
-             lv_obj_get_width(ui_switchBluetooth)),
-      0);
-  if (bluetoothLEEnabled) {
-    lv_obj_add_state(ui_switchBluetooth, LV_STATE_CHECKED);
-  }
-  lv_obj_add_event_cb(ui_switchBluetooth, ui_event_switch_cb,
-                      LV_EVENT_VALUE_CHANGED, "bt ble switch");
+  lv_obj_add_flag(lblBluetooth, LV_OBJ_FLAG_CLICKABLE);
+  lv_obj_add_event_cb(lblBluetooth, ui_event_label_cb, LV_EVENT_CLICKED, "connectivity ble");
 
   ui_add_bottom_bar(ui_panelSettingsConnectivity, 0xFFFFFF, 10);
 }

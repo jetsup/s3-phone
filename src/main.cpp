@@ -31,11 +31,9 @@ void setup() {
   lv_utils_setWallpaper(
       fileSystem.readSetting(FS_VAR_SETTINGS_THEMES_WALLPAPER).toInt(), false);
 
-  bool blcEnabled =
-      fileSystem.readSetting(FS_VAR_SETTINGS_CONNECTIVITY_BLC).toInt();
   bool bleEnabled =
       fileSystem.readSetting(FS_VAR_SETTINGS_CONNECTIVITY_BLE).toInt();
-  lv_utils_setBluetooth(blcEnabled, bleEnabled);
+  lv_utils_setBluetooth(bleEnabled);
   //=============================================================================
   display.init();
   display.setRotation(2);
@@ -95,9 +93,9 @@ void setup() {
 }
 
 void loop() {
-//   unsigned int tickPeriod = millis() - lastTickMillis;
-//   lv_tick_inc(tickPeriod);
-//   lastTickMillis = millis();
+  //   unsigned int tickPeriod = millis() - lastTickMillis;
+  //   lv_tick_inc(tickPeriod);
+  //   lastTickMillis = millis();
 
   lv_timer_handler();
   s3Time.loop();
@@ -161,8 +159,6 @@ void loop() {
   }
 
   if (bluetoothStatusChanged) {
-    fileSystem.editSetting(FS_VAR_SETTINGS_CONNECTIVITY_BLC,
-                           String(bluetoothClassicEnabled).c_str());
     fileSystem.editSetting(FS_VAR_SETTINGS_CONNECTIVITY_BLE,
                            String(bluetoothLEEnabled).c_str());
   }

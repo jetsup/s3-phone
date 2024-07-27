@@ -113,65 +113,47 @@ void ui_event_list_event_callback(lv_event_t *e) {
 
   if (event_code == LV_EVENT_CLICKED) {
     if (strcmp(buttonText, "Connectivity") == 0) {
-      if (screenStackPush(SCREEN_SETTINGS, ui_settingsMainScreen,
-                          &ui_settingsMainScreen_screen_init,
-                          LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
+      if (screenStackPush(SCREEN_SETTINGS, LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
         _ui_screen_change(SCREEN_SETTINGS_CONNECTIVITY,
                           LV_SCR_LOAD_ANIM_MOVE_LEFT, UI_ANIMATION_DURATION, 0);
       }
     } else if (strcmp(buttonText, "Network and Internet") == 0) {
-      if (screenStackPush(SCREEN_SETTINGS, ui_settingsMainScreen,
-                          &ui_settingsMainScreen_screen_init,
-                          LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
+      if (screenStackPush(SCREEN_SETTINGS, LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
         _ui_screen_change(SCREEN_SETTINGS_NETWORK_INTERNET,
                           LV_SCR_LOAD_ANIM_MOVE_LEFT, UI_ANIMATION_DURATION, 0);
       }
     } else if (strcmp(buttonText, "Display") == 0) {
-      if (screenStackPush(SCREEN_SETTINGS, ui_settingsMainScreen,
-                          &ui_settingsMainScreen_screen_init,
-                          LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
+      if (screenStackPush(SCREEN_SETTINGS, LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
         _ui_screen_change(SCREEN_SETTINGS_DISPLAY, LV_SCR_LOAD_ANIM_MOVE_LEFT,
                           UI_ANIMATION_DURATION, 0);
       }
     } else if (strcmp(buttonText, "Wallpapers and Themes") == 0) {
-      if (screenStackPush(SCREEN_SETTINGS, ui_settingsMainScreen,
-                          &ui_settingsMainScreen_screen_init,
-                          LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
+      if (screenStackPush(SCREEN_SETTINGS, LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
         _ui_screen_change(SCREEN_SETTINGS_THEMES, LV_SCR_LOAD_ANIM_MOVE_LEFT,
                           UI_ANIMATION_DURATION, 0);
       }
     } else if (strcmp(buttonText, "Lock Screen and Security") == 0) {
-      if (screenStackPush(SCREEN_SETTINGS, ui_settingsMainScreen,
-                          &ui_settingsMainScreen_screen_init,
-                          LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
+      if (screenStackPush(SCREEN_SETTINGS, LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
         _ui_screen_change(SCREEN_SETTINGS_LOCK_SCREEN_SECURITY,
                           LV_SCR_LOAD_ANIM_MOVE_LEFT, UI_ANIMATION_DURATION, 0);
       }
     } else if (strcmp(buttonText, "Sounds") == 0) {
-      if (screenStackPush(SCREEN_SETTINGS, ui_settingsMainScreen,
-                          &ui_settingsMainScreen_screen_init,
-                          LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
+      if (screenStackPush(SCREEN_SETTINGS, LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
         _ui_screen_change(SCREEN_SETTINGS_SOUND, LV_SCR_LOAD_ANIM_MOVE_LEFT,
                           UI_ANIMATION_DURATION, 0);
       }
     } else if (strcmp(buttonText, "Storage") == 0) {
-      if (screenStackPush(SCREEN_SETTINGS, ui_settingsMainScreen,
-                          &ui_settingsMainScreen_screen_init,
-                          LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
+      if (screenStackPush(SCREEN_SETTINGS, LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
         _ui_screen_change(SCREEN_SETTINGS_STORAGE, LV_SCR_LOAD_ANIM_MOVE_LEFT,
                           UI_ANIMATION_DURATION, 0);
       }
     } else if (strcmp(buttonText, "System") == 0) {
-      if (screenStackPush(SCREEN_SETTINGS, ui_settingsMainScreen,
-                          &ui_settingsMainScreen_screen_init,
-                          LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
+      if (screenStackPush(SCREEN_SETTINGS, LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
         _ui_screen_change(SCREEN_SETTINGS_SYSTEM, LV_SCR_LOAD_ANIM_MOVE_LEFT,
                           UI_ANIMATION_DURATION, 0);
       }
     } else if (strcmp(buttonText, "About") == 0) {
-      if (screenStackPush(SCREEN_SETTINGS, ui_settingsMainScreen,
-                          &ui_settingsMainScreen_screen_init,
-                          LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
+      if (screenStackPush(SCREEN_SETTINGS, LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
         _ui_screen_change(SCREEN_SETTINGS_ABOUT, LV_SCR_LOAD_ANIM_MOVE_LEFT,
                           UI_ANIMATION_DURATION, 0);
       }

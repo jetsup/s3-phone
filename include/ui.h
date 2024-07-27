@@ -188,6 +188,11 @@ extern lv_obj_t* ui_panelSettingsNetworkInternet;
 void ui_settingsConnectivityScreen_screen_init(void);
 extern lv_obj_t* ui_settingsConnectivityScreen;
 extern lv_obj_t* ui_panelSettingsConnectivity;
+// SCREEN: ui_settingsConnectivityBLEScreen
+void ui_settingsConnectivityBLEScreen_screen_init(void);
+extern lv_obj_t* ui_settingsConnectivityBLEScreen;
+extern lv_obj_t* ui_panelSettingsConnectivityBLE;
+extern lv_obj_t* ui_listBLEFoundDevices;
 // SCREEN: ui_settingsStorageScreen
 void ui_settingsStorageScreen_screen_init(void);
 extern lv_obj_t* ui_settingsStorageScreen;

@@ -95,9 +95,9 @@ void setup() {
 }
 
 void loop() {
-  unsigned int tickPeriod = millis() - lastTickMillis;
-  lv_tick_inc(tickPeriod);
-  lastTickMillis = millis();
+//   unsigned int tickPeriod = millis() - lastTickMillis;
+//   lv_tick_inc(tickPeriod);
+//   lastTickMillis = millis();
 
   lv_timer_handler();
   s3Time.loop();

@@ -41,6 +41,12 @@ void lv_utils_initScreen(s3_screens_t screen) {
     case SCREEN_SETTINGS_NETWORK_INTERNET:
       ui_settingsNetworkInternetScreen_screen_init();
       return;
+    case SCREEN_SETTINGS_NETWORK_INTERNET_WIFI:
+      ui_settingsNetworkInternetWiFiScreen_screen_init();
+      return;
+    case SCREEN_SETTINGS_NETWORK_INTERNET_GPRS:
+      ui_settingsNetworkInternetGPRSScreen_screen_init();
+      return;
     case SCREEN_SETTINGS_DISPLAY:
       ui_settingsDisplayScreen_screen_init();
       return;
@@ -114,7 +120,7 @@ void lv_utils_initScreen(s3_screens_t screen) {
       ui_browserScreen_screen_init();
       return;
     default:
-      LV_LOG_USER("Screen nod defined");
+      LV_LOG_USER("Screen not defined");
       while (1);
   }
 }
@@ -147,6 +153,10 @@ lv_obj_t* lv_utils_getScreen(s3_screens_t screen) {
       return ui_settingsConnectivityBLEScreen;
     case SCREEN_SETTINGS_NETWORK_INTERNET:
       return ui_settingsNetworkInternetScreen;
+    case SCREEN_SETTINGS_NETWORK_INTERNET_WIFI:
+      return ui_settingsNetworkInternetWiFiScreen;
+    case SCREEN_SETTINGS_NETWORK_INTERNET_GPRS:
+      return ui_settingsNetworkInternetGPRSScreen;
     case SCREEN_SETTINGS_DISPLAY:
       return ui_settingsDisplayScreen;
     case SCREEN_SETTINGS_THEMES:
@@ -278,7 +288,7 @@ void* lv_utils_getScreenInit(s3_screens_t screen) {
     case SCREEN_BROWSER_MAIN:
       return &ui_browserScreen_screen_init;
     default:
-      LV_LOG_USER("Screen nod defined");
+      LV_LOG_USER("Screen not defined");
       while (1);
   }
 }

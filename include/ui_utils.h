@@ -59,6 +59,12 @@ extern bool wallpaperChanged;
 extern bool bluetoothLEEnabled;
 extern bool bluetoothStatusChanged;
 
+// Settings Network and Internet
+extern bool wifiEnabled;
+extern bool wifiStatusChanged;
+extern char wifiName[30];
+extern char wifiPassword[30];
+
 //========================Screen Stack========================
 /**
  * @brief Holds the data to be stored in the stack
@@ -209,10 +215,23 @@ void lv_utils_setWallpaper(uint8_t wallpaperID, bool refreshUI);
 
 /**
  * @brief Update the status of bluetooth for the dependent UI components
- * @param blcEnabled Set the status of bluetooth classic to active
  * @param bleEnabled Set the status of bluetooth LE to active
  */
 void lv_utils_setBluetooth(bool bleEnabled);
+
+/**
+ * @brief Update the status of `WIFI` for the dependent UI components
+ * @param bleEnabled Set the status of WIFI
+ */
+void lv_utils_setWiFi(bool wifiState);
+
+/**
+ * @brief Add options to a list object
+ */
+void lv_utils_populate_list_options(lv_obj_t *list, const char **listOptions,
+                                    int optionsCount, lv_event_t *evt,
+                                    lv_event_code_t eventFilter,
+                                    const char *callbackData);
 
 /**
  * @brief Creates a bottom bar with navigation buttons

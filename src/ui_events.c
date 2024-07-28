@@ -326,10 +326,28 @@ void ui_event_switch_cb(lv_event_t* e) {
     if (strcmp(switchData, "theme switch") == 0) {
       lv_utils_setTheme(switchOn);
     } else if (strcmp(switchData, "bt ble switch") == 0) {
-      if (screenStackPush(SCREEN_SETTINGS_CONNECTIVITY_BLE,
-                          LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
-        _ui_screen_change(SCREEN_SETTINGS_CONNECTIVITY_BLE,
-                          LV_SCR_LOAD_ANIM_MOVE_LEFT, UI_ANIMATION_DURATION, 0);
+      lv_utils_setBluetooth(switchOn);
+
+      if (switchOn) {
+        lv_label_set_text(ui_lblBtScanning, "Scanning...");
+        lv_obj_remove_flag(ui_spinnerBtScanning, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_remove_flag(ui_listBLEFoundDevices, LV_OBJ_FLAG_HIDDEN);
+      } else {
+        lv_label_set_text(ui_lblBtScanning, "Bluetooth OFF");
+        lv_obj_add_flag(ui_spinnerBtScanning, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_add_flag(ui_listBLEFoundDevices, LV_OBJ_FLAG_HIDDEN);
+      }
+    } else if (strcmp(switchData, "wifi switch") == 0) {
+      lv_utils_setWiFi(switchOn);
+
+      if (switchOn) {
+        lv_label_set_text(ui_lblWiFiScanning, "Scanning...");
+        lv_obj_remove_flag(ui_spinnerWiFiScanning, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_remove_flag(ui_listWiFiFoundDevices, LV_OBJ_FLAG_HIDDEN);
+      } else {
+        lv_label_set_text(ui_lblWiFiScanning, "Bluetooth OFF");
+        lv_obj_add_flag(ui_spinnerWiFiScanning, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_add_flag(ui_listWiFiFoundDevices, LV_OBJ_FLAG_HIDDEN);
       }
     }
   }
@@ -448,6 +466,75 @@ void ui_event_button_cb(lv_event_t* e) {
                           UI_ANIMATION_DURATION, 0);
 
         lv_label_set_text(ui_lblContactDetailsTitle, (const char*)contactName);
+      }
+    } else if (strcmp(buttonData, "network option") == 0) {
+      lv_obj_t* list = lv_obj_get_parent(target);
+      const buttonText = lv_list_get_button_text(list, target);
+
+      if (strcmp(buttonText, "WiFi") == 0) {
+        if (screenStackPush(SCREEN_SETTINGS_NETWORK_INTERNET,
+                            LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
+          _ui_screen_change(SCREEN_SETTINGS_NETWORK_INTERNET_WIFI,
+                            LV_SCR_LOAD_ANIM_MOVE_LEFT, UI_ANIMATION_DURATION,
+                            0);
+        }
+      } else if (strcmp(buttonText, "GPRS") == 0) {
+        if (screenStackPush(SCREEN_SETTINGS_NETWORK_INTERNET,
+                            LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
+          _ui_screen_change(SCREEN_SETTINGS_NETWORK_INTERNET_GPRS,
+                            LV_SCR_LOAD_ANIM_MOVE_LEFT, UI_ANIMATION_DURATION,
+                            0);
+        }
+      }
+    }
+  }
+}
+
+void ui_event_list_button_cb(lv_event_t* e) {
+  lv_event_code_t code = lv_event_get_code(e);
+  lv_obj_t* target = lv_event_get_target(e);
+  const char* buttonData = (const char*)e->user_data;
+  lv_obj_t* list = lv_obj_get_parent(target);
+
+  if (code == LV_EVENT_CLICKED) {
+    if (strcmp(buttonData, "contact option") == 0) {
+    } else if (strcmp(buttonData, "contact list") == 0) {
+      const char* contact = lv_list_get_button_text(list, target);
+      char contactData[CONTACT_NAME_NUMBER_LENGTH];
+      strcpy(contactData, contact);
+
+      char* token;
+      token = strtok(contactData, contactSeparationDelimeter);
+      if (token != NULL) {
+        strlcpy(contactName, token, sizeof(contactName));
+        token = strtok(NULL, contactSeparationDelimeter);
+        if (token != NULL) {
+          strlcpy(contactNumber, token, sizeof(contactNumber));
+        }
+      }
+      if (screenStackPush(SCREEN_CONTACTS, LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
+        _ui_screen_change(SCREEN_CONTACT_OPTIONS, LV_SCR_LOAD_ANIM_MOVE_LEFT,
+                          UI_ANIMATION_DURATION, 0);
+
+        lv_label_set_text(ui_lblContactDetailsTitle, (const char*)contactName);
+      }
+    } else if (strcmp(buttonData, "network option") == 0) {
+      const buttonText = lv_list_get_button_text(list, target);
+
+      if (strcmp(buttonText, "WiFi") == 0) {
+        if (screenStackPush(SCREEN_SETTINGS_NETWORK_INTERNET,
+                            LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
+          _ui_screen_change(SCREEN_SETTINGS_NETWORK_INTERNET_WIFI,
+                            LV_SCR_LOAD_ANIM_MOVE_LEFT, UI_ANIMATION_DURATION,
+                            0);
+        }
+      } else if (strcmp(buttonText, "GPRS") == 0) {
+        if (screenStackPush(SCREEN_SETTINGS_NETWORK_INTERNET,
+                            LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
+          _ui_screen_change(SCREEN_SETTINGS_NETWORK_INTERNET_GPRS,
+                            LV_SCR_LOAD_ANIM_MOVE_LEFT, UI_ANIMATION_DURATION,
+                            0);
+        }
       }
     }
   }

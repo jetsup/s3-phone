@@ -39,6 +39,7 @@
 #define FS_SETTINGS_DISPLAY_FILEPATH "/system/settings/display.json"
 #define FS_SETTINGS_THEMES_FILEPATH "/system/settings/themes.json"
 #define FS_SETTINGS_CONNECTIVITY_FILEPATH "/system/settings/connectivity.json"
+#define FS_SETTINGS_NETWORK_INTERNET_FILEPATH "/system/settings/networking.json"
 
 #define FS_VAR_SETTINGS_DISPLAY_BRIGHTNESS "brightness"
 #define FS_DEF_SETTINGS_DISPLAY_BRIGHTNESS "120"
@@ -58,5 +59,10 @@
 
 #define FS_VAR_SETTINGS_CONNECTIVITY_BLE "ble"
 #define FS_DEF_SETTINGS_CONNECTIVITY_BLE "0"
+
+#define FS_VAR_SETTINGS_NETWORKING_HOTSPOT_NAME "hotspot-name"
+#define FS_DEF_SETTINGS_NETWORKING_HOTSPOT_NAME "s3phone"
+#define FS_VAR_SETTINGS_NETWORKING_WIFI_STATE "wifi-state"
+#define FS_DEF_SETTINGS_NETWORKING_WIFI_STATE "0"
 
 #endif  // CONFIG_HPP_

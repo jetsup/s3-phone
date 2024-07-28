@@ -184,6 +184,17 @@ extern lv_obj_t* ui_panelSettingsLockSecurity;
 void ui_settingsNetworkInternetScreen_screen_init(void);
 extern lv_obj_t* ui_settingsNetworkInternetScreen;
 extern lv_obj_t* ui_panelSettingsNetworkInternet;
+// SCREEN: ui_settingsNetworkInternetWiFiScreen
+void ui_settingsNetworkInternetWiFiScreen_screen_init(void);
+extern lv_obj_t* ui_settingsNetworkInternetWiFiScreen;
+extern lv_obj_t* ui_panelSettingsNetworkInternetWiFi;
+extern lv_obj_t* ui_lblWiFiScanning;
+extern lv_obj_t* ui_spinnerWiFiScanning;
+extern lv_obj_t* ui_listWiFiFoundDevices;
+// SCREEN: ui_settingsNetworkInternetGPRSScreen
+void ui_settingsNetworkInternetGPRSScreen_screen_init(void);
+extern lv_obj_t* ui_settingsNetworkInternetGPRSScreen;
+extern lv_obj_t* ui_panelSettingsNetworkInternetGPRS;
 // SCREEN: ui_settingsConnectivityScreen
 void ui_settingsConnectivityScreen_screen_init(void);
 extern lv_obj_t* ui_settingsConnectivityScreen;
@@ -192,6 +203,8 @@ extern lv_obj_t* ui_panelSettingsConnectivity;
 void ui_settingsConnectivityBLEScreen_screen_init(void);
 extern lv_obj_t* ui_settingsConnectivityBLEScreen;
 extern lv_obj_t* ui_panelSettingsConnectivityBLE;
+extern lv_obj_t* ui_lblBtScanning;
+extern lv_obj_t* ui_spinnerBtScanning;
 extern lv_obj_t* ui_listBLEFoundDevices;
 // SCREEN: ui_settingsStorageScreen
 void ui_settingsStorageScreen_screen_init(void);

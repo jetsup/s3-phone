@@ -31,9 +31,13 @@ void setup() {
   lv_utils_setWallpaper(
       fileSystem.readSetting(FS_VAR_SETTINGS_THEMES_WALLPAPER).toInt(), false);
 
-  bool bleEnabled =
+  bool bleEnabledMain =
       fileSystem.readSetting(FS_VAR_SETTINGS_CONNECTIVITY_BLE).toInt();
-  lv_utils_setBluetooth(bleEnabled);
+  lv_utils_setBluetooth(bleEnabledMain);
+
+  bool wifiEnabledMain =
+      fileSystem.readSetting(FS_VAR_SETTINGS_NETWORKING_WIFI_STATE).toInt();
+  lv_utils_setWiFi(wifiEnabledMain);
   //=============================================================================
   display.init();
   display.setRotation(2);
@@ -159,8 +163,15 @@ void loop() {
   }
 
   if (bluetoothStatusChanged) {
+    bluetoothStatusChanged = false;
     fileSystem.editSetting(FS_VAR_SETTINGS_CONNECTIVITY_BLE,
                            String(bluetoothLEEnabled).c_str());
+  }
+
+  if (wifiStatusChanged) {
+    wifiStatusChanged = false;
+    fileSystem.editSetting(FS_VAR_SETTINGS_NETWORKING_WIFI_STATE,
+                           String(wifiEnabled).c_str());
   }
 }
 // ----------------------------------------------------------

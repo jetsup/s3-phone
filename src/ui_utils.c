@@ -48,6 +48,12 @@ bool wallpaperChanged = false;
 bool bluetoothLEEnabled = false;
 bool bluetoothStatusChanged = false;
 
+// Settings Network and Internet
+bool wifiEnabled = false;
+bool wifiStatusChanged = false;
+char wifiName[30];
+char wifiPassword[30];
+
 //================================Prototypes==============================
 s3_resource_num_t lv_utils_getResourceByID(int id);
 lv_font_t *lv_utils_getFont(uint8_t fontSize);
@@ -163,7 +169,6 @@ void lv_utils_setTheme(bool themeDark) {
     themeChanged = true;
     darkThemeSelected = themeDark;
     themeApplied = false;
-    // TODO: Refresh the UI
   }
 }
 
@@ -377,4 +382,20 @@ s3_resource_num_t lv_utils_getResourceByID(int id) {
 void lv_utils_setBluetooth(bool bleEnabled) {
   bluetoothLEEnabled = bleEnabled;
   bluetoothStatusChanged = true;
+}
+
+void lv_utils_setWiFi(bool wifiState) {
+  wifiEnabled = wifiState;
+  wifiStatusChanged = true;
+}
+
+void lv_utils_populate_list_options(lv_obj_t *list, const char **listOptions,
+                                    int optionsCount, lv_event_t *evt,
+                                    lv_event_code_t eventFilter,
+                                    const char *callbackData) {
+  for (int i = 0; i < optionsCount; i++) {
+    lv_obj_t *btn = lv_list_add_button(list, NULL, listOptions[i]);
+    lv_obj_set_style_bg_opa(btn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_add_event_cb(btn, evt, eventFilter, callbackData);
+  }
 }

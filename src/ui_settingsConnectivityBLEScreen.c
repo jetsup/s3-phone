@@ -1,11 +1,7 @@
 #include "ui.h"
 
-lv_obj_t *lblBtScanning;
-lv_obj_t *scanningSpinner;
 char scanStatus[20];
 int listStartY;
-
-void ui_event_ble_switch_cb(lv_event_t *e);
 
 void ui_settingsConnectivityBLEScreen_screen_init(void) {
   ui_settingsConnectivityBLEScreen = lv_obj_create(NULL);
@@ -41,7 +37,7 @@ void ui_settingsConnectivityBLEScreen_screen_init(void) {
 
   yOffset += 25;
 
-  // BT classic switch
+  // BT Low Energy switch
   lv_obj_t *lblBluetooth = lv_label_create(ui_panelSettingsConnectivityBLE);
   lv_obj_set_align(lblBluetooth, LV_ALIGN_TOP_LEFT);
   lv_obj_set_x(lblBluetooth, UI_ALIGN_TOP_LEFT_X_OFFSET + 5);
@@ -59,35 +55,35 @@ void ui_settingsConnectivityBLEScreen_screen_init(void) {
   if (bluetoothLEEnabled) {
     lv_obj_add_state(ui_switchBluetooth, LV_STATE_CHECKED);
   }
-  lv_obj_add_event_cb(ui_switchBluetooth, ui_event_ble_switch_cb,
-                      LV_EVENT_VALUE_CHANGED, NULL);
+  lv_obj_add_event_cb(ui_switchBluetooth, ui_event_switch_cb,
+                      LV_EVENT_VALUE_CHANGED, "bt ble switch");
 
   yOffset += 25;
 
-  lblBtScanning = lv_label_create(ui_panelSettingsConnectivityBLE);
-  lv_obj_set_align(lblBtScanning, LV_ALIGN_TOP_LEFT);
-  lv_obj_set_x(lblBtScanning, 5);
-  lv_obj_set_y(lblBtScanning, yOffset);
+  ui_lblBtScanning = lv_label_create(ui_panelSettingsConnectivityBLE);
+  lv_obj_set_align(ui_lblBtScanning, LV_ALIGN_TOP_LEFT);
+  lv_obj_set_x(ui_lblBtScanning, 5);
+  lv_obj_set_y(ui_lblBtScanning, yOffset);
 
   if (bluetoothLEEnabled) {
     strcpy(scanStatus, "Scanning...");
   } else {
     strcpy(scanStatus, "Bluetooth OFF");
   }
-  lv_label_set_text(lblBtScanning, scanStatus);
-  lv_obj_set_style_text_font(lblBtScanning, systemFontMedium,
+  lv_label_set_text(ui_lblBtScanning, scanStatus);
+  lv_obj_set_style_text_font(ui_lblBtScanning, systemFontMedium,
                              LV_PART_MAIN | LV_STATE_DEFAULT);
 
-  scanningSpinner = lv_spinner_create(ui_panelSettingsConnectivityBLE);
-  lv_obj_set_width(scanningSpinner, 10);
-  lv_obj_set_height(scanningSpinner, 10);
+  ui_spinnerBtScanning = lv_spinner_create(ui_panelSettingsConnectivityBLE);
+  lv_obj_set_width(ui_spinnerBtScanning, 10);
+  lv_obj_set_height(ui_spinnerBtScanning, 10);
   if (!bluetoothLEEnabled) {
-    lv_obj_add_flag(scanningSpinner, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(ui_spinnerBtScanning, LV_OBJ_FLAG_HIDDEN);
   }
-  lv_obj_align_to(scanningSpinner, ui_panelSettingsConnectivityBLE,
+  lv_obj_align_to(ui_spinnerBtScanning, ui_panelSettingsConnectivityBLE,
                   LV_ALIGN_TOP_RIGHT,
-                  (lv_obj_get_width(scanningSpinner) * -1) + 10, yOffset);
-  lv_spinner_set_anim_params(scanningSpinner, 1000, 270);
+                  (lv_obj_get_width(ui_spinnerBtScanning) * -1) + 10, yOffset);
+  lv_spinner_set_anim_params(ui_spinnerBtScanning, 1000, 270);
 
   yOffset += 20;
 
@@ -115,22 +111,4 @@ void ui_settingsConnectivityBLEScreen_screen_init(void) {
   }
 
   ui_add_bottom_bar(ui_panelSettingsConnectivityBLE, 0xFFFFFF, 10);
-}
-
-void ui_event_ble_switch_cb(lv_event_t *e) {
-  lv_event_code_t code = lv_event_get_code(e);
-  lv_obj_t *target = lv_event_get_target(e);
-
-  bool switchOn = lv_obj_has_state(target, LV_STATE_CHECKED);
-  lv_utils_setBluetooth(switchOn);
-
-  if (switchOn) {
-    lv_label_set_text(lblBtScanning, "Scanning...");
-    lv_obj_remove_flag(scanningSpinner, LV_OBJ_FLAG_HIDDEN);
-    lv_obj_remove_flag(ui_listBLEFoundDevices, LV_OBJ_FLAG_HIDDEN);
-  } else {
-    lv_label_set_text(lblBtScanning, "Bluetooth OFF");
-    lv_obj_add_flag(scanningSpinner, LV_OBJ_FLAG_HIDDEN);
-    lv_obj_add_flag(ui_listBLEFoundDevices, LV_OBJ_FLAG_HIDDEN);
-  }
 }

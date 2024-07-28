@@ -41,7 +41,7 @@ void contact_set_contact_list(lv_obj_t* list) {
     strcat(nameNumber, cNumbers[i]);
 
     contact_add_to_list(list, nameNumber, LVC_SYMBOL_SD_CARD,
-                        ui_event_button_cb);
+                        ui_event_list_button_cb);
   }
 }
 
@@ -60,7 +60,7 @@ void contact_details_set_options_list(lv_obj_t* list) {
     lv_obj_t* btn;
     btn = lv_list_add_btn(list, NULL, contactOptions[i]);
     lv_obj_set_style_bg_opa(btn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_add_event_cb(btn, ui_event_button_cb,
+    lv_obj_add_event_cb(btn, ui_event_list_button_cb,
                         LV_EVENT_CLICKED, "contact option");
   }
 }

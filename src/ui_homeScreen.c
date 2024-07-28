@@ -95,6 +95,37 @@ void ui_homeScreen_screen_init(void) {
   lv_obj_set_style_text_opa(ui_lblHomeSignalLevel, 255,
                             LV_PART_MAIN | LV_STATE_DEFAULT);
 
+  bool activatedNetworksSettings[] = {wifiEnabled};
+  char *activatedNetworksSettingsSymbols[] = {LV_SYMBOL_WIFI};
+  char strNetworksSystemIndicators[21] = {};  // LV_SYMBOL_* 3bytes?
+  uint8_t networkIndicatorsAdded = 0;         // for spacing of the indicators
+
+  lv_obj_t *networksIndicators = lv_label_create(ui_panelMain);
+  lv_label_set_long_mode(networksIndicators, LV_LABEL_LONG_SCROLL_CIRCULAR);
+  lv_obj_set_width(networksIndicators, 60);                /// 1
+  lv_obj_set_height(networksIndicators, LV_SIZE_CONTENT);  /// 1
+  lv_obj_set_y(networksIndicators, 0);
+  lv_obj_align_to(networksIndicators, ui_lblHomeSignalLevel,
+                  LV_ALIGN_OUT_RIGHT_MID, 5, 0);
+  lv_obj_set_style_text_color(networksIndicators, lv_color_hex(0xFFFFFF),
+                              LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_text_opa(networksIndicators, 255,
+                            LV_PART_MAIN | LV_STATE_DEFAULT);
+
+  for (int i = 0; i < sizeof(activatedNetworksSettings) / sizeof(activatedNetworksSettings[0]);
+       i++) {
+    if (activatedNetworksSettings[i]) {
+      if (networkIndicatorsAdded > 0) {
+        strcat(strNetworksSystemIndicators, " ");
+      }
+      strcat(strNetworksSystemIndicators, activatedNetworksSettingsSymbols[i]);
+      networkIndicatorsAdded++;
+    }
+  }
+  lv_label_set_text(networksIndicators, strNetworksSystemIndicators);
+
+  //
+
   ui_homeContainerDateISP = lv_obj_create(ui_panelMain);
   lv_obj_remove_style_all(ui_homeContainerDateISP);
   lv_obj_set_height(ui_homeContainerDateISP, 85);

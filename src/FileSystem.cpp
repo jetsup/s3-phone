@@ -101,16 +101,27 @@ void FileSystem::writeFile(const char* filename, const char* content,
 
 void FileSystem::_loadSettings(bool createIfUnavailable) {
   // load display settings
-  String settingsParameters[] = {
-      FS_VAR_SETTINGS_DISPLAY_BRIGHTNESS, FS_VAR_SETTINGS_DISPLAY_TIMEOUT,
-      FS_VAR_SETTINGS_THEMES_THEME_DARK,  FS_VAR_SETTINGS_THEMES_WALLPAPER,
-      FS_VAR_SETTINGS_THEMES_FONT_SMALL,  FS_VAR_SETTINGS_THEMES_FONT_MEDIUM,
-      FS_VAR_SETTINGS_THEMES_FONT_LARGE,  FS_VAR_SETTINGS_CONNECTIVITY_BLE};
-  String settingsParDefaults[] = {
-      FS_DEF_SETTINGS_DISPLAY_BRIGHTNESS, FS_DEF_SETTINGS_DISPLAY_TIMEOUT,
-      FS_DEF_SETTINGS_THEMES_THEME_DARK,  FS_DEF_SETTINGS_THEMES_WALLPAPER,
-      FS_DEF_SETTINGS_THEMES_FONT_SMALL,  FS_DEF_SETTINGS_THEMES_FONT_MEDIUM,
-      FS_DEF_SETTINGS_THEMES_FONT_LARGE,  FS_DEF_SETTINGS_CONNECTIVITY_BLE};
+  String settingsParameters[] = {FS_VAR_SETTINGS_DISPLAY_BRIGHTNESS,
+                                 FS_VAR_SETTINGS_DISPLAY_TIMEOUT,
+                                 FS_VAR_SETTINGS_THEMES_THEME_DARK,
+                                 FS_VAR_SETTINGS_THEMES_WALLPAPER,
+                                 FS_VAR_SETTINGS_THEMES_FONT_SMALL,
+                                 FS_VAR_SETTINGS_THEMES_FONT_MEDIUM,
+                                 FS_VAR_SETTINGS_THEMES_FONT_LARGE,
+                                 FS_VAR_SETTINGS_CONNECTIVITY_BLE,
+                                 FS_VAR_SETTINGS_NETWORKING_HOTSPOT_NAME,
+                                 FS_VAR_SETTINGS_NETWORKING_WIFI_STATE};
+
+  String settingsParDefaults[] = {FS_DEF_SETTINGS_DISPLAY_BRIGHTNESS,
+                                  FS_DEF_SETTINGS_DISPLAY_TIMEOUT,
+                                  FS_DEF_SETTINGS_THEMES_THEME_DARK,
+                                  FS_DEF_SETTINGS_THEMES_WALLPAPER,
+                                  FS_DEF_SETTINGS_THEMES_FONT_SMALL,
+                                  FS_DEF_SETTINGS_THEMES_FONT_MEDIUM,
+                                  FS_DEF_SETTINGS_THEMES_FONT_LARGE,
+                                  FS_DEF_SETTINGS_CONNECTIVITY_BLE,
+                                  FS_DEF_SETTINGS_NETWORKING_HOTSPOT_NAME,
+                                  FS_DEF_SETTINGS_NETWORKING_WIFI_STATE};
 
   for (int i = 0;
        i < sizeof(settingsParameters) / sizeof(settingsParameters[0]); i++) {
@@ -134,7 +145,11 @@ String FileSystem::readSetting(const char* variable) {
     filename = FS_SETTINGS_THEMES_FILEPATH;
   } else if (String(variable).equals(FS_VAR_SETTINGS_CONNECTIVITY_BLE)) {
     filename = FS_SETTINGS_CONNECTIVITY_FILEPATH;
+  } else if (String(variable).equals(FS_VAR_SETTINGS_NETWORKING_HOTSPOT_NAME) ||
+             String(variable).equals(FS_VAR_SETTINGS_NETWORKING_WIFI_STATE)) {
+    filename = FS_SETTINGS_NETWORK_INTERNET_FILEPATH;
   }
+
   File file = _mFs.open(filename, FILE_READ);
 
   if (!file || file.isDirectory()) {
@@ -169,6 +184,9 @@ String FileSystem::_readSetting(const char* variable, const char* defaultValue,
     filename = FS_SETTINGS_THEMES_FILEPATH;
   } else if (String(variable).equals(FS_VAR_SETTINGS_CONNECTIVITY_BLE)) {
     filename = FS_SETTINGS_CONNECTIVITY_FILEPATH;
+  } else if (String(variable).equals(FS_VAR_SETTINGS_NETWORKING_HOTSPOT_NAME) ||
+             String(variable).equals(FS_VAR_SETTINGS_NETWORKING_WIFI_STATE)) {
+    filename = FS_SETTINGS_NETWORK_INTERNET_FILEPATH;
   }
 
   File file = _mFs.open(filename, FILE_READ, createIfUnavailable);
@@ -239,6 +257,9 @@ void FileSystem::editSetting(const char* variable, const char* value) {
     filename = FS_SETTINGS_THEMES_FILEPATH;
   } else if (String(variable).equals(FS_VAR_SETTINGS_CONNECTIVITY_BLE)) {
     filename = FS_SETTINGS_CONNECTIVITY_FILEPATH;
+  } else if (String(variable).equals(FS_VAR_SETTINGS_NETWORKING_HOTSPOT_NAME) ||
+             String(variable).equals(FS_VAR_SETTINGS_NETWORKING_WIFI_STATE)) {
+    filename = FS_SETTINGS_NETWORK_INTERNET_FILEPATH;
   }
 
   File file = _mFs.open(filename, FILE_READ);

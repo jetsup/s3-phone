@@ -101,16 +101,10 @@ void ui_settingsThemesScreen_screen_init(void) {
     lv_obj_add_event_cb(lblWallpaperImgName, ui_event_label_cb,
                         LV_EVENT_CLICKED, wallpaperTags[i - 1]);
 
-    // purposely left
-    // LV_LOG_USER("ImageName %d: [%s](%s)", i, wallpaperName,
-    //             wallpaperTags[i - 1]);
-
     yOffset += 25;
   }
 
   // Screen saver
 
   ui_add_bottom_bar(ui_panelSettingsTheme, 0xFFFFFF, 10);
-
-  // Events
 }

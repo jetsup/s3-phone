@@ -1,60 +1,61 @@
 #include <Bluetooth.hpp>
 
-void _bluetoothDiscoveredCb(BTAdvertisedDevice* discoveredDevice);
-
-DiscoveredDevice s3DiscoveredDevices[10];
 int discoveredDevicesCount;
+DiscoveredDevice discoveredDevices[10];
 
-S3Bluetooth::S3Bluetooth(const String btName) : _bluetoothName(btName) {
-  _bluetooth = new BluetoothSerial();
+S3Bluetooth::S3Bluetooth(String btName, int scanTime)
+    : _bluetoothName(btName), _scanTime(scanTime) {}
+
+void S3Bluetooth::clientModeInit() {
+  BLEDevice::init("");
+  _bleScan = BLEDevice::getScan();
+  _bleScan->setAdvertisedDeviceCallbacks(new S3DeviceAdvertiseCallback());
+  _bleScan->setActiveScan(true);
+  _bleScan->setInterval(100);
+  _bleScan->setWindow(99);
 }
 
-void S3Bluetooth::activateBluetooth() {  //
-  _bluetooth->begin(_bluetoothName);
+void S3Bluetooth::clientScanServers() {
+  // TODO: implement
 }
 
-void S3Bluetooth::discoverDevices() {  //
-  _bluetooth->discoverAsync(_bluetoothDiscoveredCb);
+void S3Bluetooth::clientTerminate() {
+  _bleScan->clearResults();
+  _bleScan->stop();
 }
 
-void S3Bluetooth::connect() {
-  _bluetooth->begin(_bluetoothName);
-  _bluetooth->connect(_bluetoothName);
+void S3Bluetooth::serverModeInit() {
+  BLEDevice::init(_bluetoothName.c_str());
+  BLEServer *pServer = BLEDevice::createServer();
+  BLEService *pService = pServer->createService(SERVICE_UUID);
+  _pCharacteristic = pService->createCharacteristic(
+      CHARACTERISTIC_UUID,
+      BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_WRITE);
+
+  pService->start();
+  BLEAdvertising *pAdvertising = BLEDevice::getAdvertising();
+  pAdvertising->addServiceUUID(SERVICE_UUID);
+  pAdvertising->setScanResponse(true);
+  pAdvertising->setMinPreferred(
+      0x06);  // functions that help with iPhone connections issue
+  pAdvertising->setMinPreferred(0x12);
+  BLEDevice::startAdvertising();
 }
 
-void S3Bluetooth::disconnect() {
-  _bluetooth->discoverAsyncStop();
-  _bluetooth->discoverClear();
-  _bluetooth->disconnect();
+void S3Bluetooth::serverSetData(String data) {
+  //
+  _pCharacteristic->setValue(data.c_str());
 }
 
-void S3Bluetooth::sendText(const char* data) {}
+//
 
-void S3Bluetooth::receiveText(char* data) {}
-
-void S3Bluetooth::setBluetoothName(String btName) {  //
-  _bluetoothName = btName;
-}
-
-String S3Bluetooth::getBluetoothName() {  //
-  return _bluetoothName;
-}
-
-// ===============================================================================
-void _bluetoothDiscoveredCb(BTAdvertisedDevice* discoveredDevice) {
-  s3DiscoveredDevices[discoveredDevicesCount].btAddress =
-      discoveredDevice->getAddress();
-
-  s3DiscoveredDevices[discoveredDevicesCount].btCOD =
-      (discoveredDevice->haveCOD()) ? discoveredDevice->getCOD() : -1;
-
-  s3DiscoveredDevices[discoveredDevicesCount].btName =
-      (discoveredDevice->haveName())
-          ? String(discoveredDevice->getName().c_str())
-          : "Unnamed";
-
-  s3DiscoveredDevices[discoveredDevicesCount].btRSSI =
-      (discoveredDevice->haveRSSI()) ? discoveredDevice->getRSSI() : -1;
-
-  discoveredDevicesCount++;
+void S3DeviceAdvertiseCallback::onResult(BLEAdvertisedDevice advertisedDevice) {
+  DiscoveredDevice dDevice = {
+      advertisedDevice.getAddress().toString().c_str(),
+      (advertisedDevice.haveRSSI()) ? advertisedDevice.getRSSI() : -1,
+      (advertisedDevice.haveName()) ? String(advertisedDevice.getName().c_str())
+                                    : "",
+      advertisedDevice.getServiceUUID(),
+  };
+  discoveredDevices[discoveredDevicesCount++] = dDevice;
 }

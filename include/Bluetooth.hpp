@@ -1,39 +1,42 @@
 #pragma once
 
 #include <Arduino.h>
+#include <BLEAdvertisedDevice.h>
 #include <BLEDevice.h>
-#include <BLEServer.h>
+#include <BLEScan.h>
 #include <BLEUtils.h>
-#include <BluetoothSerial.h>
+#include <string.h>
+
+#include <Config.hpp>
 
 typedef struct {
-  BTAddress btAddress;
-  uint32_t btCOD;
-  String btName;
-  int8_t btRSSI;
+  String btAddress;
+  int rssi;
+  String name;
+  BLEUUID uuid;
 } DiscoveredDevice;
 
-extern DiscoveredDevice s3DiscoveredDevices[10];
 extern int discoveredDevicesCount;
+extern DiscoveredDevice discoveredDevices[10];
 
-class S3Bluetooth : private BluetoothSerial {
+class S3Bluetooth {
  private:
   String _bluetoothName;
+  int _scanTime;
   unsigned long _bluetoothBaud;
-  BluetoothSerial* _bluetooth;
-  BTAdvertisedDevice _discoveredDevices[10];
+  BLEScan* _bleScan;
+  BLECharacteristic *_pCharacteristic;
 
  public:
   S3Bluetooth() = delete;
-  S3Bluetooth(const String btName);
-  void activateBluetooth();
-  void discoverDevices();
-  void connect();
-  void disconnect();
-  void sendText(const char* data);
-  void receiveText(char* data);
-  void setBluetoothName(String btName);
-  String getBluetoothName();
+  S3Bluetooth(String btName, int scanTime = 5);
+  void clientModeInit();
+  void clientScanServers();
+  void clientTerminate();
+  void serverModeInit();
+  void serverSetData(String data);
 };
 
-class S3BluetoothBLE {};
+class S3DeviceAdvertiseCallback : public BLEAdvertisedDeviceCallbacks {
+  void onResult(BLEAdvertisedDevice advertisedDevice);
+};

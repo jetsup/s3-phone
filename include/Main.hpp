@@ -156,9 +156,8 @@ void s3looperTask(void *params) {
     }
 
     if (wifiEnabled) {
-      if (wifiScreenVisible) {
-        s3WiFi.loop();
-      }
+      s3WiFi.loop();
+
       if (!s3WiFi.isConnected()) {
         s3WiFi.reconnect();
       }

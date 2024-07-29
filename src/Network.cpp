@@ -3,7 +3,8 @@
 Network::Network()
     : _previousConnectionRetryTime(0),
       _isConnected(false),
-      _shouldConnect(false) {}
+      _shouldConnect(false),
+      _previousFoundDeviceCount(0) {}
 
 void Network::enableStationMode() {
   WiFi.mode(WIFI_STA);
@@ -20,11 +21,9 @@ uint8_t Network::scanAccessPoints() {
   if (!_isStation) {
     enableStationMode();
   }
-  int foundDevices = WiFi.scanNetworks();
+  int8_t foundDevices = WiFi.scanNetworks();
   if (foundDevices > 0) {
-    // clearStructArray(foundNetworks);
     for (int i = 0; i < foundDevices; i++) {
-      //   discoveredWiFiNames[i] = WiFi.SSID(i);
       strncpy(discoveredWiFiNames[i], String(WiFi.SSID(i)).c_str(),
               MAX_WIFI_NAME_LENGTH);
       discoveredWiFiRSSI[i] = WiFi.RSSI(i);
@@ -36,13 +35,24 @@ uint8_t Network::scanAccessPoints() {
         break;
       }
     }
-  } else {
-    // clear the variables
   }
 
+  if (foundDevices != _previousFoundDeviceCount) {
+    _refreshUI = true;
+  } else {
+    _refreshUI = false;
+  }
+
+  _previousFoundDeviceCount = foundDevices;
   discoveredWiFiCount = foundDevices;
+  DEBUG_PRINTF("Refresh: %d-%d :: Found: %d\n", _refreshUI, shouldRefreshUI(),
+               discoveredWiFiCount);
   return foundDevices;
 }
+
+bool Network::shouldRefreshUI() { return _refreshUI; }
+
+void Network::setRefreshUI(bool refresh) { _refreshUI = refresh; }
 
 void Network::connect(String ssid, String password) {
   _ssid = (char*)ssid.c_str();

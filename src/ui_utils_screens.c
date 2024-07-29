@@ -1,5 +1,8 @@
 #include "ui_utils_screens.h"
 
+// TODO: be used to recreate a WiFi list later
+int wifiScreenListYOffset = 0;
+
 void lv_utils_initScreen(s3_screens_t screen) {
   switch (screen) {
     case SCREEN_HOME:

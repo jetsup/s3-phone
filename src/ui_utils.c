@@ -405,4 +405,30 @@ void lv_utils_populate_list_options(lv_obj_t *list, const char **listOptions,
   }
 }
 
+void lv_utils_refreshWiFiList() {
+  // TODO: Find a way to clear the list
+  // '*' + 'WiFi Name' + ' ' + '(' + 'rssi' + ')'
+  char wifiOption[MAX_WIFI_NAME_LENGTH + 8];
+
+  for (int i = 0; i < discoveredWiFiCount; i++) {
+    memset(wifiOption, 0, sizeof(wifiOption));
+
+    if (!discoveredWiFiOpen[i]) {
+      strcat(wifiOption, "*");
+    }
+    strcat(wifiOption, discoveredWiFiNames[i]);
+    strcat(wifiOption, " (");
+    char rssi[5];
+    itoa(discoveredWiFiRSSI[i], rssi, 10 /*base*/);
+    strcat(wifiOption, rssi);
+    strcat(wifiOption, ")");
+
+    lv_obj_t *btn =
+        lv_list_add_button(ui_listWiFiFoundDevices, LV_SYMBOL_WIFI, wifiOption);
+    lv_obj_set_style_bg_opa(btn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_add_event_cb(btn, ui_event_list_button_cb, LV_EVENT_CLICKED,
+                        "wifi name");
+  }
+}
+
 void lv_utils_resetScreenVisibility() { wifiScreenVisible = false; }

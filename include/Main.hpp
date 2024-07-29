@@ -188,4 +188,9 @@ void s3UILooper() {
 
     ui_utils_updateTimeDate();
   }
+
+  if (s3WiFi.shouldRefreshUI() && wifiScreenVisible && wifiEnabled) {
+    lv_utils_refreshWiFiList();
+    s3WiFi.setRefreshUI(false);
+  }
 }

@@ -1,4 +1,5 @@
 #include "ui.h"
+#include "ui_utils_screens.h"
 
 void ui_settingsNetworkInternetWiFiScreen_screen_init(void) {
   wifiScreenVisible = true;
@@ -25,6 +26,7 @@ void ui_settingsNetworkInternetWiFiScreen_screen_init(void) {
                                 LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_border_opa(ui_panelSettingsNetworkInternetWiFi, 0,
                               LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_center(ui_panelSettingsNetworkInternetWiFi);
 
   lv_obj_t *lblNetworking =
       lv_label_create(ui_panelSettingsNetworkInternetWiFi);
@@ -84,12 +86,13 @@ void ui_settingsNetworkInternetWiFiScreen_screen_init(void) {
   lv_spinner_set_anim_params(ui_spinnerWiFiScanning, 1000, 270);
 
   yOffset += 20;
+  wifiScreenListYOffset = yOffset;
 
   // list
   ui_listWiFiFoundDevices = lv_list_create(ui_panelSettingsNetworkInternetWiFi);
   lv_obj_set_width(ui_listWiFiFoundDevices, 240);
-  lv_obj_set_height(ui_listWiFiFoundDevices, 265);
-  lv_obj_set_x(ui_listWiFiFoundDevices, 0);
+  lv_obj_set_height(ui_listWiFiFoundDevices, 320 - yOffset - 40);
+  lv_obj_set_x(ui_listWiFiFoundDevices, UI_ALIGN_TOP_LEFT_X_OFFSET);
   lv_obj_set_y(ui_listWiFiFoundDevices, yOffset);
   lv_obj_set_align(ui_listWiFiFoundDevices, LV_ALIGN_TOP_LEFT);
   lv_obj_set_style_radius(ui_listWiFiFoundDevices, 0,
@@ -104,10 +107,11 @@ void ui_settingsNetworkInternetWiFiScreen_screen_init(void) {
                                 LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_border_side(ui_listWiFiFoundDevices, LV_BORDER_SIDE_NONE,
                                LV_PART_MAIN | LV_STATE_DEFAULT);
-  lv_obj_center(ui_listWiFiFoundDevices);
   if (!wifiEnabled) {
     lv_obj_add_flag(ui_listWiFiFoundDevices, LV_OBJ_FLAG_HIDDEN);
   }
+
+  lv_utils_refreshWiFiList();
 
   ui_add_bottom_bar(ui_panelSettingsNetworkInternetWiFi, 0xFFFFFF, 10);
 }

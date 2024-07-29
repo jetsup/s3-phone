@@ -249,6 +249,11 @@ void lv_utils_populate_list_options(lv_obj_t *list, const char **listOptions,
                                     const char *callbackData);
 
 /**
+ * @brief Update the WiFi list with new available scanned WiFi connections
+ */
+void lv_utils_refreshWiFiList();
+
+/**
  * @brief Reset the screen visibility variables. This should be called inside
  * the screen transition function
  */

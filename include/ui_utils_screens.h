@@ -1,7 +1,14 @@
 #ifndef UI_UTILS_SCREENS_H_
 #define UI_UTILS_SCREENS_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "ui.h"
+
+// Settings WiFi Screen
+extern int wifiScreenListYOffset;
 
 /**
  * @brief call the initialization function fro the specified `screen`
@@ -19,5 +26,9 @@ lv_obj_t* lv_utils_getScreen(s3_screens_t screen);
  * @brief Get the screen setup function of the specified `screen`
  */
 void* lv_utils_getScreenInit(s3_screens_t screen);
+
+#ifdef __cplusplus
+}
+#endif  // __cplusplus
 
 #endif  // UI_UTILS_SCREENS_H_

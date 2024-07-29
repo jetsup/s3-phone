@@ -18,10 +18,12 @@ class Network {
   char* _ssid;
   const char* _password;
   long _previousConnectionRetryTime;
+  int8_t _previousFoundDeviceCount;
   bool _isConnected;
   bool _shouldConnect;  // whether the user wants to connect to the network
   bool _isStation;
   bool _isAccessPoint;
+  bool _refreshUI = false;
 
  public:
   /**
@@ -45,6 +47,16 @@ class Network {
    * networks array are populated.
    */
   uint8_t scanAccessPoints();
+
+  /**
+   * @brief WiFi detected changed and should refresh the UI
+   */
+  bool shouldRefreshUI();
+
+  /**
+   * @brief Update the variable for refreshing UI
+   */
+  void setRefreshUI(bool refresh);
 
   /**
    * @brief Initialize the network connection and connect to the network

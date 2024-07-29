@@ -493,15 +493,18 @@ void ui_event_button_cb(lv_event_t* e) {
 void ui_event_list_button_cb(lv_event_t* e) {
   lv_event_code_t code = lv_event_get_code(e);
   lv_obj_t* target = lv_event_get_target(e);
-  const char* buttonData = (const char*)e->user_data;
   lv_obj_t* list = lv_obj_get_parent(target);
+
+  const char* buttonData = (const char*)e->user_data;
+  const char* buttonText = lv_list_get_button_text(list, target);
+
+  LV_LOG_USER("'%s'::'%s'", buttonText, buttonData);
 
   if (code == LV_EVENT_CLICKED) {
     if (strcmp(buttonData, "contact option") == 0) {
     } else if (strcmp(buttonData, "contact list") == 0) {
-      const char* contact = lv_list_get_button_text(list, target);
       char contactData[CONTACT_NAME_NUMBER_LENGTH];
-      strcpy(contactData, contact);
+      strcpy(contactData, buttonText);
 
       char* token;
       token = strtok(contactData, contactSeparationDelimeter);
@@ -519,8 +522,6 @@ void ui_event_list_button_cb(lv_event_t* e) {
         lv_label_set_text(ui_lblContactDetailsTitle, (const char*)contactName);
       }
     } else if (strcmp(buttonData, "network option") == 0) {
-      const buttonText = lv_list_get_button_text(list, target);
-
       if (strcmp(buttonText, "WiFi") == 0) {
         if (screenStackPush(SCREEN_SETTINGS_NETWORK_INTERNET,
                             LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
@@ -535,6 +536,12 @@ void ui_event_list_button_cb(lv_event_t* e) {
                             LV_SCR_LOAD_ANIM_MOVE_LEFT, UI_ANIMATION_DURATION,
                             0);
         }
+      }
+    } else if (strcmp(buttonData, "wifi name") == 0) {
+      if (strncmp(buttonText, "*", 1) == 0) {
+        // open a screen for entering the password
+      } else {
+        // open network, connect
       }
     }
   }

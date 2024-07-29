@@ -1,6 +1,8 @@
 #include "ui.h"
 
 void ui_settingsNetworkInternetWiFiScreen_screen_init(void) {
+  wifiScreenVisible = true;
+
   ui_settingsNetworkInternetWiFiScreen = lv_obj_create(NULL);
   lv_obj_remove_flag(ui_settingsNetworkInternetWiFiScreen,
                      LV_OBJ_FLAG_SCROLLABLE);  /// Flags

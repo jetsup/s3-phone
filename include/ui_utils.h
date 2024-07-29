@@ -62,8 +62,16 @@ extern bool bluetoothStatusChanged;
 // Settings Network and Internet
 extern bool wifiEnabled;
 extern bool wifiStatusChanged;
+// So that wifi scanning can be started if need be
+extern bool wifiScreenVisible;
 extern char wifiName[30];
 extern char wifiPassword[30];
+#define MAX_WIFI_DISCOVERABLE 20
+#define MAX_WIFI_NAME_LENGTH 30
+extern char discoveredWiFiNames[MAX_WIFI_DISCOVERABLE][MAX_WIFI_NAME_LENGTH];
+extern int discoveredWiFiRSSI[MAX_WIFI_DISCOVERABLE];
+extern bool discoveredWiFiOpen[MAX_WIFI_DISCOVERABLE];
+extern uint8_t discoveredWiFiCount;
 
 //========================Screen Stack========================
 /**
@@ -227,11 +235,24 @@ void lv_utils_setWiFi(bool wifiState);
 
 /**
  * @brief Add options to a list object
+ * @param list The list object to be populated
+ * @param listOptions The strings array containing the options for the list
+ * @param optionsCount The number of options to be populated, `size of the
+ * array`
+ * @param evt Event callback
+ * @param evtFilter ORed event type to respond to e.g.`LV_EVENT_CLICKED`
+ * @param callbackData The data to be passed to the callback
  */
 void lv_utils_populate_list_options(lv_obj_t *list, const char **listOptions,
                                     int optionsCount, lv_event_t *evt,
                                     lv_event_code_t eventFilter,
                                     const char *callbackData);
+
+/**
+ * @brief Reset the screen visibility variables. This should be called inside
+ * the screen transition function
+ */
+void lv_utils_resetScreenVisibility();
 
 /**
  * @brief Creates a bottom bar with navigation buttons

@@ -51,8 +51,13 @@ bool bluetoothStatusChanged = false;
 // Settings Network and Internet
 bool wifiEnabled = false;
 bool wifiStatusChanged = false;
+bool wifiScreenVisible = false;
 char wifiName[30];
 char wifiPassword[30];
+char discoveredWiFiNames[MAX_WIFI_DISCOVERABLE][MAX_WIFI_NAME_LENGTH];
+int discoveredWiFiRSSI[MAX_WIFI_DISCOVERABLE];
+bool discoveredWiFiOpen[MAX_WIFI_DISCOVERABLE];
+uint8_t discoveredWiFiCount = 0;
 
 //================================Prototypes==============================
 s3_resource_num_t lv_utils_getResourceByID(int id);
@@ -399,3 +404,5 @@ void lv_utils_populate_list_options(lv_obj_t *list, const char **listOptions,
     lv_obj_add_event_cb(btn, evt, eventFilter, callbackData);
   }
 }
+
+void lv_utils_resetScreenVisibility() { wifiScreenVisible = false; }

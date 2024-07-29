@@ -5,7 +5,11 @@
 #include <IPAddress.h>
 #include <NTPClient.h>
 #include <WiFi.h>
+#include <WiFiGeneric.h>
 #include <WiFiUdp.h>
+#include <ui_utils.h>
+
+#include <Utils.hpp>
 
 class Network {
  private:
@@ -16,22 +20,44 @@ class Network {
   long _previousConnectionRetryTime;
   bool _isConnected;
   bool _shouldConnect;  // whether the user wants to connect to the network
+  bool _isStation;
+  bool _isAccessPoint;
 
  public:
-  Network() = delete;
-
   /**
    * @brief Construct a new Network object
-   *
-   * @param ssid The SSID of the network to connect to
-   * @param password The password of the network to connect to
    */
-  Network(char* ssid, const char* password);
+  Network();
+
+  /**
+   * @brief Configure the device as a client to a WiFi
+   */
+  void enableStationMode();
+
+  /**
+   * @brief Configure the devise as an access point
+   */
+  void enableAccessPionMode();
+
+  /**
+   * @brief Scan for available WiFi networks
+   * @return The number of networks found. If the number is not `0`, the
+   * networks array are populated.
+   */
+  uint8_t scanAccessPoints();
 
   /**
    * @brief Initialize the network connection and connect to the network
+   * @param ssid The network to connect to
+   * @param password The password of the network to connect to
    */
-  void connect();
+  void connect(String ssid, String password = "");
+
+  /**
+   * @brief Try to connect to the network with the previously entered
+   * credentials
+   */
+  void reconnect();
 
   /**
    * @brief Disconnect from the network

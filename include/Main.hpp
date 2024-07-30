@@ -82,73 +82,6 @@ void my_touchpad_read(lv_indev_t *indev_driver, lv_indev_data_t *data) {
  */
 void s3looperTask(void *params) {
   while (true) {
-    s3Time.loop();
-    // if (s3Time.isTimeUpdated()) {
-    //   // set lvCurrentTime and lvCurrentDate eg (MM/DD/YYYY Tue)
-    //   // https://cplusplus.com/reference/ctime/strftime/
-    //   sprintf(lvCurrentTime, "%s", s3Time.getTime("%H:%M"));
-    //   sprintf(lvCurrentDate, "%s/%s/%s %s", s3Time.getTime("%d"),
-    //           s3Time.getTime("%m"), s3Time.getTime("%Y"),
-    //           s3Time.getTime("%a"));
-
-    //   ui_utils_updateTimeDate();
-    // }
-
-    if (dateChanged) {
-      s3Time.setTime(s3Time.getSecond(), s3Time.getMinute(), s3Time.getHour(),
-                     newDay, newMonth, newYear, s3Time.getMicros());
-      DEBUG_PRINTF("New Time: %s", s3Time.getTime());
-      dateChanged = false;
-    }
-
-    if (brightnessChanged) {
-      brightnessChanged = false;
-      display.updateBrightness(screenBrightnessLevel);
-      fileSystem.editSetting(FS_VAR_SETTINGS_DISPLAY_BRIGHTNESS,
-                             String(screenBrightnessLevel).c_str());
-    }
-
-    if (timeoutChanged) {
-      timeoutChanged = false;
-      fileSystem.editSetting(FS_VAR_SETTINGS_DISPLAY_TIMEOUT,
-                             String(screenTimeout).c_str());
-    }
-
-    if ((millis() - previousScreenTouch) / 1000 >= screenTimeout &&
-        screenTimeout != TIMEOUT_NEVER) {
-      display.sleep();
-      screenInteractive = false;
-    }
-
-    // if (themeChanged) {
-    //   themeChanged = false;
-    //   fileSystem.editSetting(FS_VAR_SETTINGS_THEMES_THEME_DARK,
-    //                          String(darkThemeSelected).c_str());
-    //   lv_utils_applyTheme();
-    // }
-
-    if (wallpaperChanged) {
-      wallpaperChanged = false;
-      fileSystem.editSetting(FS_VAR_SETTINGS_THEMES_WALLPAPER,
-                             String(screenWallpaperID).c_str());
-    }
-
-    if (fontChanged) {
-      fontChanged = false;
-      fileSystem.editSetting(FS_VAR_SETTINGS_THEMES_FONT_SMALL,
-                             String(sFont).c_str());
-      fileSystem.editSetting(FS_VAR_SETTINGS_THEMES_FONT_MEDIUM,
-                             String(mFont).c_str());
-      fileSystem.editSetting(FS_VAR_SETTINGS_THEMES_FONT_LARGE,
-                             String(lFont).c_str());
-    }
-
-    if (bluetoothStatusChanged) {
-      bluetoothStatusChanged = false;
-      fileSystem.editSetting(FS_VAR_SETTINGS_CONNECTIVITY_BLE,
-                             String(bluetoothLEEnabled).c_str());
-    }
-
     if (wifiStatusChanged) {
       wifiStatusChanged = false;
       fileSystem.editSetting(FS_VAR_SETTINGS_NETWORKING_WIFI_STATE,
@@ -170,6 +103,73 @@ void s3looperTask(void *params) {
  * that should only run on `main loop` thread.
  */
 void s3UILooper() {
+  s3Time.loop();
+  // if (s3Time.isTimeUpdated()) {
+  //   // set lvCurrentTime and lvCurrentDate eg (MM/DD/YYYY Tue)
+  //   // https://cplusplus.com/reference/ctime/strftime/
+  //   sprintf(lvCurrentTime, "%s", s3Time.getTime("%H:%M"));
+  //   sprintf(lvCurrentDate, "%s/%s/%s %s", s3Time.getTime("%d"),
+  //           s3Time.getTime("%m"), s3Time.getTime("%Y"),
+  //           s3Time.getTime("%a"));
+
+  //   ui_utils_updateTimeDate();
+  // }
+
+  if (dateChanged) {
+    s3Time.setTime(s3Time.getSecond(), s3Time.getMinute(), s3Time.getHour(),
+                   newDay, newMonth, newYear, s3Time.getMicros());
+    DEBUG_PRINTF("New Time: %s", s3Time.getTime());
+    dateChanged = false;
+  }
+
+  if (brightnessChanged) {
+    brightnessChanged = false;
+    display.updateBrightness(screenBrightnessLevel);
+    fileSystem.editSetting(FS_VAR_SETTINGS_DISPLAY_BRIGHTNESS,
+                           String(screenBrightnessLevel).c_str());
+  }
+
+  if (timeoutChanged) {
+    timeoutChanged = false;
+    fileSystem.editSetting(FS_VAR_SETTINGS_DISPLAY_TIMEOUT,
+                           String(screenTimeout).c_str());
+  }
+
+  if ((millis() - previousScreenTouch) / 1000 >= screenTimeout &&
+      screenTimeout != TIMEOUT_NEVER) {
+    display.sleep();
+    screenInteractive = false;
+  }
+
+  // if (themeChanged) {
+  //   themeChanged = false;
+  //   fileSystem.editSetting(FS_VAR_SETTINGS_THEMES_THEME_DARK,
+  //                          String(darkThemeSelected).c_str());
+  //   lv_utils_applyTheme();
+  // }
+
+  if (wallpaperChanged) {
+    wallpaperChanged = false;
+    fileSystem.editSetting(FS_VAR_SETTINGS_THEMES_WALLPAPER,
+                           String(screenWallpaperID).c_str());
+  }
+
+  if (fontChanged) {
+    fontChanged = false;
+    fileSystem.editSetting(FS_VAR_SETTINGS_THEMES_FONT_SMALL,
+                           String(sFont).c_str());
+    fileSystem.editSetting(FS_VAR_SETTINGS_THEMES_FONT_MEDIUM,
+                           String(mFont).c_str());
+    fileSystem.editSetting(FS_VAR_SETTINGS_THEMES_FONT_LARGE,
+                           String(lFont).c_str());
+  }
+
+  if (bluetoothStatusChanged) {
+    bluetoothStatusChanged = false;
+    fileSystem.editSetting(FS_VAR_SETTINGS_CONNECTIVITY_BLE,
+                           String(bluetoothLEEnabled).c_str());
+  }
+
   if (themeChanged) {
     themeChanged = false;
     fileSystem.editSetting(FS_VAR_SETTINGS_THEMES_THEME_DARK,

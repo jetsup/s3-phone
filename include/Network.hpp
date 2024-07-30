@@ -8,11 +8,13 @@
 #include <WiFiGeneric.h>
 #include <WiFiUdp.h>
 #include <ui_utils.h>
+#include <Config.hpp>
 
 #include <Utils.hpp>
 
 class Network {
  private:
+ String _hostname;
   IPAddress _localIPAddress;
   IPAddress _gatewayIPAddress;
   char* _ssid;
@@ -24,12 +26,18 @@ class Network {
   bool _isStation;
   bool _isAccessPoint;
   bool _refreshUI = false;
+  bool _scanning = false;
 
  public:
   /**
    * @brief Construct a new Network object
    */
-  Network();
+  Network(String hostname=S3PHONE_MODEL_NAME);
+
+  /**
+   * @brief Destroy and free all variables and memory
+   */
+  ~Network();
 
   /**
    * @brief Configure the device as a client to a WiFi

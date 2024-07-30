@@ -1,10 +1,15 @@
 #include <Network.hpp>
 
-Network::Network()
+Network::Network(String hostname)
     : _previousConnectionRetryTime(0),
       _isConnected(false),
       _shouldConnect(false),
-      _previousFoundDeviceCount(0) {}
+      _previousFoundDeviceCount(0),
+      _hostname(hostname) {}
+
+Network::~Network() {
+  //
+}
 
 void Network::enableStationMode() {
   WiFi.mode(WIFI_STA);
@@ -17,11 +22,15 @@ void Network::enableAccessPionMode() {
 }
 
 uint8_t Network::scanAccessPoints() {
-  //
-  if (!_isStation) {
-    enableStationMode();
+  if (!_scanning) {
+    if (!_isStation) {
+      enableStationMode();
+    }
+    WiFi.scanNetworks(true, true);
+    _scanning = true;
   }
-  int8_t foundDevices = WiFi.scanNetworks();
+
+  int16_t foundDevices = WiFi.scanComplete();
   if (foundDevices > 0) {
     for (int i = 0; i < foundDevices; i++) {
       strncpy(discoveredWiFiNames[i], String(WiFi.SSID(i)).c_str(),
@@ -35,18 +44,20 @@ uint8_t Network::scanAccessPoints() {
         break;
       }
     }
+    _scanning = false;
+    
+    if (foundDevices != _previousFoundDeviceCount) {
+      _refreshUI = true;
+    } else {
+      _refreshUI = false;
+    }
+
+    _previousFoundDeviceCount = foundDevices;
+    discoveredWiFiCount = foundDevices;
+    DEBUG_PRINTF("Refresh: %d-%d :: Found: %d\n", _refreshUI, shouldRefreshUI(),
+                 discoveredWiFiCount);
   }
 
-  if (foundDevices != _previousFoundDeviceCount) {
-    _refreshUI = true;
-  } else {
-    _refreshUI = false;
-  }
-
-  _previousFoundDeviceCount = foundDevices;
-  discoveredWiFiCount = foundDevices;
-  DEBUG_PRINTF("Refresh: %d-%d :: Found: %d\n", _refreshUI, shouldRefreshUI(),
-               discoveredWiFiCount);
   return foundDevices;
 }
 
@@ -62,11 +73,13 @@ void Network::connect(String ssid, String password) {
   _isConnected = false;
   _shouldConnect = true;
 
+  WiFi.setHostname(_hostname.c_str());
   WiFi.begin(_ssid, _password);
 }
 
 void Network::reconnect() {
   if (_shouldConnect) {
+    WiFi.setHostname(_hostname.c_str());
     WiFi.begin(_ssid, _password);
   }
 }

@@ -27,7 +27,7 @@ static Display display(TFT_CLK, TFT_MOSI, TFT_MISO, TFT_CS, TFT_DC, TFT_RST,
                        TFT_LED, TOUCH_CS, TOUCH_CLK, TOUCH_DIN, TOUCH_DO);
 S3Time s3Time("2024-11-01 14:40:56", 3);
 FileSystem fileSystem(LittleFS);
-Network s3WiFi;
+Network *s3WiFi;
 
 unsigned int lastTickMillis = 0;
 
@@ -86,13 +86,32 @@ void s3looperTask(void *params) {
       wifiStatusChanged = false;
       fileSystem.editSetting(FS_VAR_SETTINGS_NETWORKING_WIFI_STATE,
                              String(wifiEnabled).c_str());
+
+      if (wifiEnabled) {
+        // create the radio on
+        DEBUG_PRINTF("WiFi 5: %d\n", s3WiFi == nullptr)
+        s3WiFi = new Network();
+        wifiReady = true;
+        DEBUG_PRINTF("WiFi 6: %d\n", s3WiFi == nullptr)
+      } else {
+        // destroy it
+        DEBUG_PRINTF("WiFi 1: %d\n", s3WiFi == nullptr)
+        if (s3WiFi != nullptr) {
+          DEBUG_PRINTF("WiFi 2: %d\n", s3WiFi == nullptr)
+          delete s3WiFi;
+          DEBUG_PRINTF("WiFi 3: %d\n", s3WiFi == nullptr)
+          s3WiFi = nullptr;
+          DEBUG_PRINTF("WiFi 4: %d\n", s3WiFi == nullptr)
+          wifiReady = false;
+        }
+      }
     }
 
-    if (wifiEnabled) {
-      s3WiFi.loop();
+    if (wifiEnabled && wifiReady) {
+      s3WiFi->loop();
 
-      if (!s3WiFi.isConnected()) {
-        s3WiFi.reconnect();
+      if (!s3WiFi->isConnected()) {
+        s3WiFi->reconnect();
       }
     }
   }
@@ -188,8 +207,10 @@ void s3UILooper() {
     ui_utils_updateTimeDate();
   }
 
-  if (s3WiFi.shouldRefreshUI() && wifiScreenVisible && wifiEnabled) {
-    lv_utils_refreshWiFiList();
-    s3WiFi.setRefreshUI(false);
+  if (wifiScreenVisible && wifiEnabled && wifiReady) {
+    if (s3WiFi->shouldRefreshUI()) {
+      lv_utils_refreshWiFiList();
+      s3WiFi->setRefreshUI(false);
+    }
   }
 }

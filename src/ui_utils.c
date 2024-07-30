@@ -49,7 +49,8 @@ bool bluetoothLEEnabled = false;
 bool bluetoothStatusChanged = false;
 
 // Settings Network and Internet
-bool wifiEnabled = false;
+volatile bool wifiEnabled = false;
+bool wifiReady = false;
 bool wifiStatusChanged = false;
 bool wifiScreenVisible = false;
 char wifiName[30];

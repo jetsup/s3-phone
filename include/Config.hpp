@@ -1,6 +1,8 @@
 #ifndef CONFIG_HPP_
 #define CONFIG_HPP_
 
+#define S3PHONE_MODEL_NAME "s3phone"
+
 // IO
 #define S3_PHONE_ANALOG_RESOLUTION 12
 

@@ -60,7 +60,8 @@ extern bool bluetoothLEEnabled;
 extern bool bluetoothStatusChanged;
 
 // Settings Network and Internet
-extern bool wifiEnabled;
+extern volatile bool wifiEnabled;
+extern bool wifiReady;
 extern bool wifiStatusChanged;
 // So that wifi scanning can be started if need be
 extern bool wifiScreenVisible;

@@ -1,8 +1,5 @@
 #include "ui_utils_screens.h"
 
-// TODO: be used to recreate a WiFi list later
-int wifiScreenListYOffset = 0;
-
 void lv_utils_initScreen(s3_screens_t screen) {
   switch (screen) {
     case SCREEN_HOME:
@@ -46,6 +43,9 @@ void lv_utils_initScreen(s3_screens_t screen) {
       return;
     case SCREEN_SETTINGS_NETWORK_INTERNET_WIFI:
       ui_settingsNetworkInternetWiFiScreen_screen_init();
+      return;
+    case SCREEN_SETTINGS_NETWORK_INTERNET_WIFI_PASSWORD:
+      ui_settingsNetworkWiFiPasswordScreen_screen_init();
       return;
     case SCREEN_SETTINGS_NETWORK_INTERNET_GPRS:
       ui_settingsNetworkInternetGPRSScreen_screen_init();
@@ -158,6 +158,8 @@ lv_obj_t* lv_utils_getScreen(s3_screens_t screen) {
       return ui_settingsNetworkInternetScreen;
     case SCREEN_SETTINGS_NETWORK_INTERNET_WIFI:
       return ui_settingsNetworkInternetWiFiScreen;
+    case SCREEN_SETTINGS_NETWORK_INTERNET_WIFI_PASSWORD:
+      return ui_settingsNetworkWiFiPasswordScreen;
     case SCREEN_SETTINGS_NETWORK_INTERNET_GPRS:
       return ui_settingsNetworkInternetGPRSScreen;
     case SCREEN_SETTINGS_DISPLAY:

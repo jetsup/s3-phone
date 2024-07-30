@@ -35,6 +35,9 @@
 #define SERVICE_UUID "7668d2f7-0a48-40f4-ad1d-beff839e6bf0"
 #define CHARACTERISTIC_UUID "98f9284b-6dbe-42f1-a3d6-319d964b76f2"
 
+// WIFI
+#define S3WIFI_RECONNECT_TIMEOUT (10 * 1000)  // ms
+
 // File System
 #define FILESYSTEM_FORMAT_ON_FAIL 1
 

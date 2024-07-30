@@ -7,9 +7,6 @@ extern "C" {
 
 #include "ui.h"
 
-// Settings WiFi Screen
-extern int wifiScreenListYOffset;
-
 /**
  * @brief call the initialization function fro the specified `screen`
  * @param screen The screen to initialize

@@ -64,11 +64,13 @@ extern volatile bool wifiEnabled;
 extern bool wifiReady;
 extern bool wifiStatusChanged;
 // So that wifi scanning can be started if need be
-extern bool wifiScreenVisible;
-extern char wifiName[30];
-extern char wifiPassword[30];
 #define MAX_WIFI_DISCOVERABLE 20
-#define MAX_WIFI_NAME_LENGTH 30
+#define MAX_WIFI_NAME_LENGTH 15
+#define MAX_WIFI_PASSWORD_LENGTH 30
+extern bool wifiScreenVisible;
+extern char wifiName[MAX_WIFI_NAME_LENGTH];
+extern char wifiPassword[MAX_WIFI_PASSWORD_LENGTH];
+extern bool utilsConnectToWiFi;
 extern char discoveredWiFiNames[MAX_WIFI_DISCOVERABLE][MAX_WIFI_NAME_LENGTH];
 extern int discoveredWiFiRSSI[MAX_WIFI_DISCOVERABLE];
 extern bool discoveredWiFiOpen[MAX_WIFI_DISCOVERABLE];
@@ -80,9 +82,7 @@ extern uint8_t discoveredWiFiCount;
  */
 typedef struct {
   s3_screens_t screen;
-  lv_obj_t *previousScreen;
   lv_screen_load_anim_t transitionAnimation;
-  void (*previousScreenInit)(void);
 } ScreenStackElement;
 
 typedef struct {
@@ -253,6 +253,12 @@ void lv_utils_populate_list_options(lv_obj_t *list, const char **listOptions,
  * @brief Update the WiFi list with new available scanned WiFi connections
  */
 void lv_utils_refreshWiFiList();
+
+/**
+ * @brief Trigger the main looper to try connecting to the WiFi with the set
+ * `wifiName` and `wifiPassword`
+ */
+void lv_utils_connectWiFi();
 
 /**
  * @brief Reset the screen visibility variables. This should be called inside

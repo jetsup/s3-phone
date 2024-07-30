@@ -8,13 +8,13 @@
 #include <WiFiGeneric.h>
 #include <WiFiUdp.h>
 #include <ui_utils.h>
-#include <Config.hpp>
 
+#include <Config.hpp>
 #include <Utils.hpp>
 
 class Network {
  private:
- String _hostname;
+  String _hostname;
   IPAddress _localIPAddress;
   IPAddress _gatewayIPAddress;
   char* _ssid;
@@ -32,7 +32,7 @@ class Network {
   /**
    * @brief Construct a new Network object
    */
-  Network(String hostname=S3PHONE_MODEL_NAME);
+  Network(String hostname = S3PHONE_MODEL_NAME);
 
   /**
    * @brief Destroy and free all variables and memory
@@ -67,6 +67,12 @@ class Network {
   void setRefreshUI(bool refresh);
 
   /**
+   * @brief Update the hostname for which this device will be identified with in
+   * the local network
+   */
+  void setHostname(String hostname);
+
+  /**
    * @brief Initialize the network connection and connect to the network
    * @param ssid The network to connect to
    * @param password The password of the network to connect to
@@ -96,6 +102,13 @@ class Network {
    * @return false if the device is not connected to the network
    */
   bool isConnected();
+
+  /**
+   * @brief Get the status of the WiFi radio
+   * @return `true` if the system had tried to connect and there are credentials
+   * stored. `false` if the system has not tried to connect to a network.
+   */
+  bool shouldConnect();
 
   /**
    * @brief Set whether the device should connect to the network

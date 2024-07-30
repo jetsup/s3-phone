@@ -197,16 +197,16 @@ void ui_event_textarea_cb(lv_event_t* e) {
   const char* textData = (const char*)e->user_data;
 
   if (code == LV_EVENT_CLICKED) {
-    if (strcmp(textData, "contact add name") == 0) {
+    if (strcmp(textData, "full") == 0) {
       if (ui_keyboard_full == NULL) {
-        ui_keyboard_full = lv_keyboard_create(lv_scr_act());
+        ui_keyboard_full = lv_keyboard_create(lv_screen_active());
         lv_obj_add_event_cb(ui_keyboard_full, ui_event_keyboard_cb,
-                            LV_EVENT_ALL, NULL);
+                            LV_EVENT_ALL, "keyboard full");
       }
       lv_keyboard_set_textarea(ui_keyboard_full, ta);
-    } else if (strcmp(textData, "contact add num") == 0) {
+    } else if (strcmp(textData, "num") == 0) {
       if (ui_keyboard_num == NULL) {
-        ui_keyboard_num = lv_keyboard_create(lv_scr_act());
+        ui_keyboard_num = lv_keyboard_create(lv_screen_active());
         lv_obj_add_event_cb(ui_keyboard_num, ui_event_keyboard_cb, LV_EVENT_ALL,
                             "keyboard num");
         lv_keyboard_set_mode(ui_keyboard_num, LV_KEYBOARD_MODE_NUMBER);
@@ -216,12 +216,12 @@ void ui_event_textarea_cb(lv_event_t* e) {
   }
 
   if (code == LV_EVENT_DEFOCUSED) {
-    if (strcmp(textData, "contact add name") == 0) {
+    if (strcmp(textData, "full") == 0) {
       if (ui_keyboard_full) {
         lv_obj_del(ui_keyboard_full);
         ui_keyboard_full = NULL;
       }
-    } else if (strcmp(textData, "contact add name") == 0) {
+    } else if (strcmp(textData, "num") == 0) {
       if (ui_keyboard_num) {
         lv_obj_del(ui_keyboard_num);
         ui_keyboard_num = NULL;
@@ -237,10 +237,10 @@ void ui_event_keyboard_cb(lv_event_t* e) {
 
   if (code == LV_EVENT_READY || code == LV_EVENT_CANCEL) {
     if (strcmp(keyboardData, "keyboard full") == 0) {
-      lv_obj_del(ui_keyboard_full);
+      lv_obj_delete(ui_keyboard_full);
       ui_keyboard_full = NULL;
     } else if (strcmp(keyboardData, "keyboard num") == 0) {
-      lv_obj_del(ui_keyboard_num);
+      lv_obj_delete(ui_keyboard_num);
       ui_keyboard_num = NULL;
     } else if (strcmp(keyboardData, "sim unlock") == 0) {
       lv_obj_t* uData = lv_event_get_user_data(e);
@@ -486,6 +486,16 @@ void ui_event_button_cb(lv_event_t* e) {
                             0);
         }
       }
+    } else if (strcmp(buttonData, "wifi connect") == 0) {
+      // TODO: Display loading until connected, if connected go to prev screen
+      const char* enteredPassword = lv_textarea_get_text(ui_txtWiFiPassword);
+      strcpy(wifiPassword, enteredPassword);
+
+      lv_utils_connectWiFi();
+
+      ScreenStackElement prevScreen = screenStackPop();
+      _ui_screen_change(prevScreen.screen, prevScreen.transitionAnimation,
+                        UI_ANIMATION_DURATION, 0);
     }
   }
 }
@@ -497,8 +507,6 @@ void ui_event_list_button_cb(lv_event_t* e) {
 
   const char* buttonData = (const char*)e->user_data;
   const char* buttonText = lv_list_get_button_text(list, target);
-
-  LV_LOG_USER("'%s'::'%s'", buttonText, buttonData);
 
   if (code == LV_EVENT_CLICKED) {
     if (strcmp(buttonData, "contact option") == 0) {
@@ -537,12 +545,33 @@ void ui_event_list_button_cb(lv_event_t* e) {
                             0);
         }
       }
-    } else if (strcmp(buttonData, "wifi name") == 0) {
-      if (strncmp(buttonText, "*", 1) == 0) {
-        // open a screen for entering the password
-      } else {
-        // open network, connect
-      }
     }
+  }
+}
+
+void ui_event_list_wifi_cb(lv_event_t* e) {
+  lv_event_code_t code = lv_event_get_code(e);
+  lv_obj_t* target = lv_event_get_target(e);
+  lv_obj_t* list = lv_obj_get_parent(target);
+
+  const char* wifiNameData = (char*)e->user_data;
+  const char* btnText = lv_list_get_button_text(list, target);
+
+  LV_LOG_USER("WiFi Data: `%s`::`%d`", wifiNameData,
+              strncmp(btnText, "*", 1) == 0);
+
+  if (strncmp(btnText, "*", 1) == 0) {
+    strcpy(wifiName, wifiNameData);
+
+    if (screenStackPush(SCREEN_SETTINGS_NETWORK_INTERNET_WIFI,
+                        LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
+      _ui_screen_change(SCREEN_SETTINGS_NETWORK_INTERNET_WIFI_PASSWORD,
+                        LV_SCR_LOAD_ANIM_MOVE_LEFT, UI_ANIMATION_DURATION, 0);
+    }
+  } else {
+    strcpy(wifiName, wifiNameData);
+    strcpy(wifiPassword, "");  // clear the previous password
+
+    lv_utils_connectWiFi();
   }
 }

@@ -86,7 +86,6 @@ void ui_settingsNetworkInternetWiFiScreen_screen_init(void) {
   lv_spinner_set_anim_params(ui_spinnerWiFiScanning, 1000, 270);
 
   yOffset += 20;
-  wifiScreenListYOffset = yOffset;
 
   // list
   ui_listWiFiFoundDevices = lv_list_create(ui_panelSettingsNetworkInternetWiFi);

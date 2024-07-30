@@ -45,7 +45,7 @@ uint8_t Network::scanAccessPoints() {
       }
     }
     _scanning = false;
-    
+
     if (foundDevices != _previousFoundDeviceCount) {
       _refreshUI = true;
     } else {
@@ -64,6 +64,8 @@ uint8_t Network::scanAccessPoints() {
 bool Network::shouldRefreshUI() { return _refreshUI; }
 
 void Network::setRefreshUI(bool refresh) { _refreshUI = refresh; }
+
+void Network::setHostname(String hostname) { _hostname = hostname; }
 
 void Network::connect(String ssid, String password) {
   _ssid = (char*)ssid.c_str();
@@ -88,14 +90,16 @@ void Network::disconnect() { WiFi.disconnect(); }
 
 bool Network::isConnected() { return _isConnected; }
 
+bool Network::shouldConnect() { return _shouldConnect; }
+
 void Network::loop() {
   if (_shouldConnect && !_isConnected) {
-    if (millis() - _previousConnectionRetryTime > 5000) {
+    if (millis() - _previousConnectionRetryTime > S3WIFI_RECONNECT_TIMEOUT) {
       _previousConnectionRetryTime = millis();
       reconnect();
     }
   } else if (!_shouldConnect && _isConnected) {
-    if (millis() - _previousConnectionRetryTime > 5000) {
+    if (millis() - _previousConnectionRetryTime > S3WIFI_RECONNECT_TIMEOUT) {
       _previousConnectionRetryTime = millis();
       disconnect();
     }
@@ -106,7 +110,12 @@ void Network::loop() {
 
     _localIPAddress = WiFi.localIP();
     _gatewayIPAddress = WiFi.gatewayIP();
-  } else {
+
+    DEBUG_PRINTF("IP: %s GIP: %s\n", _localIPAddress.toString(),
+                 _gatewayIPAddress.toString());
+  }
+  
+  if (WiFi.status() != WL_CONNECTED) {
     _isConnected = false;
   }
 

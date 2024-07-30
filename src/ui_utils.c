@@ -53,8 +53,9 @@ volatile bool wifiEnabled = false;
 bool wifiReady = false;
 bool wifiStatusChanged = false;
 bool wifiScreenVisible = false;
-char wifiName[30];
-char wifiPassword[30];
+char wifiName[MAX_WIFI_NAME_LENGTH];
+char wifiPassword[MAX_WIFI_PASSWORD_LENGTH];
+bool utilsConnectToWiFi = false;
 char discoveredWiFiNames[MAX_WIFI_DISCOVERABLE][MAX_WIFI_NAME_LENGTH];
 int discoveredWiFiRSSI[MAX_WIFI_DISCOVERABLE];
 bool discoveredWiFiOpen[MAX_WIFI_DISCOVERABLE];
@@ -294,8 +295,7 @@ bool screenStackPush(s3_screens_t screen,
 ScreenStackElement screenStackPop() {
   if (screenStackIsEmpty()) {
     screenStack.top = -1;
-    return (ScreenStackElement){SCREEN_HOME, NULL, LV_SCR_LOAD_ANIM_MOVE_RIGHT,
-                                NULL};
+    return (ScreenStackElement){SCREEN_HOME, LV_SCR_LOAD_ANIM_MOVE_RIGHT};
   }
   return screenStack.screenStackElements[screenStack.top--];
 }
@@ -407,7 +407,8 @@ void lv_utils_populate_list_options(lv_obj_t *list, const char **listOptions,
 }
 
 void lv_utils_refreshWiFiList() {
-  // TODO: Find a way to clear the list
+  lv_obj_clean(ui_listWiFiFoundDevices);
+
   // '*' + 'WiFi Name' + ' ' + '(' + 'rssi' + ')'
   char wifiOption[MAX_WIFI_NAME_LENGTH + 8];
 
@@ -418,6 +419,7 @@ void lv_utils_refreshWiFiList() {
       strcat(wifiOption, "*");
     }
     strcat(wifiOption, discoveredWiFiNames[i]);
+
     strcat(wifiOption, " (");
     char rssi[5];
     itoa(discoveredWiFiRSSI[i], rssi, 10 /*base*/);
@@ -427,9 +429,11 @@ void lv_utils_refreshWiFiList() {
     lv_obj_t *btn =
         lv_list_add_button(ui_listWiFiFoundDevices, LV_SYMBOL_WIFI, wifiOption);
     lv_obj_set_style_bg_opa(btn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_add_event_cb(btn, ui_event_list_button_cb, LV_EVENT_CLICKED,
-                        "wifi name");
+    lv_obj_add_event_cb(btn, ui_event_list_wifi_cb, LV_EVENT_CLICKED,
+                        (const char *)discoveredWiFiNames[i]);
   }
 }
+
+void lv_utils_connectWiFi() { utilsConnectToWiFi = true; }
 
 void lv_utils_resetScreenVisibility() { wifiScreenVisible = false; }

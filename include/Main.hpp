@@ -88,20 +88,12 @@ void s3looperTask(void *params) {
                              String(wifiEnabled).c_str());
 
       if (wifiEnabled) {
-        // create the radio on
-        DEBUG_PRINTF("WiFi 5: %d\n", s3WiFi == nullptr)
         s3WiFi = new Network();
         wifiReady = true;
-        DEBUG_PRINTF("WiFi 6: %d\n", s3WiFi == nullptr)
       } else {
-        // destroy it
-        DEBUG_PRINTF("WiFi 1: %d\n", s3WiFi == nullptr)
         if (s3WiFi != nullptr) {
-          DEBUG_PRINTF("WiFi 2: %d\n", s3WiFi == nullptr)
           delete s3WiFi;
-          DEBUG_PRINTF("WiFi 3: %d\n", s3WiFi == nullptr)
           s3WiFi = nullptr;
-          DEBUG_PRINTF("WiFi 4: %d\n", s3WiFi == nullptr)
           wifiReady = false;
         }
       }
@@ -110,8 +102,9 @@ void s3looperTask(void *params) {
     if (wifiEnabled && wifiReady) {
       s3WiFi->loop();
 
-      if (!s3WiFi->isConnected()) {
-        s3WiFi->reconnect();
+      if (utilsConnectToWiFi) {
+        s3WiFi->connect(String(wifiName), String(wifiPassword));
+        utilsConnectToWiFi = false;
       }
     }
   }
@@ -123,16 +116,6 @@ void s3looperTask(void *params) {
  */
 void s3UILooper() {
   s3Time.loop();
-  // if (s3Time.isTimeUpdated()) {
-  //   // set lvCurrentTime and lvCurrentDate eg (MM/DD/YYYY Tue)
-  //   // https://cplusplus.com/reference/ctime/strftime/
-  //   sprintf(lvCurrentTime, "%s", s3Time.getTime("%H:%M"));
-  //   sprintf(lvCurrentDate, "%s/%s/%s %s", s3Time.getTime("%d"),
-  //           s3Time.getTime("%m"), s3Time.getTime("%Y"),
-  //           s3Time.getTime("%a"));
-
-  //   ui_utils_updateTimeDate();
-  // }
 
   if (dateChanged) {
     s3Time.setTime(s3Time.getSecond(), s3Time.getMinute(), s3Time.getHour(),
@@ -159,13 +142,6 @@ void s3UILooper() {
     display.sleep();
     screenInteractive = false;
   }
-
-  // if (themeChanged) {
-  //   themeChanged = false;
-  //   fileSystem.editSetting(FS_VAR_SETTINGS_THEMES_THEME_DARK,
-  //                          String(darkThemeSelected).c_str());
-  //   lv_utils_applyTheme();
-  // }
 
   if (wallpaperChanged) {
     wallpaperChanged = false;
@@ -196,7 +172,6 @@ void s3UILooper() {
     lv_utils_applyTheme();
   }
 
-  //
   if (s3Time.isTimeUpdated()) {
     // set lvCurrentTime and lvCurrentDate eg (MM/DD/YYYY Tue)
     // https://cplusplus.com/reference/ctime/strftime/

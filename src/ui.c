@@ -183,6 +183,12 @@ lv_obj_t* ui_lblWiFiScanning;
 lv_obj_t* ui_spinnerWiFiScanning;
 lv_obj_t* ui_listWiFiFoundDevices;
 
+// SCREEN: ui_settingsNetworkWiFiPasswordScreen
+void ui_settingsNetworkWiFiPasswordScreen_screen_init(void);
+lv_obj_t* ui_settingsNetworkWiFiPasswordScreen;
+lv_obj_t* ui_panelSettingsNetworkWiFiPassword;
+lv_obj_t *ui_txtWiFiPassword;
+
 // SCREEN: ui_settingsNetworkInternetGPRSScreen
 void ui_settingsNetworkInternetGPRSScreen_screen_init(void);
 lv_obj_t* ui_settingsNetworkInternetGPRSScreen;

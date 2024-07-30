@@ -191,6 +191,11 @@ extern lv_obj_t* ui_panelSettingsNetworkInternetWiFi;
 extern lv_obj_t* ui_lblWiFiScanning;
 extern lv_obj_t* ui_spinnerWiFiScanning;
 extern lv_obj_t* ui_listWiFiFoundDevices;
+// SCREEN: ui_settingsNetworkWiFiPasswordScreen
+void ui_settingsNetworkWiFiPasswordScreen_screen_init(void);
+extern lv_obj_t* ui_settingsNetworkWiFiPasswordScreen;
+extern lv_obj_t* ui_panelSettingsNetworkWiFiPassword;
+extern lv_obj_t *ui_txtWiFiPassword;
 // SCREEN: ui_settingsNetworkInternetGPRSScreen
 void ui_settingsNetworkInternetGPRSScreen_screen_init(void);
 extern lv_obj_t* ui_settingsNetworkInternetGPRSScreen;
@@ -312,6 +317,9 @@ void ui_event_uiComponentsChangeEvent(lv_event_t* e);
 void ui_event_slider_cb(lv_event_t* e);
 void ui_event_dropdown_cb(lv_event_t* e);
 void ui_event_label_cb(lv_event_t* e);
+void ui_event_button_cb(lv_event_t* e);
+void ui_event_list_button_cb(lv_event_t* e);
+void ui_event_list_wifi_cb(lv_event_t* e);
 
 extern lv_obj_t* ui____initial_actions0;
 

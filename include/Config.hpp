@@ -45,6 +45,7 @@
 #define FS_SETTINGS_THEMES_FILEPATH "/system/settings/themes.json"
 #define FS_SETTINGS_CONNECTIVITY_FILEPATH "/system/settings/connectivity.json"
 #define FS_SETTINGS_NETWORK_INTERNET_FILEPATH "/system/settings/networking.json"
+#define FS_SETTINGS_NETWORK_WIFI_CREDENTIALS "/system/credentials/wifi.json"
 
 #define FS_VAR_SETTINGS_DISPLAY_BRIGHTNESS "brightness"
 #define FS_DEF_SETTINGS_DISPLAY_BRIGHTNESS "120"

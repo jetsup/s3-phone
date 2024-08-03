@@ -106,6 +106,12 @@ void s3looperTask(void *params) {
         s3WiFi->connect(String(wifiName), String(wifiPassword));
         utilsConnectToWiFi = false;
       }
+
+      if (!s3WiFi->credentialsSaved()) {
+        fileSystem.saveCredentials(CREDENTIALS_WIFI, s3WiFi->getSSID().c_str(),
+                                   s3WiFi->getPassword().c_str());
+        s3WiFi->setCredentialsSaved(true);
+      }
     }
   }
 }

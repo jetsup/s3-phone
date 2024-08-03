@@ -79,6 +79,24 @@ void Network::connect(String ssid, String password) {
   WiFi.begin(_ssid, _password);
 }
 
+String Network::getPassword() {
+  if (_isConnected) {
+    return _password;
+  }
+  return String();
+}
+
+String Network::getSSID() {
+  if (_isConnected) {
+    return _ssid;
+  }
+  return String();
+}
+
+bool Network::credentialsSaved() { return _credentialsSaved; }
+
+void Network::setCredentialsSaved(bool saved) { _credentialsSaved = saved; }
+
 void Network::reconnect() {
   if (_shouldConnect) {
     WiFi.setHostname(_hostname.c_str());
@@ -86,7 +104,10 @@ void Network::reconnect() {
   }
 }
 
-void Network::disconnect() { WiFi.disconnect(); }
+void Network::disconnect() {
+  WiFi.disconnect();
+  _credentialsSaved = false;
+}
 
 bool Network::isConnected() { return _isConnected; }
 
@@ -114,7 +135,7 @@ void Network::loop() {
     DEBUG_PRINTF("IP: %s GIP: %s\n", _localIPAddress.toString(),
                  _gatewayIPAddress.toString());
   }
-  
+
   if (WiFi.status() != WL_CONNECTED) {
     _isConnected = false;
   }

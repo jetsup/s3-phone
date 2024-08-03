@@ -11,6 +11,10 @@
 
 #include "ui_utils.h"
 
+typedef enum {
+  CREDENTIALS_WIFI,
+} filesystem_credentials_t;
+
 class FileSystem {
  private:
   size_t _totalSpaceBytes;
@@ -39,7 +43,7 @@ class FileSystem {
    * @return Setting value
    */
   String _readSetting(const char* variable, const char* defaultValue,
-                     bool createIfUnavailable = true);
+                      bool createIfUnavailable = true);
 
  public:
   /**
@@ -110,4 +114,7 @@ class FileSystem {
    * @brief Delete a file from the file system
    */
   void deleteFile(const char* path);
+
+  void saveCredentials(filesystem_credentials_t type, const char* key,
+                       const char* value);
 };

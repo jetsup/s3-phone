@@ -286,3 +286,30 @@ void FileSystem::deleteFile(const char* path) {
     DEBUG_PRINTLN("Delete failed");
   }
 }
+
+void FileSystem::saveCredentials(filesystem_credentials_t type, const char* key,
+                                 const char* value) {
+  String filename = "";
+  switch (type) {
+    case CREDENTIALS_WIFI:
+      filename = FS_SETTINGS_NETWORK_WIFI_CREDENTIALS;
+      break;
+  }
+
+  File file = _mFs.open(filename, FILE_APPEND, true);
+  if (!file || file.isDirectory()) {
+    DEBUG_PRINTLN("Failed to open file for writing");
+    return;
+  }
+
+  JsonDocument doc;
+  deserializeJson(doc, file);
+
+  doc[key] = value;
+
+  file.seek(0);
+  if (serializeJson(doc, file) == 0) {
+    DEBUG_PRINTLN("Failed to write to file");
+  }
+  file.close();
+}

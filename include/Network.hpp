@@ -27,6 +27,7 @@ class Network {
   bool _isAccessPoint;
   bool _refreshUI = false;
   bool _scanning = false;
+  bool _credentialsSaved = false;
 
  public:
   /**
@@ -78,6 +79,30 @@ class Network {
    * @param password The password of the network to connect to
    */
   void connect(String ssid, String password = "");
+
+  /**
+   * @brief Get the SSID of the network the device is connected to
+   * @return String The password of the network
+   */
+  String getPassword();
+
+  /**
+   * @brief Get the SSID of the network the device is connected to
+   * @return String The SSID of the network
+   */
+  String getSSID();
+
+  /**
+   * @brief Query if the credentials for this network are saved
+   * @return true if the credentials are saved and can be used to connect to
+   * the network later `false` if the credentials are not saved
+   */
+  bool credentialsSaved();
+
+  /**
+   * @brief Update the saved credentials status
+   */
+  void setCredentialsSaved(bool saved);
 
   /**
    * @brief Try to connect to the network with the previously entered

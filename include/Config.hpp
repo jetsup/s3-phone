@@ -30,6 +30,10 @@
 #define TFT_HEIGHT 320
 #define TFT_DRAW_BUF_SIZE (TFT_WIDTH * TFT_HEIGHT / 10 * (LV_COLOR_DEPTH / 8))
 
+// NTP and Internet
+#define S3_NTP_SERVER "pool.ntp.org"
+#define S3INTERNET_PING_ADDRESS "www.google.com"
+
 // Connectivity Bluetooth
 // https://www.uuidgenerator.net/
 #define SERVICE_UUID "7668d2f7-0a48-40f4-ad1d-beff839e6bf0"

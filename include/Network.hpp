@@ -29,9 +29,11 @@ class Network {
   bool _scanning = false;
   bool _credentialsSaved = false;
 
+  bool _hasInternet = false;
+
  public:
   Network() = delete;
-  
+
   /**
    * @brief Construct a new Network object
    */
@@ -116,6 +118,12 @@ class Network {
    * @brief Disconnect from the network
    */
   void disconnect();
+
+  /**
+   * @brief Check if the connected internet has internet access
+   * @return true if the device has internet access
+   */
+  bool hasInternet();  // TODO: Implement this
 
   /**
    * @brief Loop function to be called in the main loop

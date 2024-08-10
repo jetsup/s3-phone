@@ -1,71 +1,79 @@
 #include <Helpers.hpp>
 
-S3Time::S3Time(int8_t offset, const char* server)
-    : timeZone(offset), server(server) {
-  timeClient = new NTPClient(ntpUDP, server, offset * 3600, 60000);
+S3Time::S3Time(int8_t offset, const char* server, bool updateTimeOnInternet)
+    : _timeZone(offset),
+      _server(server),
+      _updateTimeOnInternet(updateTimeOnInternet) {
+  _timeClient = new NTPClient(_ntpUDP, _server, _timeZone * 3600, 60000);
 
-  timeClient->begin();
-  timeClient->forceUpdate();
+  _timeClient->begin();
+  _timeClient->forceUpdate();
 
-  esp32Time = new ESP32Time(offset * 3600);
-  esp32Time->setTime(timeClient->getEpochTime());
+  _esp32Time = new ESP32Time(_timeZone * 3600);
+  _esp32Time->setTime(_timeClient->getEpochTime());
 }
 
-S3Time::S3Time(const char* datetime, int8_t offset) : timeZone(offset) {
-  esp32Time = new ESP32Time(offset * 3600);
-  esp32Time->setTime(atol(datetime + 17), atoi(datetime + 14),
-                     atoi(datetime + 10), atoi(datetime + 8),
-                     atoi(datetime + 5), atoi(datetime));
+S3Time::S3Time(const char* datetime, int8_t offset, bool updateTimeOnInternet)
+    : _timeZone(offset), _updateTimeOnInternet(updateTimeOnInternet) {
+  _esp32Time = new ESP32Time(_timeZone * 3600);
+  _esp32Time->setTime(atol(datetime + 17), atoi(datetime + 14),
+                      atoi(datetime + 10), atoi(datetime + 8),
+                      atoi(datetime + 5), atoi(datetime));
 }
 
-S3Time::S3Time(int8_t offset, const char* server, uint32_t updateInterval)
-    : timeZone(offset), server(server), updateInterval(updateInterval) {
-  timeClient = new NTPClient(ntpUDP, server, offset * 3600, updateInterval);
+S3Time::S3Time(int8_t offset, const char* server, uint32_t updateInterval,
+               bool updateTimeOnInternet)
+    : _timeZone(offset),
+      _server(server),
+      _updateInterval(updateInterval),
+      _updateTimeOnInternet(updateTimeOnInternet) {
+  _timeClient =
+      new NTPClient(_ntpUDP, _server, _timeZone * 3600, _updateInterval);
 
-  timeClient->begin();
-  timeClient->forceUpdate();
+  _timeClient->begin();
+  _timeClient->forceUpdate();
 
-  esp32Time = new ESP32Time(offset * 3600);
-  esp32Time->setTime(timeClient->getEpochTime());
+  _esp32Time = new ESP32Time(_timeZone * 3600);
+  _esp32Time->setTime(_timeClient->getEpochTime());
 }
 
 void S3Time::fetchTime(bool force) {
   if (force) {
-    timeClient->forceUpdate();
+    _timeClient->forceUpdate();
   } else {
-    timeClient->update();
+    _timeClient->update();
   }
 
-  esp32Time->setTime(timeClient->getEpochTime());
+  _esp32Time->setTime(_timeClient->getEpochTime());
 }
 
 void S3Time::setTimeZone(int8_t offset) {
-  timeZone = offset;
-  timeClient->setTimeOffset(offset * 3600);
-  esp32Time->offset = offset * 3600;
+  _timeZone = offset;
+  _timeClient->setTimeOffset(_timeZone * 3600);
+  _esp32Time->offset = _timeZone * 3600;
 }
 
 void S3Time::setServer(const char* server) {
-  this->server = server;
-  timeClient->setPoolServerName(server);
+  this->_server = server;
+  _timeClient->setPoolServerName(server);
 }
 
 void S3Time::setUpdateInterval(uint32_t updateInterval) {
-  this->updateInterval = updateInterval;
-  timeClient->setUpdateInterval(updateInterval);
+  this->_updateInterval = updateInterval;
+  _timeClient->setUpdateInterval(updateInterval);
 }
 
 void S3Time::loop() {
-  if (esp32Time->getMinute() != _nowMinute ||
-      esp32Time->getHour() != _nowHour || esp32Time->getDay() != _nowDay ||
-      esp32Time->getMonth() != _nowMonth || esp32Time->getYear() != _nowYear) {
-        
+  if (_esp32Time->getMinute() != _nowMinute ||
+      _esp32Time->getHour() != _nowHour || _esp32Time->getDay() != _nowDay ||
+      _esp32Time->getMonth() != _nowMonth ||
+      _esp32Time->getYear() != _nowYear) {
     _timeUpdated = true;
-    _nowMinute = esp32Time->getMinute();
-    _nowHour = esp32Time->getHour();
-    _nowDay = esp32Time->getDay();
-    _nowMonth = esp32Time->getMonth();
-    _nowYear = esp32Time->getYear();
+    _nowMinute = _esp32Time->getMinute();
+    _nowHour = _esp32Time->getHour();
+    _nowDay = _esp32Time->getDay();
+    _nowMonth = _esp32Time->getMonth();
+    _nowYear = _esp32Time->getYear();
 
     /**
      * %a - abbreviated weekday name (Thu)
@@ -77,9 +85,9 @@ void S3Time::loop() {
      * %M - minute (03)
      */
 
-    DEBUG_PRINTF("Time: %s/%s/%s %s :: %s\n", esp32Time->getTime("%d"),
-                 esp32Time->getTime("%m"), esp32Time->getTime("%Y"),
-                 esp32Time->getTime("%a"), esp32Time->getTime("%H:%M"));
+    DEBUG_PRINTF("Time: %s/%s/%s %s :: %s\n", _esp32Time->getTime("%d"),
+                 _esp32Time->getTime("%m"), _esp32Time->getTime("%Y"),
+                 _esp32Time->getTime("%a"), _esp32Time->getTime("%H:%M"));
   }
 }
 

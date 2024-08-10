@@ -116,10 +116,11 @@ void s3looperTask(void *params) {
         // so that the connected WIFI name can be highlighted
         // FIXME: This is not working. Not updating the UI
         DEBUG_PRINTLN("Refreshing WiFi List after connection");
-        lv_utils_refreshWiFiList();
+        // lv_utils_refreshWiFiList();
       }
 
       if (!s3WiFi->isConnected() && isWiFiConnected) {
+        // refresh the list so that the connected WIFI name can be unhighlighted
         isWiFiConnected = false;
         lv_utils_refreshWiFiList();
       }

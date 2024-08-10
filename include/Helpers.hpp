@@ -5,24 +5,30 @@
 #include <NTPClient.h>
 #include <WiFi.h>
 #include <WiFiUdp.h>
+#include <ui_utils.h>
 
+#include <Config.hpp>
 #include <Utils.hpp>
 
 class S3Time : public ESP32Time {
  private:
-  int8_t timeZone;
-  const char* server;
-  uint32_t updateInterval;
-  WiFiUDP ntpUDP;
-  NTPClient* timeClient;
-  ESP32Time* esp32Time;
+  int8_t _timeZone;
+  const char* _server;
+  uint32_t _updateInterval;
+  WiFiUDP _ntpUDP;
+  NTPClient* _timeClient;
+  ESP32Time* _esp32Time;
   bool _timeUpdated = false;
+  bool _updateTimeOnInternet = true;
+  bool _timeUpdatedOnInternet = false;
 
   int _nowMinute = -1;
   int _nowHour = -1;
   int _nowDay = -1;
   int _nowMonth = -1;
   int _nowYear = -1;
+
+  int _lastTimeUpdate = 0;
 
  private:
   S3Time() = delete;
@@ -33,14 +39,15 @@ class S3Time : public ESP32Time {
    * @param offset Timezone offset eg 8, -8
    * @param server NTP server eg "pool.ntp.org"
    */
-  S3Time(int8_t offset, const char* server);
+  S3Time(int8_t offset, const char* server, bool updateTimeOnInternet = true);
 
   /**
    * @brief Construct a new S3Time object
    * @param offset Timezone offset eg 8, -8
    * @param datetime Date and time in `YYYY-MM-DD HH:MM:SS` format
    */
-  S3Time(const char* datetime = "2024-01-01 00:00:00", int8_t offset = 0);
+  S3Time(const char* datetime = "2024-01-01 00:00:00", int8_t offset = 0,
+         bool updateTimeOnInternet = true);
 
   /**
    * @brief Construct a new S3Time object
@@ -48,7 +55,8 @@ class S3Time : public ESP32Time {
    * @param server NTP server eg "pool.ntp.org"
    * @param updateInterval Update interval in milliseconds
    */
-  S3Time(int8_t offset, const char* server, uint32_t updateInterval);
+  S3Time(int8_t offset, const char* server, uint32_t updateInterval,
+         bool updateTimeOnInternet = true);
 
   /**
    * @brief Fetch time from NTP server
@@ -78,6 +86,13 @@ class S3Time : public ESP32Time {
    * @brief Keep the time updated, call this in loop
    */
   void loop();
+
+  /**
+   * @brief Update time
+   * @param fromInternet Update time from internet
+   * @param updateInterval Update interval in milliseconds
+   */
+  void updateS3Time(bool fromInternet, int updateInterval = 60000);
 
   /**
    * @brief Check if time is updated

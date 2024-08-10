@@ -30,6 +30,8 @@ class Network {
   bool _credentialsSaved = false;
 
  public:
+  Network() = delete;
+  
   /**
    * @brief Construct a new Network object
    */

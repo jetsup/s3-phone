@@ -14,6 +14,9 @@ int newDay = 0;
 
 ScreenStack screenStack;
 
+// Home Screen
+bool homeScreenVisible = false;
+
 // Settings Display
 int screenBrightnessLevel = 100;
 bool brightnessChanged = false;
@@ -53,11 +56,15 @@ volatile bool wifiEnabled = false;
 bool wifiReady = false;
 bool wifiStatusChanged = false;
 bool wifiScreenVisible = false;
+bool isWiFiConnected = false;
 char wifiName[MAX_WIFI_NAME_LENGTH];
 char wifiPassword[MAX_WIFI_PASSWORD_LENGTH];
+int wifiChannel = 0; // TODO: Implement channel selection
 bool utilsConnectToWiFi = false;
+char connectedWiFiSSID[MAX_WIFI_NAME_LENGTH];
 char discoveredWiFiNames[MAX_WIFI_DISCOVERABLE][MAX_WIFI_NAME_LENGTH];
 int discoveredWiFiRSSI[MAX_WIFI_DISCOVERABLE];
+int discoveredWiFiChannel[MAX_WIFI_DISCOVERABLE];
 bool discoveredWiFiOpen[MAX_WIFI_DISCOVERABLE];
 uint8_t discoveredWiFiCount = 0;
 
@@ -407,33 +414,42 @@ void lv_utils_populate_list_options(lv_obj_t *list, const char **listOptions,
 }
 
 void lv_utils_refreshWiFiList() {
-  lv_obj_clean(ui_listWiFiFoundDevices);
+  if (wifiScreenVisible) {
+    lv_obj_clean(ui_listWiFiFoundDevices);
 
-  // '*' + 'WiFi Name' + ' ' + '(' + 'rssi' + ')'
-  char wifiOption[MAX_WIFI_NAME_LENGTH + 8];
+    // '*' + 'WiFi Name' + ' ' + '(' + 'rssi' + ')'
+    char wifiOption[MAX_WIFI_NAME_LENGTH + 8];
 
-  for (int i = 0; i < discoveredWiFiCount; i++) {
-    memset(wifiOption, 0, sizeof(wifiOption));
+    for (int i = 0; i < discoveredWiFiCount; i++) {
+      memset(wifiOption, 0, sizeof(wifiOption));
 
-    if (!discoveredWiFiOpen[i]) {
-      strcat(wifiOption, "*");
+      if (!discoveredWiFiOpen[i]) {
+        strcat(wifiOption, "*");
+      }
+      strcat(wifiOption, discoveredWiFiNames[i]);
+
+      strcat(wifiOption, " (");
+      char rssi[5];
+      itoa(discoveredWiFiRSSI[i], rssi, 10 /*base*/);
+      strcat(wifiOption, rssi);
+      strcat(wifiOption, ")");
+
+      lv_obj_t *btn = lv_list_add_button(ui_listWiFiFoundDevices,
+                                         LV_SYMBOL_WIFI, wifiOption);
+      lv_obj_set_style_bg_opa(btn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+      if (strcmp(discoveredWiFiNames[i], connectedWiFiSSID) == 0) {
+        lv_color_t selectedColor = {50, 200, 70};
+        lv_obj_set_style_text_color(btn, selectedColor, 0);
+      }
+      lv_obj_add_event_cb(btn, ui_event_list_wifi_cb, LV_EVENT_CLICKED,
+                          (const char *)discoveredWiFiNames[i]);
     }
-    strcat(wifiOption, discoveredWiFiNames[i]);
-
-    strcat(wifiOption, " (");
-    char rssi[5];
-    itoa(discoveredWiFiRSSI[i], rssi, 10 /*base*/);
-    strcat(wifiOption, rssi);
-    strcat(wifiOption, ")");
-
-    lv_obj_t *btn =
-        lv_list_add_button(ui_listWiFiFoundDevices, LV_SYMBOL_WIFI, wifiOption);
-    lv_obj_set_style_bg_opa(btn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_add_event_cb(btn, ui_event_list_wifi_cb, LV_EVENT_CLICKED,
-                        (const char *)discoveredWiFiNames[i]);
   }
 }
 
 void lv_utils_connectWiFi() { utilsConnectToWiFi = true; }
 
-void lv_utils_resetScreenVisibility() { wifiScreenVisible = false; }
+void lv_utils_resetScreenVisibility() {
+  homeScreenVisible = false;
+  wifiScreenVisible = false;
+}

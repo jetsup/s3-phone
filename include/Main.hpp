@@ -28,6 +28,7 @@ static Display display(TFT_CLK, TFT_MOSI, TFT_MISO, TFT_CS, TFT_DC, TFT_RST,
 S3Time s3Time("2024-11-01 14:40:56", 3);
 FileSystem fileSystem(LittleFS);
 Network *s3WiFi;
+bool wifiNameUtilsUpdated = false;
 
 unsigned int lastTickMillis = 0;
 
@@ -88,7 +89,7 @@ void s3looperTask(void *params) {
                              String(wifiEnabled).c_str());
 
       if (wifiEnabled) {
-        s3WiFi = new Network();
+        s3WiFi = new Network(S3PHONE_MODEL_NAME);
         wifiReady = true;
       } else {
         if (s3WiFi != nullptr) {
@@ -103,11 +104,27 @@ void s3looperTask(void *params) {
       s3WiFi->loop();
 
       if (utilsConnectToWiFi) {
+        wifiNameUtilsUpdated = false;
         s3WiFi->connect(String(wifiName), String(wifiPassword));
         utilsConnectToWiFi = false;
       }
 
-      if (!s3WiFi->credentialsSaved()) {
+      if (s3WiFi->isConnected() && !wifiNameUtilsUpdated) {
+        isWiFiConnected = true;
+        wifiNameUtilsUpdated = true;
+        strcpy(connectedWiFiSSID, s3WiFi->getSSID().c_str());
+        // so that the connected WIFI name can be highlighted
+        // FIXME: This is not working. Not updating the UI
+        DEBUG_PRINTLN("Refreshing WiFi List after connection");
+        lv_utils_refreshWiFiList();
+      }
+
+      if (!s3WiFi->isConnected() && isWiFiConnected) {
+        isWiFiConnected = false;
+        lv_utils_refreshWiFiList();
+      }
+
+      if (!s3WiFi->credentialsSaved() && s3WiFi->isConnected()) {
         fileSystem.saveCredentials(CREDENTIALS_WIFI, s3WiFi->getSSID().c_str(),
                                    s3WiFi->getPassword().c_str());
         s3WiFi->setCredentialsSaved(true);
@@ -126,7 +143,7 @@ void s3UILooper() {
   if (dateChanged) {
     s3Time.setTime(s3Time.getSecond(), s3Time.getMinute(), s3Time.getHour(),
                    newDay, newMonth, newYear, s3Time.getMicros());
-    DEBUG_PRINTF("New Time: %s", s3Time.getTime());
+    DEBUG_PRINTF("New Time: %s\n", s3Time.getTime());
     dateChanged = false;
   }
 
@@ -144,7 +161,7 @@ void s3UILooper() {
   }
 
   if ((millis() - previousScreenTouch) / 1000 >= screenTimeout &&
-      screenTimeout != TIMEOUT_NEVER) {
+      screenTimeout != TIMEOUT_NEVER && screenInteractive) {
     display.sleep();
     screenInteractive = false;
   }
@@ -184,8 +201,9 @@ void s3UILooper() {
     sprintf(lvCurrentTime, "%s", s3Time.getTime("%H:%M"));
     sprintf(lvCurrentDate, "%s/%s/%s %s", s3Time.getTime("%d"),
             s3Time.getTime("%m"), s3Time.getTime("%Y"), s3Time.getTime("%a"));
-
-    ui_utils_updateTimeDate();
+    if (homeScreenVisible) {
+      ui_utils_updateTimeDate();
+    }
   }
 
   if (wifiScreenVisible && wifiEnabled && wifiReady) {

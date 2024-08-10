@@ -25,6 +25,9 @@ extern int newDay;
 
 static lv_display_t *lv_display;
 
+// Home Screen
+extern bool homeScreenVisible;
+
 // Settings Display
 #define UI_BRIGHTNESS_SLIDER_MAX 4096
 #define UI_BRIGHTNESS_SLIDER_MIN 100
@@ -68,11 +71,15 @@ extern bool wifiStatusChanged;
 #define MAX_WIFI_NAME_LENGTH 15
 #define MAX_WIFI_PASSWORD_LENGTH 30
 extern bool wifiScreenVisible;
+extern bool isWiFiConnected;
 extern char wifiName[MAX_WIFI_NAME_LENGTH];
 extern char wifiPassword[MAX_WIFI_PASSWORD_LENGTH];
+extern int wifiChannel;
 extern bool utilsConnectToWiFi;
+extern char connectedWiFiSSID[MAX_WIFI_NAME_LENGTH];
 extern char discoveredWiFiNames[MAX_WIFI_DISCOVERABLE][MAX_WIFI_NAME_LENGTH];
 extern int discoveredWiFiRSSI[MAX_WIFI_DISCOVERABLE];
+extern int discoveredWiFiChannel[MAX_WIFI_DISCOVERABLE];
 extern bool discoveredWiFiOpen[MAX_WIFI_DISCOVERABLE];
 extern uint8_t discoveredWiFiCount;
 

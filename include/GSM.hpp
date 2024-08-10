@@ -9,7 +9,7 @@
 
 class GSM {
  private:
-  EspSoftwareSerial::UART *_gsmSerial;
+  EspSoftwareSerial::UART *_gsmSerial;  // TODO: Migrate to HardwareSerial
   bool _responseReady = false, _isRinging = false, _isCallActive = false,
        _isCallAnswered = false, _isCallHungUp = true, _smsSendPending = false;
 

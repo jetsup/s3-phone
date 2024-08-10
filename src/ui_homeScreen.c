@@ -1,6 +1,8 @@
 #include "ui.h"
 
 void ui_homeScreen_screen_init(void) {
+  homeScreenVisible = true;
+  
   ui_homeScreen = lv_obj_create(NULL);
   lv_obj_remove_flag(ui_homeScreen, LV_OBJ_FLAG_SCROLLABLE);  /// Flags
 
@@ -112,7 +114,8 @@ void ui_homeScreen_screen_init(void) {
   lv_obj_set_style_text_opa(networksIndicators, 255,
                             LV_PART_MAIN | LV_STATE_DEFAULT);
 
-  for (int i = 0; i < sizeof(activatedNetworksSettings) / sizeof(activatedNetworksSettings[0]);
+  for (int i = 0; i < sizeof(activatedNetworksSettings) /
+                          sizeof(activatedNetworksSettings[0]);
        i++) {
     if (activatedNetworksSettings[i]) {
       if (networkIndicatorsAdded > 0) {

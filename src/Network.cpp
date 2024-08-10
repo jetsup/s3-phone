@@ -36,6 +36,7 @@ uint8_t Network::scanAccessPoints() {
       strncpy(discoveredWiFiNames[i], String(WiFi.SSID(i)).c_str(),
               MAX_WIFI_NAME_LENGTH);
       discoveredWiFiRSSI[i] = WiFi.RSSI(i);
+      discoveredWiFiChannel[i] = WiFi.channel(i);
       discoveredWiFiOpen[i] = WiFi.encryptionType(i) == WIFI_AUTH_OPEN;
 
       DEBUG_PRINTF("Name: %s RSSI: %d Open: %d\n", discoveredWiFiNames[i],
@@ -101,6 +102,8 @@ void Network::reconnect() {
   if (_shouldConnect) {
     WiFi.setHostname(_hostname.c_str());
     WiFi.begin(_ssid, _password);
+
+    DEBUG_PRINTF("Reconnecting to '%s'::'%s'\n", _ssid, _password);
   }
 }
 

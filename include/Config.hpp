@@ -75,4 +75,9 @@
 #define FS_VAR_SETTINGS_NETWORKING_WIFI_STATE "wifi-state"
 #define FS_DEF_SETTINGS_NETWORKING_WIFI_STATE "0"
 
+// SQLite
+#define S3_SQLITE_DB_FILE "/system/db/s3phone.db"
+// System database for system settings and configurations
+#define S3_SQLITE_DB_SYSTEM_FILEPATH "/system/db/system.db"
+
 #endif  // CONFIG_HPP_

@@ -313,3 +313,32 @@ void FileSystem::saveCredentials(filesystem_credentials_t type, const char* key,
   }
   file.close();
 }
+
+// SQLite implementation
+Database::Database() { sqlite3_initialize(); }
+
+Database::~Database() {
+  sqlite3_close(_db);
+  sqlite3_free(_zErrMsg);
+}
+
+int Database::openDB(const char* filename, sqlite3** db) {
+  int code = sqlite3_open(filename, db);
+  if (code != SQLITE_OK) {
+    DEBUG_PRINTF("Failed to open database: %s\n", sqlite3_errmsg(*db));
+  }
+  return code;
+}
+
+int Database::executeQuery(const char* sql) {
+  int code = sqlite3_exec(_db, sql, NULL, 0, &_zErrMsg);
+  if (code != SQLITE_OK) {
+    DEBUG_PRINTF("Failed to execute query: %s\n", _zErrMsg);
+  }
+  return code;
+}
+
+void Database::close() {
+  sqlite3_close(_db);
+  sqlite3_free(_zErrMsg);
+}

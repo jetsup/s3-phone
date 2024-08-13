@@ -8,3 +8,5 @@
 lib/ui
 Credentials.hpp
 TODO
+test
+!test/README.md

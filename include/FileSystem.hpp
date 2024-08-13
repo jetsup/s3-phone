@@ -5,6 +5,7 @@
 #include <FS.h>
 #include <LittleFS.h>
 #include <SD.h>
+#include <sqlite3.h>
 
 #include <Config.hpp>
 #include <Utils.hpp>
@@ -117,4 +118,39 @@ class FileSystem {
 
   void saveCredentials(filesystem_credentials_t type, const char* key,
                        const char* value);
+};
+
+// SQLite database
+class Database {
+ private:
+  sqlite3* _db;  // hold the opened database
+  sqlite3_stmt* _stmt;
+  char* _zErrMsg = 0;
+  int _rc;
+
+ public:
+  Database();
+
+  ~Database();
+
+  /**
+   * @brief Open a database file and and assign it to the `db` pointer. If the
+   * database file does not exist, it will be created.
+   * @param filename The name of the database file
+   * @param db The pointer to the database
+   * @return SQLITE_OK if successful
+   */
+  int openDB(const char* filename, sqlite3** db);
+
+  /**
+   * @brief Execute a query on the database
+   * @param sql The SQL query to execute
+   * @return SQLITE_OK if successful
+   */
+  int executeQuery(const char* sql);
+
+  /**
+   * @brief Close the database. This is similar to calling the destructor
+   */
+  void close();
 };

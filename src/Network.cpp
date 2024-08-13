@@ -39,8 +39,6 @@ uint8_t Network::scanAccessPoints() {
       discoveredWiFiChannel[i] = WiFi.channel(i);
       discoveredWiFiOpen[i] = WiFi.encryptionType(i) == WIFI_AUTH_OPEN;
 
-      DEBUG_PRINTF("Name: %s RSSI: %d Open: %d\n", discoveredWiFiNames[i],
-                   discoveredWiFiRSSI[i], discoveredWiFiOpen[i]);
       if (i == MAX_WIFI_DISCOVERABLE) {
         break;
       }
@@ -55,8 +53,6 @@ uint8_t Network::scanAccessPoints() {
 
     _previousFoundDeviceCount = foundDevices;
     discoveredWiFiCount = foundDevices;
-    DEBUG_PRINTF("Refresh: %d-%d :: Found: %d\n", _refreshUI, shouldRefreshUI(),
-                 discoveredWiFiCount);
   }
 
   return foundDevices;
@@ -135,7 +131,7 @@ void Network::loop() {
     _localIPAddress = WiFi.localIP();
     _gatewayIPAddress = WiFi.gatewayIP();
 
-    DEBUG_PRINTF("IP: %s GIP: %s\n", _localIPAddress.toString(),
+    DEBUG_PRINTF(">>> IP: %s GIP: %s <<<\n", _localIPAddress.toString(),
                  _gatewayIPAddress.toString());
   }
 

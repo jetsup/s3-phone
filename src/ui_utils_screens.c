@@ -78,7 +78,7 @@ void lv_utils_initScreen(s3_screens_t screen) {
       ui_timeScreen_screen_init();
       return;
     case SCREEN_CALCULATOR:
-      ui_calculatorScreen_screen_init;
+      ui_calculatorScreen_screen_init();
       return;
     case SCREEN_CALENDAR:
       ui_calendarScreen_screen_init();

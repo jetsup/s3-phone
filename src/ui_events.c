@@ -4,7 +4,7 @@ void ui_event_imagebutton_cb(lv_event_t* e) {
   lv_event_code_t event_code = lv_event_get_code(e);
   lv_obj_t* target = lv_event_get_target(e);
 
-  const char* btnData = (const char*)e->user_data;
+  const char* btnData = (const char*)(const char*) lv_event_get_user_data(e);
 
   if (event_code == LV_EVENT_CLICKED) {
     if (strcmp(btnData, "phone") == 0) {
@@ -149,7 +149,7 @@ void ui_event_imagebutton_cb(lv_event_t* e) {
 void ui_event_evtBottombar(lv_event_t* e) {
   lv_event_code_t event_code = lv_event_get_code(e);
   lv_obj_t* target = lv_event_get_target(e);
-  const char* btnData = (const char*)e->user_data;
+  const char* btnData = (const char*)(const char*) lv_event_get_user_data(e);
 
   if (event_code == LV_EVENT_CLICKED) {
     if (strcmp(btnData, "navbar home") == 0) {
@@ -194,7 +194,7 @@ void ui_event_fab_cb(lv_event_t* e) {
 void ui_event_textarea_cb(lv_event_t* e) {
   lv_event_code_t code = lv_event_get_code(e);
   lv_obj_t* ta = lv_event_get_target(e);
-  const char* textData = (const char*)e->user_data;
+  const char* textData = (const char*)(const char*) lv_event_get_user_data(e);
 
   if (code == LV_EVENT_CLICKED) {
     if (strcmp(textData, "full") == 0) {
@@ -233,7 +233,7 @@ void ui_event_textarea_cb(lv_event_t* e) {
 void ui_event_keyboard_cb(lv_event_t* e) {
   lv_event_code_t code = lv_event_get_code(e);
   lv_obj_t* target = lv_event_get_target(e);
-  const char* keyboardData = (const char*)e->user_data;
+  const char* keyboardData = (const char*)(const char*) lv_event_get_user_data(e);
 
   if (code == LV_EVENT_READY || code == LV_EVENT_CANCEL) {
     if (strcmp(keyboardData, "keyboard full") == 0) {
@@ -261,7 +261,7 @@ void ui_event_keyboard_cb(lv_event_t* e) {
 void ui_event_slider_cb(lv_event_t* e) {
   lv_event_code_t code = lv_event_get_code(e);
   lv_obj_t* target = lv_event_get_target(e);
-  const char* sliderData = (const char*)e->user_data;
+  const char* sliderData = (const char*)(const char*) lv_event_get_user_data(e);
 
   if (code == LV_EVENT_VALUE_CHANGED) {
     if (strcmp(sliderData, "settings brightness") == 0) {
@@ -281,7 +281,7 @@ void ui_event_slider_cb(lv_event_t* e) {
 void ui_event_dropdown_cb(lv_event_t* e) {
   lv_event_code_t code = lv_event_get_code(e);
   lv_obj_t* target = lv_event_get_target(e);
-  const char* dropdownData = (const char*)e->user_data;
+  const char* dropdownData = (const char*)(const char*) lv_event_get_user_data(e);
 
   int selected = lv_dropdown_get_selected(target);
 
@@ -318,7 +318,7 @@ void ui_event_dropdown_cb(lv_event_t* e) {
 void ui_event_switch_cb(lv_event_t* e) {
   lv_event_code_t code = lv_event_get_code(e);
   lv_obj_t* target = lv_event_get_target(e);
-  const char* switchData = (const char*)e->user_data;
+  const char* switchData = (const char*)(const char*) lv_event_get_user_data(e);
 
   bool switchOn = lv_obj_has_state(target, LV_STATE_CHECKED);
 
@@ -356,13 +356,13 @@ void ui_event_switch_cb(lv_event_t* e) {
 void ui_event_image_cb(lv_event_t* e) {
   lv_event_code_t code = lv_event_get_code(e);
   lv_obj_t* target = lv_event_get_target(e);
-  const char* switchData = (const char*)e->user_data;
+  const char* switchData = (const char*)(const char*) lv_event_get_user_data(e);
 }
 
 void ui_event_label_cb(lv_event_t* e) {
   lv_event_code_t code = lv_event_get_code(e);
   lv_obj_t* target = lv_event_get_target(e);
-  const char* labelData = (const char*)e->user_data;
+  const char* labelData = (const char*)(const char*) lv_event_get_user_data(e);
 
   if (code == LV_EVENT_CLICKED) {
     if (strcmp(labelData, "time home") == 0) {
@@ -414,7 +414,7 @@ void ui_event_label_cb(lv_event_t* e) {
 void ui_event_button_cb(lv_event_t* e) {
   lv_event_code_t code = lv_event_get_code(e);
   lv_obj_t* target = lv_event_get_target(e);
-  const char* buttonData = (const char*)e->user_data;
+  const char* buttonData = (const char*)(const char*) lv_event_get_user_data(e);
 
   if (code == LV_EVENT_CLICKED) {
     if (strcmp(buttonData, "calendar discard") == 0) {
@@ -505,7 +505,7 @@ void ui_event_list_button_cb(lv_event_t* e) {
   lv_obj_t* target = lv_event_get_target(e);
   lv_obj_t* list = lv_obj_get_parent(target);
 
-  const char* buttonData = (const char*)e->user_data;
+  const char* buttonData = (const char*)(const char*) lv_event_get_user_data(e);
   const char* buttonText = lv_list_get_button_text(list, target);
 
   if (code == LV_EVENT_CLICKED) {
@@ -554,7 +554,7 @@ void ui_event_list_wifi_cb(lv_event_t* e) {
   lv_obj_t* target = lv_event_get_target(e);
   lv_obj_t* list = lv_obj_get_parent(target);
 
-  const char* wifiNameData = (char*)e->user_data;
+  const char* wifiNameData = (char*)(const char*) lv_event_get_user_data(e);
   const char* btnText = lv_list_get_button_text(list, target);
 
   LV_LOG_USER("WiFi Data: `%s`::`%d`", wifiNameData,

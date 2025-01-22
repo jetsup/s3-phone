@@ -87,7 +87,7 @@ void ui_calendarScreen_screen_init(void) {
 
 void ui_event_uiComponentsChangeEvent(lv_event_t *e) {
   lv_event_code_t code = lv_event_get_code(e);
-  const char *data = (const char *)e->user_data;
+  const char *data = (const char*) lv_event_get_user_data(e);
 
   if (code == LV_EVENT_VALUE_CHANGED) {
     if (strcmp(data, "date clicked") == 0) {

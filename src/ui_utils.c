@@ -59,7 +59,7 @@ bool wifiScreenVisible = false;
 bool isWiFiConnected = false;
 char wifiName[MAX_WIFI_NAME_LENGTH];
 char wifiPassword[MAX_WIFI_PASSWORD_LENGTH];
-int wifiChannel = 0; // TODO: Implement channel selection
+int wifiChannel = 0;  // TODO: Implement channel selection
 bool utilsConnectToWiFi = false;
 char connectedWiFiSSID[MAX_WIFI_NAME_LENGTH];
 char discoveredWiFiNames[MAX_WIFI_DISCOVERABLE][MAX_WIFI_NAME_LENGTH];
@@ -371,9 +371,6 @@ void lv_utils_setWallpaper(uint8_t wallpaperID, bool refreshUI) {
   screenWallpaperImg = lv_utils_getImage(resId);
   screenWallpaperID = wallpaperID;
   wallpaperChanged = true;
-
-  lv_image_cache_drop(screenWallpaperImg);
-
   lv_utils_getResourceName(wallpaperID, selectedWallpaper);
 }
 

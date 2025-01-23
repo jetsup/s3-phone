@@ -193,7 +193,7 @@ void lv_utils_applyTheme() {
   themeApplied = true;
 
   lv_color_t themeColorPrimary, themeColorSecondary;
-  systemFontMedium = &lv_font_montserrat_14;
+  systemFontMedium = &lv_font_montserrat_14; // FIXME: remove hardcoding
   if (darkThemeSelected) {
     themeColorPrimary.red = 5;
     themeColorPrimary.green = 2;
@@ -212,7 +212,7 @@ void lv_utils_applyTheme() {
     themeColorSecondary.blue = 250;
   }
   screenTheme =
-      lv_theme_default_init(lv_display, themeColorPrimary, themeColorPrimary,
+      lv_theme_default_init(lv_display, themeColorPrimary, themeColorSecondary,
                             darkThemeSelected, systemFontMedium);
 }
 

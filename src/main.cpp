@@ -10,34 +10,7 @@ void setup() {
   gsm.init();
   fileSystem.init();
   //================Initialize all variables from settings data=================
-  lv_utils_setBrightness(
-      fileSystem.readSetting(FS_VAR_SETTINGS_DISPLAY_BRIGHTNESS).toInt());
-
-  lv_utils_setScreenTimeout(
-      fileSystem.readSetting(FS_VAR_SETTINGS_DISPLAY_TIMEOUT).toInt());
-
-  lv_utils_setTheme(
-      fileSystem.readSetting(FS_VAR_SETTINGS_THEMES_THEME_DARK).toInt());
-
-  uint8_t fontSmall =
-      fileSystem.readSetting(FS_VAR_SETTINGS_THEMES_FONT_SMALL).toInt();
-  uint8_t fontMedium =
-      fileSystem.readSetting(FS_VAR_SETTINGS_THEMES_FONT_MEDIUM).toInt();
-  uint8_t fontLarge =
-      fileSystem.readSetting(FS_VAR_SETTINGS_THEMES_FONT_LARGE).toInt();
-
-  lv_utils_setFonts(fontSmall, fontMedium, fontLarge);
-
-  lv_utils_setWallpaper(
-      fileSystem.readSetting(FS_VAR_SETTINGS_THEMES_WALLPAPER).toInt(), false);
-
-  bool bleEnabledMain =
-      fileSystem.readSetting(FS_VAR_SETTINGS_CONNECTIVITY_BLE).toInt();
-  lv_utils_setBluetooth(bleEnabledMain);
-
-  bool wifiEnabledMain =
-      fileSystem.readSetting(FS_VAR_SETTINGS_NETWORKING_WIFI_STATE).toInt();
-  lv_utils_setWiFi(wifiEnabledMain);
+  loadSystemConfigurations();
   //=============================================================================
   display.init();
   display.setRotation(2);

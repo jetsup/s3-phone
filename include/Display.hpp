@@ -6,7 +6,7 @@
 #include <Config.hpp>
 #include <LovyanGFX.hpp>
 
-#include "ui_utils.h"
+#include "ui/helpers/ui_utils.h"
 
 class Display : public lgfx::LGFX_Device {
   lgfx::Panel_ILI9341 _panel_instance;

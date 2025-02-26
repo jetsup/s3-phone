@@ -4,13 +4,13 @@
 #include <lvgl.h>
 
 #include <Display.hpp>
-#include <FileSystem.hpp>
-#include <GSM.hpp>
 #include <Helpers.hpp>
-#include <Network.hpp>
+#include <functionality/communication/GSM.hpp>
+#include <functionality/communication/Network.hpp>
+#include <functionality/storage/FileSystem.hpp>
 
-#include "ui.h"
-#include "ui_contacts.h"
+#include "ui/helpers/ui_contacts.h"
+#include "ui/ui.h"
 
 int contactsCount = 0;
 String names[] = {"George Ngigi", "John", "Joe", "Brandon"};
@@ -76,6 +76,41 @@ void my_touchpad_read(lv_indev_t *indev_driver, lv_indev_data_t *data) {
     previousScreenTouch = millis();
   }
 }
+
+/**
+ * @brief Load configurations from file system and apply them. Called during
+ * system boot
+ */
+void loadSystemConfigurations() {
+  lv_utils_setBrightness(
+      fileSystem.readSetting(FS_VAR_SETTINGS_DISPLAY_BRIGHTNESS).toInt());
+
+  lv_utils_setScreenTimeout(
+      fileSystem.readSetting(FS_VAR_SETTINGS_DISPLAY_TIMEOUT).toInt());
+
+  lv_utils_setTheme(
+      fileSystem.readSetting(FS_VAR_SETTINGS_THEMES_THEME_DARK).toInt());
+
+  uint8_t fontSmall =
+      fileSystem.readSetting(FS_VAR_SETTINGS_THEMES_FONT_SMALL).toInt();
+  uint8_t fontMedium =
+      fileSystem.readSetting(FS_VAR_SETTINGS_THEMES_FONT_MEDIUM).toInt();
+  uint8_t fontLarge =
+      fileSystem.readSetting(FS_VAR_SETTINGS_THEMES_FONT_LARGE).toInt();
+
+  lv_utils_setFonts(fontSmall, fontMedium, fontLarge);
+
+  lv_utils_setWallpaper(
+      fileSystem.readSetting(FS_VAR_SETTINGS_THEMES_WALLPAPER).toInt(), false);
+
+  bool bleEnabledMain =
+      fileSystem.readSetting(FS_VAR_SETTINGS_CONNECTIVITY_BLE).toInt();
+  lv_utils_setBluetooth(bleEnabledMain);
+
+  bool wifiEnabledMain =
+      fileSystem.readSetting(FS_VAR_SETTINGS_NETWORKING_WIFI_STATE).toInt();
+  lv_utils_setWiFi(wifiEnabledMain);
+};
 
 /**
  * @brief Contains all the background functions and operations that do not

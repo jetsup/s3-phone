@@ -8,7 +8,7 @@ S3-Phone is a simple MCU-based phone that uses the ESP32-S3 and the SIM800L modu
 
 ### Software
 
-1. Install PlatformIO.
+1. Install [PlatformIO](https://platformio.org/install/cli).
 2. Clone the repository.
 
     ```bash
@@ -16,12 +16,19 @@ S3-Phone is a simple MCU-based phone that uses the ESP32-S3 and the SIM800L modu
     ```
 
 3. Copy the [Credentials.example.hpp](include/Credentials.example.hpp) file to `include/Credentials.hpp` and fill in the necessary credentials.
+    ```bash
+    cp include/Credentials.example.hpp include/Credentials.hpp
+    ```
 4. Copy [resources/lv_conf.sample.h](resources/lv_conf.sample.h) to `.pio/libdeps/4d_systems_esp32s3_gen4_r8n16/lv_conf.h`.
     ```bash
     cp resources/lv_conf.sample.h .pio/libdeps/4d_systems_esp32s3_gen4_r8n16/lv_conf.h
     ```
     **Note:** The path may vary depending on the board you are using. The path above is for the `4D Systems ESP32-S3 Gen4 R8N16` board.
-5. Build and upload the project to the ESP32-S3.
+5. Build and upload the project to the your board.
+
+    ```bash
+    platformio run --target upload
+    ```
 
 ### Hardware
 
@@ -46,4 +53,5 @@ Wire your components as defined in [include/Config.hpp](include/Config.hpp) file
 
 ## Future improvements
 
-Replace all the callback directive strings with enum.
+-   [ ] Replace all the callback directive strings with enum.
+-   [ ] Save all WiFi password to storage.

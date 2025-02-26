@@ -5,7 +5,7 @@
 #include <NTPClient.h>
 #include <WiFi.h>
 #include <WiFiUdp.h>
-#include <ui_utils.h>
+#include <ui/helpers/ui_utils.h>
 
 #include <Config.hpp>
 #include <Utils.hpp>

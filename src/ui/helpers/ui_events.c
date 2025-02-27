@@ -371,6 +371,8 @@ void ui_event_checkbox_cb(lv_event_t* e) {
         lv_obj_remove_state(ui_timeScreenInputHour, LV_STATE_DISABLED);
         lv_obj_remove_state(ui_timeScreenInputMinute, LV_STATE_DISABLED);
       }
+
+      lv_utils_updateSyncTime();
     }
   }
 }

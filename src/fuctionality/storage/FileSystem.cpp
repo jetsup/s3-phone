@@ -112,7 +112,8 @@ void FileSystem::_loadSettings(bool createIfUnavailable) {
                                  FS_VAR_SETTINGS_NETWORKING_HOTSPOT_NAME,
                                  FS_VAR_SETTINGS_NETWORKING_WIFI_STATE,
                                  FS_VAR_SETTINGS_DATE_TIME_DATE,
-                                 FS_VAR_SETTINGS_DATE_TIME_TIME};
+                                 FS_VAR_SETTINGS_DATE_TIME_TIME,
+                                 FS_VAR_SETTINGS_DATE_TIME_SYNC};
 
   String settingsParDefaults[] = {FS_DEF_SETTINGS_DISPLAY_BRIGHTNESS,
                                   FS_DEF_SETTINGS_DISPLAY_TIMEOUT,
@@ -125,7 +126,8 @@ void FileSystem::_loadSettings(bool createIfUnavailable) {
                                   FS_DEF_SETTINGS_NETWORKING_HOTSPOT_NAME,
                                   FS_DEF_SETTINGS_NETWORKING_WIFI_STATE,
                                   FS_DEF_SETTINGS_DATE_TIME_DATE,
-                                  FS_DEF_SETTINGS_DATE_TIME_TIME};
+                                  FS_DEF_SETTINGS_DATE_TIME_TIME,
+                                  FS_DEF_SETTINGS_DATE_TIME_SYNC};
 
   for (int i = 0;
        i < sizeof(settingsParameters) / sizeof(settingsParameters[0]); i++) {
@@ -154,6 +156,10 @@ String FileSystem::readSetting(const char* variable) {
   } else if (String(variable).equals(FS_VAR_SETTINGS_NETWORKING_HOTSPOT_NAME) ||
              String(variable).equals(FS_VAR_SETTINGS_NETWORKING_WIFI_STATE)) {
     filename = FS_SETTINGS_NETWORK_INTERNET_FILEPATH;
+  } else if (String(variable).equals(FS_VAR_SETTINGS_DATE_TIME_DATE) ||
+             String(variable).equals(FS_VAR_SETTINGS_DATE_TIME_TIME) ||
+             String(variable).equals(FS_VAR_SETTINGS_DATE_TIME_SYNC)) {
+    filename = FS_SETTINGS_DATE_TIME_FILEPATH;
   }
 
   File file = _mFs.open(filename, FILE_READ);
@@ -194,7 +200,8 @@ String FileSystem::_readSetting(const char* variable, const char* defaultValue,
              String(variable).equals(FS_VAR_SETTINGS_NETWORKING_WIFI_STATE)) {
     filename = FS_SETTINGS_NETWORK_INTERNET_FILEPATH;
   } else if (String(variable).equals(FS_VAR_SETTINGS_DATE_TIME_DATE) ||
-             String(variable).equals(FS_VAR_SETTINGS_DATE_TIME_TIME)) {
+             String(variable).equals(FS_VAR_SETTINGS_DATE_TIME_TIME) ||
+             String(variable).equals(FS_VAR_SETTINGS_DATE_TIME_SYNC)) {
     filename = FS_SETTINGS_DATE_TIME_FILEPATH;
   }
 
@@ -272,7 +279,8 @@ void FileSystem::editSetting(const char* variable, const char* value) {
              String(variable).equals(FS_VAR_SETTINGS_NETWORKING_WIFI_STATE)) {
     filename = FS_SETTINGS_NETWORK_INTERNET_FILEPATH;
   } else if (String(variable).equals(FS_VAR_SETTINGS_DATE_TIME_DATE) ||
-             String(variable).equals(FS_VAR_SETTINGS_DATE_TIME_TIME)) {
+             String(variable).equals(FS_VAR_SETTINGS_DATE_TIME_TIME) ||
+             String(variable).equals(FS_VAR_SETTINGS_DATE_TIME_SYNC)) {
     filename = FS_SETTINGS_DATE_TIME_FILEPATH;
   }
 

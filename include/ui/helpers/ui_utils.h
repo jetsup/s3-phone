@@ -86,6 +86,7 @@ extern uint8_t discoveredWiFiCount;
 // Time Screen
 extern bool updateTimeSet;
 extern bool syncTimeAutomatically;
+extern bool syncTimeAutomaticallyChanged;
 extern uint8_t currentTimeHour;
 extern uint8_t currentTimeMinute;
 extern uint8_t currentTimeSecond;
@@ -295,6 +296,12 @@ void ui_add_bottom_bar(lv_obj_t *parent, int colorRGB, int marginBottom);
  * @param second The second
  */
 void lv_utils_setTime(uint8_t hour, uint8_t minute, uint8_t second);
+
+/**
+ * @brief Update the system sync check. This updates a variable that is on watch
+ * list in system looper so that it can update in the saved settings
+ */
+void lv_utils_updateSyncTime();
 
 #ifdef __cplusplus
 }

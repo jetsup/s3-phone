@@ -136,6 +136,9 @@ void loadSystemConfigurations() {
   if (homeScreenVisible) {
     ui_utils_updateTimeDate();
   }
+
+  int syncTime = fileSystem.readSetting(FS_VAR_SETTINGS_DATE_TIME_SYNC).toInt();
+  syncTimeAutomatically = syncTime;
 };
 
 /**
@@ -281,6 +284,12 @@ void s3UILooper() {
         String(String(s3Time.getHour()) + ":" + String(s3Time.getMinute()) +
                ":" + String(s3Time.getSecond()))
             .c_str());
+  }
+
+  if (syncTimeAutomaticallyChanged) {
+    syncTimeAutomaticallyChanged = false;
+    fileSystem.editSetting(FS_VAR_SETTINGS_DATE_TIME_SYNC,
+                           String(syncTimeAutomatically).c_str());
   }
 
   if (wifiScreenVisible && wifiEnabled && wifiReady) {

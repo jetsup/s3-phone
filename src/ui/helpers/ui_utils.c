@@ -71,6 +71,7 @@ uint8_t discoveredWiFiCount = 0;
 // Time Screen
 bool updateTimeSet = false;
 bool syncTimeAutomatically = false;
+bool syncTimeAutomaticallyChanged = false;
 uint8_t currentTimeHour = 0;
 uint8_t currentTimeMinute = 0;
 uint8_t currentTimeSecond = 0;
@@ -280,6 +281,10 @@ void lv_utils_setTime(uint8_t hour, uint8_t minute, uint8_t second) {
   currentTimeMinute = minute;
   currentTimeSecond = second;
   updateTimeSet = true;
+}
+
+void lv_utils_updateSyncTime() {
+    syncTimeAutomaticallyChanged = true;
 }
 
 //==============================Screen Stack==============================

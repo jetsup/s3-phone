@@ -23,6 +23,7 @@ extern "C" {
 #include "ui/helpers/ui_events.h"
 #include "ui/helpers/ui_helpers.h"
 #include "ui/helpers/ui_utils.h"
+#include <string.h>
 
 // SCREEN: ui_homeScreen
 void ui_homeScreen_screen_init(void);
@@ -231,6 +232,8 @@ extern lv_obj_t* ui_panelSettingsAbout;
 void ui_timeScreen_screen_init(void);
 extern lv_obj_t* ui_timeScreen;
 extern lv_obj_t* ui_panelTimeMain;
+extern lv_obj_t *ui_timeScreenInputHour;
+extern lv_obj_t *ui_timeScreenInputMinute;
 // SCREEN: ui_calculatorScreen
 void ui_calculatorScreen_screen_init(void);
 extern lv_obj_t* ui_calculatorScreen;

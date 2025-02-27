@@ -231,6 +231,8 @@ lv_obj_t* ui_panelSettingsAbout;
 void ui_timeScreen_screen_init(void);
 lv_obj_t* ui_timeScreen;
 lv_obj_t* ui_panelTimeMain;
+lv_obj_t *ui_timeScreenInputHour;
+lv_obj_t *ui_timeScreenInputMinute;
 
 // SCREEN: ui_calculatorScreen
 void ui_calculatorScreen_screen_init(void);

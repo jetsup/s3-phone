@@ -49,7 +49,9 @@
 #define FS_SETTINGS_THEMES_FILEPATH "/system/settings/themes.json"
 #define FS_SETTINGS_CONNECTIVITY_FILEPATH "/system/settings/connectivity.json"
 #define FS_SETTINGS_NETWORK_INTERNET_FILEPATH "/system/settings/networking.json"
-#define FS_SETTINGS_NETWORK_WIFI_CREDENTIALS "/system/credentials/wifi.json"
+#define FS_SETTINGS_NETWORK_WIFI_CREDENTIALS_FILEPATH \
+  "/system/credentials/wifi.json"
+#define FS_SETTINGS_DATE_TIME_FILEPATH "/system/settings/datetime.json"
 
 #define FS_VAR_SETTINGS_DISPLAY_BRIGHTNESS "brightness"
 #define FS_DEF_SETTINGS_DISPLAY_BRIGHTNESS "120"
@@ -74,6 +76,11 @@
 #define FS_DEF_SETTINGS_NETWORKING_HOTSPOT_NAME "s3phone"
 #define FS_VAR_SETTINGS_NETWORKING_WIFI_STATE "wifi-state"
 #define FS_DEF_SETTINGS_NETWORKING_WIFI_STATE "0"
+
+#define FS_VAR_SETTINGS_DATE_TIME_DATE "date"
+#define FS_DEF_SETTINGS_DATE_TIME_DATE "2025-01-01"
+#define FS_VAR_SETTINGS_DATE_TIME_TIME "time"
+#define FS_DEF_SETTINGS_DATE_TIME_TIME "00:00:00"
 
 // SQLite
 #define S3_SQLITE_DB_FILE "/system/db/s3phone.db"

@@ -347,9 +347,29 @@ void ui_event_switch_cb(lv_event_t* e) {
         lv_obj_remove_flag(ui_spinnerWiFiScanning, LV_OBJ_FLAG_HIDDEN);
         lv_obj_remove_flag(ui_listWiFiFoundDevices, LV_OBJ_FLAG_HIDDEN);
       } else {
-        lv_label_set_text(ui_lblWiFiScanning, "Bluetooth OFF");
+        lv_label_set_text(ui_lblWiFiScanning, "WiFi OFF");
         lv_obj_add_flag(ui_spinnerWiFiScanning, LV_OBJ_FLAG_HIDDEN);
         lv_obj_add_flag(ui_listWiFiFoundDevices, LV_OBJ_FLAG_HIDDEN);
+      }
+    }
+  }
+}
+
+void ui_event_checkbox_cb(lv_event_t* e) {
+  lv_event_code_t code = lv_event_get_code(e);
+  lv_obj_t* target = lv_event_get_target(e);
+  const char* checkboxData =
+      (const char*)(const char*)lv_event_get_user_data(e);
+
+  if (code == LV_EVENT_VALUE_CHANGED) {
+    if (strcmp(checkboxData, "time auto sync") == 0) {
+      syncTimeAutomatically = lv_obj_has_state(target, LV_STATE_CHECKED);
+      if (syncTimeAutomatically) {
+        lv_obj_add_state(ui_timeScreenInputHour, LV_STATE_DISABLED);
+        lv_obj_add_state(ui_timeScreenInputMinute, LV_STATE_DISABLED);
+      } else {
+        lv_obj_remove_state(ui_timeScreenInputHour, LV_STATE_DISABLED);
+        lv_obj_remove_state(ui_timeScreenInputMinute, LV_STATE_DISABLED);
       }
     }
   }
@@ -499,6 +519,14 @@ void ui_event_button_cb(lv_event_t* e) {
       ScreenStackElement prevScreen = screenStackPop();
       _ui_screen_change(prevScreen.screen, prevScreen.transitionAnimation,
                         UI_ANIMATION_DURATION, 0);
+    } else if (strcmp(buttonData, "ts time update") == 0) {
+      uint8_t hour = atoi(lv_textarea_get_text(ui_timeScreenInputHour));
+      uint8_t minute = atoi(lv_textarea_get_text(ui_timeScreenInputMinute));
+
+      lv_utils_setTime(hour, minute, 0);
+    } else if (strcmp(buttonData, "ts time cancel") == 0) {
+      ui_timeScreenInputHour = currentTimeHour;
+      ui_timeScreenInputMinute = currentTimeMinute;
     }
   }
 }
@@ -511,7 +539,7 @@ void toggle_password_visibility_cb(lv_event_t* e) {
   if (code == LV_EVENT_CLICKED) {
     bool isPasswordMode = lv_textarea_get_password_mode(txtPasswordField);
     lv_textarea_set_password_mode(txtPasswordField, !isPasswordMode);
-    
+
     if (isPasswordMode) {
       lv_obj_clear_flag(eyeBtn, LV_OBJ_FLAG_CHECKABLE);
       lv_label_set_text(eyeBtn, LV_SYMBOL_EYE_CLOSE);

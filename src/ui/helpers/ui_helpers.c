@@ -43,7 +43,7 @@ void _ui_slider_set_property(lv_obj_t *target, int id, int val) {
 void _ui_screen_change(s3_screens_t screen, lv_scr_load_anim_t fademode,
                        int spd, int delay) {
   lv_utils_resetScreenVisibility();
-  
+
   lv_utils_initScreen(screen);
 
   lv_screen_load_anim(lv_utils_getScreen(screen), fademode, spd, delay, true);

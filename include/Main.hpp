@@ -110,6 +110,32 @@ void loadSystemConfigurations() {
   bool wifiEnabledMain =
       fileSystem.readSetting(FS_VAR_SETTINGS_NETWORKING_WIFI_STATE).toInt();
   lv_utils_setWiFi(wifiEnabledMain);
+
+  // load date and time
+  // YYYY-MM-DD
+  // HH:MM:SS
+  String date = fileSystem.readSetting(FS_VAR_SETTINGS_DATE_TIME_DATE);
+  String time = fileSystem.readSetting(FS_VAR_SETTINGS_DATE_TIME_TIME);
+
+  int year = date.substring(0, 4).toInt();
+  int month = date.substring(5, 7).toInt();
+  int day = date.substring(8, 10).toInt();
+  int hour = time.substring(0, 2).toInt();
+  int minute = time.substring(3, 5).toInt();
+  int second = time.substring(6, 8).toInt();
+
+  s3Time.setTime(second, minute, hour, day, month, year, 0);
+  currentTimeHour = hour;
+  currentTimeMinute = minute;
+  currentTimeSecond = second;
+
+  sprintf(lvCurrentDate, "%s/%s/%s %s", s3Time.getTime("%d"),
+          s3Time.getTime("%m"), s3Time.getTime("%Y"), s3Time.getTime("%a"));
+
+  sprintf(lvCurrentTime, "%02d:%02d", currentTimeHour, currentTimeMinute);
+  if (homeScreenVisible) {
+    ui_utils_updateTimeDate();
+  }
 };
 
 /**
@@ -234,12 +260,27 @@ void s3UILooper() {
   if (s3Time.isTimeUpdated()) {
     // set lvCurrentTime and lvCurrentDate eg (MM/DD/YYYY Tue)
     // https://cplusplus.com/reference/ctime/strftime/
-    sprintf(lvCurrentTime, "%s", s3Time.getTime("%H:%M"));
+    currentTimeHour = s3Time.getHour();
+    currentTimeMinute = s3Time.getMinute();
+    currentTimeSecond = s3Time.getSecond();
+    sprintf(lvCurrentTime, "%02d:%02d", currentTimeHour, currentTimeMinute);
     sprintf(lvCurrentDate, "%s/%s/%s %s", s3Time.getTime("%d"),
             s3Time.getTime("%m"), s3Time.getTime("%Y"), s3Time.getTime("%a"));
     if (homeScreenVisible) {
       ui_utils_updateTimeDate();
     }
+  }
+
+  if (updateTimeSet) {
+    updateTimeSet = false;
+    s3Time.setTime(currentTimeSecond, currentTimeMinute, currentTimeHour,
+                   s3Time.getDay(), s3Time.getMonth(), s3Time.getYear(),
+                   s3Time.getMicros());
+    fileSystem.editSetting(
+        FS_VAR_SETTINGS_DATE_TIME_TIME,
+        String(String(s3Time.getHour()) + ":" + String(s3Time.getMinute()) +
+               ":" + String(s3Time.getSecond()))
+            .c_str());
   }
 
   if (wifiScreenVisible && wifiEnabled && wifiReady) {

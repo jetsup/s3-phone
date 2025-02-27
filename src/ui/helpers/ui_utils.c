@@ -68,6 +68,13 @@ int discoveredWiFiChannel[MAX_WIFI_DISCOVERABLE];
 bool discoveredWiFiOpen[MAX_WIFI_DISCOVERABLE];
 uint8_t discoveredWiFiCount = 0;
 
+// Time Screen
+bool updateTimeSet = false;
+bool syncTimeAutomatically = false;
+uint8_t currentTimeHour = 0;
+uint8_t currentTimeMinute = 0;
+uint8_t currentTimeSecond = 0;
+
 //================================Prototypes==============================
 s3_resource_num_t lv_utils_getResourceByID(int id);
 lv_font_t *lv_utils_getFont(uint8_t fontSize);
@@ -193,7 +200,7 @@ void lv_utils_applyTheme() {
   themeApplied = true;
 
   lv_color_t themeColorPrimary, themeColorSecondary;
-  systemFontMedium = &lv_font_montserrat_14; // FIXME: remove hardcoding
+  systemFontMedium = &lv_font_montserrat_14;  // FIXME: remove hardcoding
   if (darkThemeSelected) {
     themeColorPrimary.red = 5;
     themeColorPrimary.green = 2;
@@ -266,6 +273,13 @@ void ui_add_bottom_bar(lv_obj_t *parent, int colorRGB, int marginBottom) {
                       "navbar home");
   lv_obj_add_event_cb(ui_lblBottombarBack, ui_event_evtBottombar, LV_EVENT_ALL,
                       "navbar back");
+}
+
+void lv_utils_setTime(uint8_t hour, uint8_t minute, uint8_t second) {
+  currentTimeHour = hour;
+  currentTimeMinute = minute;
+  currentTimeSecond = second;
+  updateTimeSet = true;
 }
 
 //==============================Screen Stack==============================

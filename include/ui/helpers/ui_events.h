@@ -15,6 +15,7 @@ void ui_event_keyboard_cb(lv_event_t* e);
 void ui_event_slider_cb(lv_event_t* e);
 void ui_event_dropdown_cb(lv_event_t* e);
 void ui_event_switch_cb(lv_event_t* e);
+void ui_event_checkbox_cb(lv_event_t* e);
 void ui_event_image_cb(lv_event_t* e);
 void ui_event_label_cb(lv_event_t* e);
 void ui_event_button_cb(lv_event_t* e);

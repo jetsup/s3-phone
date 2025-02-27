@@ -83,6 +83,13 @@ extern int discoveredWiFiChannel[MAX_WIFI_DISCOVERABLE];
 extern bool discoveredWiFiOpen[MAX_WIFI_DISCOVERABLE];
 extern uint8_t discoveredWiFiCount;
 
+// Time Screen
+extern bool updateTimeSet;
+extern bool syncTimeAutomatically;
+extern uint8_t currentTimeHour;
+extern uint8_t currentTimeMinute;
+extern uint8_t currentTimeSecond;
+
 //========================Screen Stack========================
 /**
  * @brief Holds the data to be stored in the stack
@@ -280,6 +287,14 @@ void lv_utils_resetScreenVisibility();
  * @param marginBottom The margin from the bottom. Preferred `-5`
  */
 void ui_add_bottom_bar(lv_obj_t *parent, int colorRGB, int marginBottom);
+
+/**
+ * @brief Set the time on the system
+ * @param hour The hour
+ * @param minute The minute
+ * @param second The second
+ */
+void lv_utils_setTime(uint8_t hour, uint8_t minute, uint8_t second);
 
 #ifdef __cplusplus
 }

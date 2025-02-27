@@ -32,6 +32,8 @@ S3-Phone is a simple MCU-based phone that uses the ESP32-S3 and the SIM800L modu
 
 ### Hardware
 
+This project uses the ESP32-S3 and the ILI9341 2.4" TFT display.
+
 Wire your components as defined in [include/Config.hpp](include/Config.hpp) file.
 
 | ESP32-S3 | ILI9341 TFT Display |
@@ -55,3 +57,5 @@ Wire your components as defined in [include/Config.hpp](include/Config.hpp) file
 
 -   [ ] Replace all the callback directive strings with enum.
 -   [ ] Save all WiFi password to storage.
+-   [ ] Make it to accommodate different screen sizes.
+-   [ ] Add save or cancel dialog when you press the back menu button on the navigation bar.

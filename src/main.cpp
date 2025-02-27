@@ -61,10 +61,6 @@ void setup() {
     cCount++;
   }
 
-  // set the current date so that it can be used to initialize the calendar
-  sprintf(lvCurrentDate, "%s/%s/%s %s", s3Time.getTime("%d"),
-          s3Time.getTime("%m"), s3Time.getTime("%Y"), s3Time.getTime("%a"));
-
   ui_init();
   DEBUG_PRINTLN("UI initialized");
   xTaskCreatePinnedToCore(s3looperTask, "S3Looper", 4096, NULL, 1, NULL, 1);

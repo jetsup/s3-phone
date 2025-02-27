@@ -5,7 +5,36 @@
 
 #include "ui/ui.h"
 
+lv_obj_t *ui_keyboard_time;
+static const char *btn_map[] = {"1",
+                                "2",
+                                "3",
+                                "\n",
+                                "4",
+                                "5",
+                                "6",
+                                "\n",
+                                "7",
+                                "8",
+                                "9",
+                                "\n",
+                                LV_SYMBOL_BACKSPACE,
+                                "0",
+                                LV_SYMBOL_CLOSE,
+                                ""};
+lv_obj_t *ui_btnMatrixTime;
+lv_obj_t *active_textarea = NULL;
+char strCurrentTimeHour[3] = "00";
+char strCurrentTimeMinute[3] = "00";
+
+void ui_event_textarea_time_cb(lv_event_t *e);
+void ui_event_time_keyboard_cb(lv_event_t *e);
+void create_time_keyboard(lv_obj_t *parent);
+void update_time_input(lv_obj_t *textarea, const char *new_text);
+
 void ui_timeScreen_screen_init(void) {
+  uint16_t yOffset = 0;
+
   ui_timeScreen = lv_obj_create(NULL);
   lv_obj_remove_flag(ui_timeScreen, LV_OBJ_FLAG_SCROLLABLE);  /// Flags
 
@@ -22,5 +51,182 @@ void ui_timeScreen_screen_init(void) {
   lv_obj_set_style_border_opa(ui_panelTimeMain, 0,
                               LV_PART_MAIN | LV_STATE_DEFAULT);
 
+  // Time label at the top center
+  lv_obj_t *ui_lblTime = lv_label_create(ui_panelTimeMain);
+  lv_label_set_text(ui_lblTime, "Time");
+  lv_obj_set_align(ui_lblTime, LV_ALIGN_TOP_MID);
+  yOffset += 20;
+
+  // Checkbox of whether to update time automatically or set manually
+  lv_obj_t *lblTimeAutoSync = lv_checkbox_create(ui_panelTimeMain);
+  lv_checkbox_set_text(lblTimeAutoSync, "Auto sync time");
+  lv_obj_align(lblTimeAutoSync, LV_ALIGN_TOP_LEFT, 0, yOffset);
+  lv_obj_add_event_cb(lblTimeAutoSync, ui_event_checkbox_cb,
+                      LV_EVENT_VALUE_CHANGED, "time auto sync");
+  if (syncTimeAutomatically) {
+    lv_obj_add_state(lblTimeAutoSync, LV_STATE_CHECKED);
+  } else {
+    lv_obj_remove_state(lblTimeAutoSync, LV_STATE_CHECKED);
+  }
+  yOffset += 30;
+
+  // Time inputs
+  lv_obj_t *lblTime = lv_label_create(ui_panelTimeMain);
+  lv_label_set_text(lblTime, "Time");
+  lv_obj_align(lblTime, LV_ALIGN_TOP_LEFT, 0, yOffset);
+  
+  ui_timeScreenInputHour = lv_textarea_create(ui_panelTimeMain);
+  lv_obj_set_width(ui_timeScreenInputHour, 45);
+  lv_obj_set_height(ui_timeScreenInputHour, 36);
+  lv_obj_align(ui_timeScreenInputHour, LV_ALIGN_TOP_LEFT, 50, yOffset - 5);
+  lv_textarea_set_placeholder_text(ui_timeScreenInputHour, "HH");
+  sprintf(strCurrentTimeHour, "%d", currentTimeHour);
+  lv_textarea_set_text(ui_timeScreenInputHour, strCurrentTimeHour);
+  lv_textarea_set_one_line(ui_timeScreenInputHour, true);
+  lv_textarea_set_max_length(ui_timeScreenInputHour, 2);
+  lv_obj_set_style_bg_opa(ui_timeScreenInputHour, 0,
+                          LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_add_event_cb(ui_timeScreenInputHour, ui_event_textarea_time_cb,
+                      LV_EVENT_ALL, "hh");
+
+  ui_timeScreenInputMinute = lv_textarea_create(ui_panelTimeMain);
+  lv_obj_set_width(ui_timeScreenInputMinute, 45);
+  lv_obj_set_height(ui_timeScreenInputMinute, 36);
+  lv_obj_align(ui_timeScreenInputMinute, LV_ALIGN_TOP_LEFT, 100, yOffset - 5);
+  lv_textarea_set_placeholder_text(ui_timeScreenInputMinute, "MM");
+  sprintf(strCurrentTimeMinute, "%d", currentTimeMinute);
+  lv_textarea_set_text(ui_timeScreenInputMinute, strCurrentTimeMinute);
+  lv_textarea_set_one_line(ui_timeScreenInputMinute, true);
+  lv_textarea_set_max_length(ui_timeScreenInputMinute, 2);
+  lv_obj_set_style_bg_opa(ui_timeScreenInputMinute, 0,
+                          LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_add_event_cb(ui_timeScreenInputMinute, ui_event_textarea_time_cb,
+                      LV_EVENT_ALL, "mm");
+  if (syncTimeAutomatically) {
+    lv_obj_add_state(ui_timeScreenInputHour, LV_STATE_DISABLED);
+    lv_obj_add_state(ui_timeScreenInputMinute, LV_STATE_DISABLED);
+  } else {
+    lv_obj_remove_state(ui_timeScreenInputHour, LV_STATE_DISABLED);
+    lv_obj_remove_state(ui_timeScreenInputMinute, LV_STATE_DISABLED);
+  }
+  yOffset += 30;
+
+  // update and cancel buttons at the bottom most part all in one row
+  lv_obj_t *ui_btnTimeUpdate = lv_btn_create(ui_panelTimeMain);
+  lv_obj_set_width(ui_btnTimeUpdate, 100);
+  lv_obj_set_height(ui_btnTimeUpdate, 30);
+  lv_obj_align(ui_btnTimeUpdate, LV_ALIGN_BOTTOM_LEFT, 0, -20);
+  lv_obj_t *lblTimeUpdate = lv_label_create(ui_btnTimeUpdate);
+  lv_label_set_text(lblTimeUpdate, "Update");
+  lv_obj_add_event_cb(ui_btnTimeUpdate, ui_event_button_cb, LV_EVENT_CLICKED,
+                      "ts time update");
+
+  lv_obj_t *ui_btnTimeCancel = lv_btn_create(ui_panelTimeMain);
+  lv_obj_set_width(ui_btnTimeCancel, 100);
+  lv_obj_set_height(ui_btnTimeCancel, 30);
+  lv_obj_align(ui_btnTimeCancel, LV_ALIGN_BOTTOM_RIGHT, 0, -20);
+  lv_obj_t *lblTimeCancel = lv_label_create(ui_btnTimeCancel);
+  lv_label_set_text(lblTimeCancel, "Cancel");
+  lv_obj_add_event_cb(ui_btnTimeCancel, ui_event_button_cb, LV_EVENT_CLICKED,
+                      "ts time cancel");
+
   ui_add_bottom_bar(ui_panelTimeMain, 0xFFFFFF, 10);
+}
+
+void ui_event_textarea_time_cb(lv_event_t *e) {
+  lv_event_code_t code = lv_event_get_code(e);
+  lv_obj_t *target = lv_event_get_target(e);
+  const char *buttonData = (const char *)lv_event_get_user_data(e);
+
+  if (code == LV_EVENT_CLICKED) {
+    active_textarea = target;
+    if (strcmp(buttonData, "hh") == 0) {
+      create_time_keyboard(ui_panelTimeMain);
+    } else if (strcmp(buttonData, "mm") == 0) {
+      create_time_keyboard(ui_panelTimeMain);
+    }
+  }
+
+  if (code == LV_EVENT_DEFOCUSED) {
+    if (active_textarea == target) {
+      active_textarea = NULL;
+    }
+    if (ui_keyboard_time) {
+      lv_obj_delete(ui_keyboard_time);
+      ui_keyboard_time = NULL;
+    }
+  }
+}
+
+void ui_event_time_keyboard_cb(lv_event_t *e) {
+  lv_event_code_t code = lv_event_get_code(e);
+  lv_obj_t *target = lv_event_get_target(e);
+
+  if (code == LV_EVENT_READY || code == LV_EVENT_CANCEL) {
+    if (ui_keyboard_time) {
+      lv_obj_delete(ui_keyboard_time);
+      ui_keyboard_time = NULL;
+    }
+  }
+
+  if (code == LV_EVENT_VALUE_CHANGED) {
+    if (!active_textarea) return;
+
+    const char *txt = lv_buttonmatrix_get_button_text(
+        target, lv_buttonmatrix_get_selected_button(target));
+
+    if (txt) {
+      if (strcmp(txt, LV_SYMBOL_BACKSPACE) == 0) {
+        char current_text[3];
+        strcpy(current_text, lv_textarea_get_text(active_textarea));
+        if (strlen(current_text) > 0) {
+          current_text[strlen(current_text) - 1] = '\0';
+          update_time_input(active_textarea, current_text);
+        }
+      } else if (strcmp(txt, LV_SYMBOL_CLOSE) == 0) {
+        if (ui_keyboard_time) {
+          lv_obj_delete(ui_keyboard_time);
+          ui_keyboard_time = NULL;
+        }
+      } else if (strcmp(txt, "\n") != 0) {
+        char current_text[3];
+        strcpy(current_text, lv_textarea_get_text(active_textarea));
+        if (strlen(current_text) < 2) {
+          strcat(current_text, txt);
+
+          if (active_textarea == ui_timeScreenInputHour) {
+            if (atoi(current_text) > 23) {
+              strcpy(current_text, "23");
+            }
+            update_time_input(ui_timeScreenInputHour, current_text);
+          } else if (active_textarea == ui_timeScreenInputMinute) {
+            if (atoi(current_text) > 59) {
+              strcpy(current_text, "59");
+            }
+            update_time_input(ui_timeScreenInputMinute, current_text);
+          }
+        }
+      }
+    }
+  }
+}
+
+void create_time_keyboard(lv_obj_t *parent) {
+  if (ui_keyboard_time) {
+    lv_obj_delete(ui_keyboard_time);
+  }
+
+  ui_keyboard_time = lv_buttonmatrix_create(parent);
+  lv_obj_set_size(ui_keyboard_time, 240, 200);
+  lv_obj_set_y(ui_keyboard_time, 20);
+  lv_obj_set_align(ui_keyboard_time, LV_ALIGN_BOTTOM_MID);
+  lv_obj_add_event_cb(ui_keyboard_time, ui_event_time_keyboard_cb,
+                      LV_EVENT_VALUE_CHANGED, NULL);
+  /*To keep the text area focused on button clicks*/
+  lv_obj_remove_flag(ui_keyboard_time, LV_OBJ_FLAG_CLICK_FOCUSABLE);
+  lv_buttonmatrix_set_map(ui_keyboard_time, btn_map);
+}
+
+void update_time_input(lv_obj_t *textarea, const char *new_text) {
+  lv_textarea_set_text(textarea, new_text);
 }

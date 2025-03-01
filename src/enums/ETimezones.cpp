@@ -411,5 +411,3 @@ const char* getTimezoneName(ETimezones timezone) {
     return "GMT 00:00";
   }
 }
-
-// given an int numer return the corresponding ETimzones enum

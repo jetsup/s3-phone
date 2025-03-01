@@ -140,8 +140,6 @@ void loadSystemConfigurations() {
   int minute = time.substring(3, 5).toInt();
   int second = time.substring(6, 8).toInt();
 
-  // create a time object that will do the offsetting before display
-
   s3Time.setTime(second, minute, hour, day, month, year, 0);
   currentTimeHour = hour;
   currentTimeMinute = minute;
@@ -267,9 +265,6 @@ void s3UILooper() {
 
     int localizedYear, localizedMonth, localizedDay, localizedHour,
         localizedMinute;
-    // sscanf(localizedDateTime, "%d-%d-%d %d:%d", &localizedYear,
-    // &localizedMonth,
-    //        &localizedDay, &localizedHour, &localizedMinute);
 
     String localizedSTR = String(localizedDateTime);
     localizedYear = localizedSTR.substring(0, 4).toInt();

@@ -8,10 +8,10 @@
 
 /**
  * @brief Factor in the timezone offset to the current time and date
- *
  * @param currentTime Current time in HH:MM format
  * @param currentDate Current date in YYYY-MM-DD format
  * @param timeZone Timezone offset in HH:MM format
+ * @param localizedDateTime The buffer to store the localized date and time
  */
 void localizeTime(String currentTime, String currentDate, String timeZone,
                   char *localizedDateTime);

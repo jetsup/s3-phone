@@ -294,62 +294,6 @@ void lv_utils_setTimeZone(int timezoneIndex) {
   timezoneChanged = true;
 }
 
-void ui_populate_dropdown(lv_obj_t *dropdown, const char **options, int optionsCount) {
-  /*int arrSize = sizeof(options) / sizeof(options[0]);
-  int strStringSize = sizeof(options);
-
-  char optionsStr[sizeof(options) / sizeof(options[0]) + arrSize + 1];
-
-  for (int i = 0; i < arrSize; i++){
-
-  }
-
-  lv_dropdown_set_options(dropdown, optionsStr);
-  */
-  
-  //   while (options[arrSize] != NULL) {
-  //     LV_LOG_USER("Option: '%s'\n", options[arrSize]);
-  //     arrSize++;
-  //   }
-  LV_LOG_USER("Options size: '%d'\n", optionsCount);
-
-  // log the options
-  for (int i = 0; i < optionsCount; i++){
-    LV_LOG_USER("Option: '%s'\n", options[i]);
-  }
-
-  if (optionsCount == 0) {
-    lv_dropdown_set_options(dropdown, "");
-    return;
-  }
-
-  size_t totalLength = 0;
-  for (int i = 0; i < optionsCount; i++) {
-    LV_LOG_USER("Option: '%s'\n", options[i]);
-    totalLength += strlen(options[i]) + 1;  // +1 for '\n' or '\0'
-  }
-  totalLength++;  // For the final null terminator.
-
-  LV_LOG_USER("Total length: %d\n", totalLength);
-  char *optionsStr = (char *)malloc(totalLength);
-  if (optionsStr == NULL) {
-    LV_LOG_USER("Memory allocation failed!\n");
-    return;
-  }
-
-  optionsStr[0] = '\0';
-
-  for (int i = 0; i < optionsCount; i++) {
-    strcat(optionsStr, options[i]);
-    if (i < optionsCount - 1) {
-      strcat(optionsStr, "\n");
-    }
-  }
-
-  lv_dropdown_set_options(dropdown, optionsStr);
-  free(optionsStr);
-}
-
 //==============================Screen Stack==============================
 bool screenStackInit() {
   screenStack.screenStackElements = (ScreenStackElement *)malloc(

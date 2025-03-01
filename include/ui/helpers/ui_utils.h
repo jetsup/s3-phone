@@ -312,11 +312,6 @@ void lv_utils_updateSyncTime();
  */
 void lv_utils_setTimeZone(int timezoneIndex);
 
-/**
- * @brief Populate a dropdown menu with values
- */
-void ui_populate_dropdown(lv_obj_t *dropdown, const char **options, int optionsCount);
-
 #ifdef __cplusplus
 }
 #endif  // __cplusplus

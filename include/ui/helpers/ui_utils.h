@@ -90,6 +90,9 @@ extern bool syncTimeAutomaticallyChanged;
 extern uint8_t currentTimeHour;
 extern uint8_t currentTimeMinute;
 extern uint8_t currentTimeSecond;
+extern char currentTimezone[40];
+extern uint8_t currentTimezoneIndex;
+extern bool timezoneChanged;
 
 //========================Screen Stack========================
 /**
@@ -302,6 +305,17 @@ void lv_utils_setTime(uint8_t hour, uint8_t minute, uint8_t second);
  * list in system looper so that it can update in the saved settings
  */
 void lv_utils_updateSyncTime();
+
+/**
+ * @brief Set the timezone
+ * @param timezoneIndex The index of the timezone
+ */
+void lv_utils_setTimeZone(int timezoneIndex);
+
+/**
+ * @brief Populate a dropdown menu with values
+ */
+void ui_populate_dropdown(lv_obj_t *dropdown, const char **options, int optionsCount);
 
 #ifdef __cplusplus
 }

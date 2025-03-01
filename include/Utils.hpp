@@ -1,11 +1,22 @@
-#ifndef UTILS_HPP_
-#define UTILS_HPP_
+#pragma once
+
+#include <Arduino.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+
+/**
+ * @brief Factor in the timezone offset to the current time and date
+ * 
+ * @param currentTime Current time in HH:MM format
+ * @param currentDate Current date in YYYY-MM-DD format
+ * @param timeZone Timezone offset in HH:MM format
+ * @return String Adjusted time and date in YYYY-MM-DD HH:MM format
+ */
+String localizeTime(String currentTime, String currentDate, String timeZone);
 
 #define DEBUG 1
-
-#if DEBUG
-#include <Arduino.h>
-#endif
 
 #if DEBUG
 static unsigned long DEBUG_TIMER_1 = 0;
@@ -26,5 +37,3 @@ static unsigned long DEBUG_TIMER_2 = 0;
   if (DEBUG) {                     \
     Serial.printf(x, __VA_ARGS__); \
   }
-
-#endif  // UTILS_HPP_

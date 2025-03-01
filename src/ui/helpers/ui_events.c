@@ -313,6 +313,8 @@ void ui_event_dropdown_cb(lv_event_t* e) {
       }
 
       dropdownSelectedTimeout = lv_set_selected_timeout();
+    } else if (strcmp(dropdownData, "ts timezone select") == 0) {
+      lv_utils_setTimeZone(selected);
     }
   }
 }

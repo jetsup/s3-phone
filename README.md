@@ -58,4 +58,6 @@ Wire your components as defined in [include/Config.hpp](include/Config.hpp) file
 -   [ ] Replace all the callback directive strings with enum.
 -   [ ] Save all WiFi password to storage.
 -   [ ] Make it to accommodate different screen sizes.
--   [ ] Add save or cancel dialog when you press the back menu button on the navigation bar.
+-   [ ] Add save or cancel dialog when you press the back menu button on the navigation bar in editable screens.
+-   [ ] In selecting timezones, add a search bar.
+-   [ ] On timezone change, handle leap year.

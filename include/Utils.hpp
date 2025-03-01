@@ -8,13 +8,13 @@
 
 /**
  * @brief Factor in the timezone offset to the current time and date
- * 
+ *
  * @param currentTime Current time in HH:MM format
  * @param currentDate Current date in YYYY-MM-DD format
  * @param timeZone Timezone offset in HH:MM format
- * @return String Adjusted time and date in YYYY-MM-DD HH:MM format
  */
-String localizeTime(String currentTime, String currentDate, String timeZone);
+void localizeTime(String currentTime, String currentDate, String timeZone,
+                  char *localizedDateTime);
 
 #define DEBUG 1
 

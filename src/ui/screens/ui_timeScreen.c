@@ -3,6 +3,7 @@
 // LVGL version: 9.1.0
 // Project name: s3-phone
 
+#include "enums/ETimezones.hpp"
 #include "ui/ui.h"
 
 lv_obj_t *ui_keyboard_time;
@@ -24,6 +25,8 @@ static const char *btn_map[] = {"1",
                                 ""};
 lv_obj_t *ui_btnMatrixTime;
 lv_obj_t *active_textarea = NULL;
+lv_obj_t *ui_timeScreenSelectTimezone;
+
 char strCurrentTimeHour[3] = "00";
 char strCurrentTimeMinute[3] = "00";
 
@@ -74,7 +77,7 @@ void ui_timeScreen_screen_init(void) {
   lv_obj_t *lblTime = lv_label_create(ui_panelTimeMain);
   lv_label_set_text(lblTime, "Time");
   lv_obj_align(lblTime, LV_ALIGN_TOP_LEFT, 0, yOffset);
-  
+
   ui_timeScreenInputHour = lv_textarea_create(ui_panelTimeMain);
   lv_obj_set_width(ui_timeScreenInputHour, 45);
   lv_obj_set_height(ui_timeScreenInputHour, 36);
@@ -109,6 +112,25 @@ void ui_timeScreen_screen_init(void) {
     lv_obj_remove_state(ui_timeScreenInputHour, LV_STATE_DISABLED);
     lv_obj_remove_state(ui_timeScreenInputMinute, LV_STATE_DISABLED);
   }
+  yOffset += 30;
+
+  // timezone select item
+  lv_obj_t *lblTimezone = lv_label_create(ui_panelTimeMain);
+  lv_label_set_text(lblTimezone, "Timezone");
+  lv_obj_align(lblTimezone, LV_ALIGN_TOP_LEFT, 0, yOffset);
+  yOffset += 20;
+
+  ui_timeScreenSelectTimezone = lv_dropdown_create(ui_panelTimeMain);
+  lv_obj_set_width(ui_timeScreenSelectTimezone, 220);
+  lv_obj_set_height(ui_timeScreenSelectTimezone, 36);
+  lv_obj_align(ui_timeScreenSelectTimezone, LV_ALIGN_TOP_LEFT, 0, yOffset);
+  int timezonesCount = sizeof(timezoneNames) / sizeof(timezoneNames[0]);
+  for (int i = 0; i < timezonesCount; i++) {
+    lv_dropdown_add_option(ui_timeScreenSelectTimezone, timezoneNames[i], i);
+  }
+  lv_obj_add_event_cb(ui_timeScreenSelectTimezone, ui_event_dropdown_cb,
+                      LV_EVENT_VALUE_CHANGED, "ts timezone select");
+  lv_dropdown_set_selected(ui_timeScreenSelectTimezone, currentTimezoneIndex);
   yOffset += 30;
 
   // update and cancel buttons at the bottom most part all in one row

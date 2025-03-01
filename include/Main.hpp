@@ -9,6 +9,8 @@
 #include <functionality/communication/Network.hpp>
 #include <functionality/storage/FileSystem.hpp>
 
+#include "Utils.hpp"
+#include "enums/ETimezones.hpp"
 #include "ui/helpers/ui_contacts.h"
 #include "ui/ui.h"
 
@@ -116,6 +118,20 @@ void loadSystemConfigurations() {
   // HH:MM:SS
   String date = fileSystem.readSetting(FS_VAR_SETTINGS_DATE_TIME_DATE);
   String time = fileSystem.readSetting(FS_VAR_SETTINGS_DATE_TIME_TIME);
+  currentTimezoneIndex =
+      fileSystem.readSetting(FS_VAR_SETTINGS_DATE_TIME_TIMEZONE).toInt();
+  // TODO: update the time based on the timezone
+  String timezoneSTR = /*"+03:00"*/ getTimezoneString(
+      static_cast<ETimezones>(currentTimezoneIndex));
+  char offsetSign = timezoneSTR.charAt(0);
+  bool isOffsetPositive;
+  if (offsetSign == '+') {
+    isOffsetPositive = true;
+  } else {  // for negative and 00:00
+    isOffsetPositive = false;
+  }
+  int hourOffset = timezoneSTR.substring(1, 3).toInt();
+  int minuteOffset = timezoneSTR.substring(4).toInt();
 
   int year = date.substring(0, 4).toInt();
   int month = date.substring(5, 7).toInt();
@@ -123,6 +139,8 @@ void loadSystemConfigurations() {
   int hour = time.substring(0, 2).toInt();
   int minute = time.substring(3, 5).toInt();
   int second = time.substring(6, 8).toInt();
+
+  // create a time object that will do the offsetting before display
 
   s3Time.setTime(second, minute, hour, day, month, year, 0);
   currentTimeHour = hour;
@@ -206,10 +224,16 @@ void s3UILooper() {
   s3Time.loop();
 
   if (dateChanged) {
+    dateChanged = false;
     s3Time.setTime(s3Time.getSecond(), s3Time.getMinute(), s3Time.getHour(),
                    newDay, newMonth, newYear, s3Time.getMicros());
-    DEBUG_PRINTF("New Time: %s\n", s3Time.getTime());
-    dateChanged = false;
+
+    fileSystem.editSetting(
+        FS_VAR_SETTINGS_DATE_TIME_DATE,
+        String(String(newYear) + "-" + (newMonth < 10 ? "0" : "") +
+               String(newMonth) + "-" + (newDay < 10 ? "0" : "") +
+               String(newDay))
+            .c_str());
   }
 
   if (brightnessChanged) {
@@ -223,6 +247,44 @@ void s3UILooper() {
     timeoutChanged = false;
     fileSystem.editSetting(FS_VAR_SETTINGS_DISPLAY_TIMEOUT,
                            String(screenTimeout).c_str());
+  }
+
+  if (timezoneChanged) {
+    timezoneChanged = false;
+    fileSystem.editSetting(FS_VAR_SETTINGS_DATE_TIME_TIMEZONE,
+                           String(currentTimezoneIndex).c_str());
+    String cTime = s3Time.getTime("%H:%M");
+    String cDate = s3Time.getTime("%Y-%m-%d");
+    String selectedTimezoneStr =
+        getTimezoneString(static_cast<ETimezones>(currentTimezoneIndex));
+    DEBUG_PRINTF("Date: '%s' Time: '%s' Timezone: '%s'\n", cDate.c_str(),
+                 cTime.c_str(), selectedTimezoneStr.c_str());
+
+    char *localizedDateTime = (char *)malloc(17);  // "2025-03-01 12:56\0"
+    localizeTime(cTime, cDate, selectedTimezoneStr, localizedDateTime);
+
+    DEBUG_PRINTF("Localized Time: '%s'\n", localizedDateTime);
+
+    int localizedYear, localizedMonth, localizedDay, localizedHour,
+        localizedMinute;
+    // sscanf(localizedDateTime, "%d-%d-%d %d:%d", &localizedYear,
+    // &localizedMonth,
+    //        &localizedDay, &localizedHour, &localizedMinute);
+
+    String localizedSTR = String(localizedDateTime);
+    localizedYear = localizedSTR.substring(0, 4).toInt();
+    localizedMonth = localizedSTR.substring(5, 7).toInt();
+    localizedDay = localizedSTR.substring(8, 10).toInt();
+    localizedHour = localizedSTR.substring(11, 13).toInt();
+    localizedMinute = localizedSTR.substring(14).toInt();
+
+    s3Time.setTime(s3Time.getSecond(), localizedMinute, localizedHour,
+                   localizedDay, localizedMonth, localizedYear);
+
+    lv_utils_setTime(localizedHour, localizedMinute, s3Time.getSecond());
+    lv_utils_setDate(localizedYear, localizedMonth, localizedDay);
+
+    free(localizedDateTime);
   }
 
   if ((millis() - previousScreenTouch) / 1000 >= screenTimeout &&
@@ -281,8 +343,11 @@ void s3UILooper() {
                    s3Time.getMicros());
     fileSystem.editSetting(
         FS_VAR_SETTINGS_DATE_TIME_TIME,
-        String(String(s3Time.getHour()) + ":" + String(s3Time.getMinute()) +
-               ":" + String(s3Time.getSecond()))
+        String((s3Time.getHour() < 10 ? "0" : "") + String(s3Time.getHour()) +
+               ":" + (s3Time.getMinute() < 10 ? "0" : "") +
+               String(s3Time.getMinute()) + ":" +
+               (s3Time.getSecond() < 10 ? "0" : "") +
+               String(s3Time.getSecond()))
             .c_str());
   }
 

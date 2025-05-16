@@ -23,9 +23,9 @@ void setup() {
 
   lv_display = lv_display_create(TFT_WIDTH, TFT_HEIGHT);
 
-  if (lv_display == NULL) {
+  if (lv_display == nullptr) {
     DEBUG_PRINTLN("Failed to create display");
-    while (1);
+    while (true);
   }
 
   lv_display_set_color_format(lv_display, LV_COLOR_FORMAT_RGB565);
@@ -37,9 +37,9 @@ void setup() {
   drawBuffer =
       heap_caps_malloc(TFT_DRAW_BUF_SIZE, MALLOC_CAP_DMA | MALLOC_CAP_INTERNAL);
 
-  if (drawBuffer == NULL) {
+  if (drawBuffer == nullptr) {
     DEBUG_PRINTLN("Failed to allocate draw buffer");
-    while (1);
+    while (true);
   }
 
   // Initialize the input device driver
@@ -48,14 +48,14 @@ void setup() {
   lv_indev_set_read_cb(indev, my_touchpad_read);
 
   for (int i = 0; i < 4; i++) {
-    DEBUG_PRINTF(">> %s %s\n", names[i], numbers[i]);
+    DEBUG_PRINTF(">> %s %s\n", names[i].c_str(), numbers[i].c_str());
   }
 
   contactsCount = 4;
 
   for (int i = 0; i < 4; i++) {
-    cNames[i] = (char *)names[i].c_str();
-    cNumbers[i] = (char *)numbers[i].c_str();
+    cNames[i] = const_cast<char*>(names[i].c_str());
+    cNumbers[i] = const_cast<char*>(numbers[i].c_str());
 
     DEBUG_PRINTF("%s::%s\n", cNames[i], cNumbers[i]);
     cCount++;
@@ -63,7 +63,7 @@ void setup() {
 
   ui_init();
   DEBUG_PRINTLN("UI initialized");
-  xTaskCreatePinnedToCore(s3looperTask, "S3Looper", 4096, NULL, 1, NULL, 1);
+  xTaskCreatePinnedToCore(s3looperTask, "S3Looper", 4096, nullptr, 1, nullptr, 1);
 }
 
 void loop() {

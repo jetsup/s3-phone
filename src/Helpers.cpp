@@ -1,21 +1,21 @@
 #include <Helpers.hpp>
 
-S3Time::S3Time(int8_t offset, const char* server, bool updateTimeOnInternet)
-    : _timeZone(offset),
+S3Time::S3Time(const int8_t offset, const char* server, bool updateTimeOnInternet)
+    : _timezoneHours(offset),
       _server(server),
       _updateTimeOnInternet(updateTimeOnInternet) {
-  _timeClient = new NTPClient(_ntpUDP, _server, _timeZone * 3600, 60000);
+  _timeClient = new NTPClient(_ntpUDP, _server, _timezoneHours * 3600, 60000);
 
   _timeClient->begin();
   _timeClient->forceUpdate();
 
-  _esp32Time = new ESP32Time(_timeZone * 3600);
+  _esp32Time = new ESP32Time(_timezoneHours * 3600);
   _esp32Time->setTime(_timeClient->getEpochTime());
 }
 
-S3Time::S3Time(const char* datetime, int8_t offset, bool updateTimeOnInternet)
-    : _timeZone(offset), _updateTimeOnInternet(updateTimeOnInternet) {
-  _esp32Time = new ESP32Time(_timeZone * 3600);
+S3Time::S3Time(const char* datetime, const int8_t offset, const bool updateTimeOnInternet)
+    : _timezoneHours(offset), _updateTimeOnInternet(updateTimeOnInternet) {
+  _esp32Time = new ESP32Time(_timezoneHours * 3600);
   _esp32Time->setTime(atol(datetime + 17), atoi(datetime + 14),
                       atoi(datetime + 10), atoi(datetime + 8),
                       atoi(datetime + 5), atoi(datetime));
@@ -23,21 +23,22 @@ S3Time::S3Time(const char* datetime, int8_t offset, bool updateTimeOnInternet)
 
 S3Time::S3Time(int8_t offset, const char* server, uint32_t updateInterval,
                bool updateTimeOnInternet)
-    : _timeZone(offset),
+    : _timezoneHours(offset),
       _server(server),
       _updateInterval(updateInterval),
       _updateTimeOnInternet(updateTimeOnInternet) {
   _timeClient =
-      new NTPClient(_ntpUDP, _server, _timeZone * 3600, _updateInterval);
+      new NTPClient(_ntpUDP, _server, _timezoneHours * 3600, _updateInterval);
 
   _timeClient->begin();
   _timeClient->forceUpdate();
 
-  _esp32Time = new ESP32Time(_timeZone * 3600);
+  _esp32Time = new ESP32Time(_timezoneHours * 3600);
   _esp32Time->setTime(_timeClient->getEpochTime());
 }
 
-void S3Time::fetchTime(bool force) {
+void S3Time::fetchTime(const bool force) const
+{
   if (force) {
     _timeClient->forceUpdate();
   } else {
@@ -47,10 +48,14 @@ void S3Time::fetchTime(bool force) {
   _esp32Time->setTime(_timeClient->getEpochTime());
 }
 
-void S3Time::setTimeZone(int8_t offset) {
-  _timeZone = offset;
-  _timeClient->setTimeOffset(_timeZone * 3600);
-  _esp32Time->offset = _timeZone * 3600;
+void S3Time::setTimeZone(const float offset) {
+  _timezoneHours = offset;
+  if (_timeClient == nullptr) {
+    _timeClient = new NTPClient(_ntpUDP, _server, _timezoneHours * 3600, 60000);
+    _timeClient->begin();
+  }
+  _timeClient->setTimeOffset(_timezoneHours * 3600);
+  _esp32Time->offset = _timezoneHours * 3600;
 }
 
 void S3Time::setServer(const char* server) {
@@ -85,11 +90,28 @@ void S3Time::loop() {
      * %M - minute (03)
      */
 
-    DEBUG_PRINTF("Time: %s/%s/%s %s :: %s\n", _esp32Time->getTime("%d"),
-                 _esp32Time->getTime("%m"), _esp32Time->getTime("%Y"),
-                 _esp32Time->getTime("%a"), _esp32Time->getTime("%H:%M"));
+    DEBUG_PRINTF("Time: %s/%s/%s %s :: %s\n", _esp32Time->getTime("%d").c_str(),
+                 _esp32Time->getTime("%m").c_str(), _esp32Time->getTime("%Y").c_str(),
+                 _esp32Time->getTime("%a").c_str(), _esp32Time->getTime("%H:%M").c_str());
   }
 }
+
+void S3Time::updateS3Time(const bool fromInternet, const int updateInterval) {
+  if (fromInternet) {
+    if (_timeClient == nullptr) {
+      _timeClient = new NTPClient(_ntpUDP, _server, _timezoneHours * 3600,
+                                  updateInterval);
+      _timeClient->begin();
+    }
+    _timeClient->forceUpdate();
+
+    _ntpTimeUpdated = true;
+  }
+}
+
+bool S3Time::isNtpTimeUpdated() const { return _ntpTimeUpdated; }
+
+void S3Time::setNtpTimeUpdated(const bool isUpdated) { _ntpTimeUpdated = isUpdated; }
 
 bool S3Time::isTimeUpdated() {
   if (_timeUpdated) {

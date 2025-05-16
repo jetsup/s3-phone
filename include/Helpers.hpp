@@ -12,15 +12,16 @@
 
 class S3Time : public ESP32Time {
  private:
-  int8_t _timeZone;
+  float _timezoneHours;
   const char* _server;
   uint32_t _updateInterval;
   WiFiUDP _ntpUDP;
-  NTPClient* _timeClient;
+  NTPClient* _timeClient = nullptr;
   ESP32Time* _esp32Time;
   bool _timeUpdated = false;
   bool _updateTimeOnInternet = true;
   bool _timeUpdatedOnInternet = false;
+  bool _ntpTimeUpdated = false;
 
   int _nowMinute = -1;
   int _nowHour = -1;
@@ -62,13 +63,13 @@ class S3Time : public ESP32Time {
    * @brief Fetch time from NTP server
    * @param force Force update
    */
-  void fetchTime(bool force = false);
+  void fetchTime(bool force = false) const;
 
   /**
    * @brief Set timezone offset
-   * @param offset Timezone offset eg 8, -8
+   * @param offset Timezone offset in hours. e.g. 3.5 for GMT +03:30
    */
-  void setTimeZone(int8_t offset);
+  void setTimeZone(float offset);
 
   /**
    * @brief Set NTP server
@@ -93,6 +94,16 @@ class S3Time : public ESP32Time {
    * @param updateInterval Update interval in milliseconds
    */
   void updateS3Time(bool fromInternet, int updateInterval = 60000);
+
+  /**
+   * @brief Check if NTP time is updated since
+   */
+  bool isNtpTimeUpdated() const;
+
+  /**
+   * @brief Update NTP time check variable
+   */
+  void setNtpTimeUpdated(bool isUpdated);
 
   /**
    * @brief Check if time is updated

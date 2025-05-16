@@ -1,6 +1,6 @@
 #include <functionality/storage/FileSystem.hpp>
 
-FileSystem::FileSystem(fs::FS& fileSystem) : _mFs(fileSystem) {}
+FileSystem::FileSystem(FS &fileSystem) : _mFs(fileSystem) {}
 
 void FileSystem::init() {
   while (!LittleFS.begin(FILESYSTEM_FORMAT_ON_FAIL)) {
@@ -17,7 +17,7 @@ void FileSystem::diskUsage() {
   DEBUG_PRINTF("Used space: %d/%d\n", _usedSpaceBytes, _totalSpaceBytes);
 }
 
-void FileSystem::createDirectory(const char* path) {
+void FileSystem::createDirectory(const char *path) const {
   if (!_mFs.exists(path)) {
     if (!_mFs.mkdir(path)) {
       DEBUG_PRINTLN("Create directory failed");
@@ -25,7 +25,7 @@ void FileSystem::createDirectory(const char* path) {
   }
 }
 
-String FileSystem::listDirectory(const char* path) {
+String FileSystem::listDirectory(const char *path) const {
   File folder = _mFs.open(path);
 
   if (!folder || !folder.isDirectory()) {
@@ -56,7 +56,7 @@ String FileSystem::listDirectory(const char* path) {
   return dirContent;
 }
 
-void FileSystem::readFile(const char* filename, bool createIfNotExists) {
+void FileSystem::readFile(const char *filename, bool createIfNotExists) const {
   File file = _mFs.open(filename, FILE_READ, createIfNotExists);
   if (!file || file.isDirectory()) {
     DEBUG_PRINTLN("Failed to open file for reading");
@@ -65,14 +65,14 @@ void FileSystem::readFile(const char* filename, bool createIfNotExists) {
 
   DEBUG_PRINTLN("File content:");
   while (file.available()) {
-    DEBUG_PRINT((char)file.read());
+    DEBUG_PRINT(static_cast<char>(file.read()));
   }
   DEBUG_PRINTLN();
   file.close();
 }
 
-void FileSystem::appendFile(const char* filename, const char* content,
-                            bool createIfNotExists) {
+void FileSystem::appendFile(const char *filename, const char *content,
+                            const bool createIfNotExists) const {
   File file = _mFs.open(filename, FILE_APPEND, createIfNotExists);
   if (!file || file.isDirectory()) {
     DEBUG_PRINTLN("Failed to open file for writing");
@@ -85,8 +85,8 @@ void FileSystem::appendFile(const char* filename, const char* content,
   file.close();
 }
 
-void FileSystem::writeFile(const char* filename, const char* content,
-                           bool createIfNotExists) {
+void FileSystem::writeFile(const char *filename, const char *content,
+                           const bool createIfNotExists) const {
   File file = _mFs.open(filename, FILE_WRITE, createIfNotExists);
   if (!file || file.isDirectory()) {
     DEBUG_PRINTLN("Failed to open file for writing");
@@ -99,37 +99,37 @@ void FileSystem::writeFile(const char* filename, const char* content,
   file.close();
 }
 
-void FileSystem::_loadSettings(bool createIfUnavailable) {
+void FileSystem::_loadSettings(const bool createIfUnavailable) {
   // load display settings
-  String settingsParameters[] = {FS_VAR_SETTINGS_DISPLAY_BRIGHTNESS,
-                                 FS_VAR_SETTINGS_DISPLAY_TIMEOUT,
-                                 FS_VAR_SETTINGS_THEMES_THEME_DARK,
-                                 FS_VAR_SETTINGS_THEMES_WALLPAPER,
-                                 FS_VAR_SETTINGS_THEMES_FONT_SMALL,
-                                 FS_VAR_SETTINGS_THEMES_FONT_MEDIUM,
-                                 FS_VAR_SETTINGS_THEMES_FONT_LARGE,
-                                 FS_VAR_SETTINGS_CONNECTIVITY_BLE,
-                                 FS_VAR_SETTINGS_NETWORKING_HOTSPOT_NAME,
-                                 FS_VAR_SETTINGS_NETWORKING_WIFI_STATE,
-                                 FS_VAR_SETTINGS_DATE_TIME_DATE,
-                                 FS_VAR_SETTINGS_DATE_TIME_TIME,
-                                 FS_VAR_SETTINGS_DATE_TIME_SYNC,
-                                 FS_VAR_SETTINGS_DATE_TIME_TIMEZONE};
+  const String settingsParameters[] = {FS_VAR_SETTINGS_DISPLAY_BRIGHTNESS,
+                                       FS_VAR_SETTINGS_DISPLAY_TIMEOUT,
+                                       FS_VAR_SETTINGS_THEMES_THEME_DARK,
+                                       FS_VAR_SETTINGS_THEMES_WALLPAPER,
+                                       FS_VAR_SETTINGS_THEMES_FONT_SMALL,
+                                       FS_VAR_SETTINGS_THEMES_FONT_MEDIUM,
+                                       FS_VAR_SETTINGS_THEMES_FONT_LARGE,
+                                       FS_VAR_SETTINGS_CONNECTIVITY_BLE,
+                                       FS_VAR_SETTINGS_NETWORKING_HOTSPOT_NAME,
+                                       FS_VAR_SETTINGS_NETWORKING_WIFI_STATE,
+                                       FS_VAR_SETTINGS_DATE_TIME_DATE,
+                                       FS_VAR_SETTINGS_DATE_TIME_TIME,
+                                       FS_VAR_SETTINGS_DATE_TIME_SYNC,
+                                       FS_VAR_SETTINGS_DATE_TIME_TIMEZONE};
 
-  String settingsParDefaults[] = {FS_DEF_SETTINGS_DISPLAY_BRIGHTNESS,
-                                  FS_DEF_SETTINGS_DISPLAY_TIMEOUT,
-                                  FS_DEF_SETTINGS_THEMES_THEME_DARK,
-                                  FS_DEF_SETTINGS_THEMES_WALLPAPER,
-                                  FS_DEF_SETTINGS_THEMES_FONT_SMALL,
-                                  FS_DEF_SETTINGS_THEMES_FONT_MEDIUM,
-                                  FS_DEF_SETTINGS_THEMES_FONT_LARGE,
-                                  FS_DEF_SETTINGS_CONNECTIVITY_BLE,
-                                  FS_DEF_SETTINGS_NETWORKING_HOTSPOT_NAME,
-                                  FS_DEF_SETTINGS_NETWORKING_WIFI_STATE,
-                                  FS_DEF_SETTINGS_DATE_TIME_DATE,
-                                  FS_DEF_SETTINGS_DATE_TIME_TIME,
-                                  FS_DEF_SETTINGS_DATE_TIME_SYNC,
-                                  FS_DEF_SETTINGS_DATE_TIME_TIMEZONE};
+  const String settingsParDefaults[] = {FS_DEF_SETTINGS_DISPLAY_BRIGHTNESS,
+                                        FS_DEF_SETTINGS_DISPLAY_TIMEOUT,
+                                        FS_DEF_SETTINGS_THEMES_THEME_DARK,
+                                        FS_DEF_SETTINGS_THEMES_WALLPAPER,
+                                        FS_DEF_SETTINGS_THEMES_FONT_SMALL,
+                                        FS_DEF_SETTINGS_THEMES_FONT_MEDIUM,
+                                        FS_DEF_SETTINGS_THEMES_FONT_LARGE,
+                                        FS_DEF_SETTINGS_CONNECTIVITY_BLE,
+                                        FS_DEF_SETTINGS_NETWORKING_HOTSPOT_NAME,
+                                        FS_DEF_SETTINGS_NETWORKING_WIFI_STATE,
+                                        FS_DEF_SETTINGS_DATE_TIME_DATE,
+                                        FS_DEF_SETTINGS_DATE_TIME_TIME,
+                                        FS_DEF_SETTINGS_DATE_TIME_SYNC,
+                                        FS_DEF_SETTINGS_DATE_TIME_TIMEZONE};
 
   for (int i = 0;
        i < sizeof(settingsParameters) / sizeof(settingsParameters[0]); i++) {
@@ -138,11 +138,11 @@ void FileSystem::_loadSettings(bool createIfUnavailable) {
                      settingsParDefaults[i].c_str(), createIfUnavailable);
     DEBUG_PRINTF("Variable: %s :: Default: %s\n", settingsParameters[i].c_str(),
                  settingsParDefaults[i].c_str());
-    DEBUG_PRINTF("%s: %s\n", settingsParameters[i], setting);
+    DEBUG_PRINTF("%s: %s\n", settingsParameters[i].c_str(), setting.c_str());
   }
 }
 
-String FileSystem::readSetting(const char* variable) {
+String FileSystem::readSetting(const char *variable) const {
   String filename = "";
   if (String(variable).equals(FS_VAR_SETTINGS_DISPLAY_BRIGHTNESS) ||
       String(variable).equals(FS_VAR_SETTINGS_DISPLAY_TIMEOUT)) {
@@ -168,7 +168,7 @@ String FileSystem::readSetting(const char* variable) {
   File file = _mFs.open(filename, FILE_READ);
 
   if (!file || file.isDirectory()) {
-    DEBUG_PRINTF("Failed to open file for reading: %s\n", filename);
+    DEBUG_PRINTF("Failed to open file for reading: %s\n", filename.c_str());
     return "Failed to open " + String(filename);
   }
 
@@ -179,11 +179,11 @@ String FileSystem::readSetting(const char* variable) {
 
   file.close();
 
-  DEBUG_PRINTF("%s: %s\n", variable, value);
+  DEBUG_PRINTF("%s: %s\n", variable, value.c_str());
   return value;
 }
 
-String FileSystem::_readSetting(const char* variable, const char* defaultValue,
+String FileSystem::_readSetting(const char *variable, const char *defaultValue,
                                 bool createIfUnavailable) {
   String filename = "";
   JsonDocument doc;
@@ -209,20 +209,20 @@ String FileSystem::_readSetting(const char* variable, const char* defaultValue,
     filename = FS_SETTINGS_DATE_TIME_FILEPATH;
   }
 
-  DEBUG_PRINTF("Reading setting: %s\n", filename);
+  DEBUG_PRINTF("Reading setting: %s\n", filename.c_str());
   File file = _mFs.open(filename, FILE_READ, createIfUnavailable);
 
   if (!file) {
-    DEBUG_PRINTF("'%s' does not exist\n", filename);
+    DEBUG_PRINTF("'%s' does not exist\n", filename.c_str());
     if (file.isDirectory()) {
-      DEBUG_PRINTF("The Path '%s' is a directory\n", filename);
+      DEBUG_PRINTF("The Path '%s' is a directory\n", filename.c_str());
       return "Failed to open " + String(filename);
     }
 
     file = _mFs.open(filename, FILE_WRITE, createIfUnavailable);
 
     if (!file || file.isDirectory()) {
-      DEBUG_PRINTF("Failed to open file for writing: %s\n", filename);
+      DEBUG_PRINTF("Failed to open file for writing: %s\n", filename.c_str());
       return "Failed to open " + String(filename);
     }
     deserializeJson(doc, file);
@@ -232,7 +232,7 @@ String FileSystem::_readSetting(const char* variable, const char* defaultValue,
 
     file.seek(0);
     if (serializeJson(doc, file) == 0) {
-      DEBUG_PRINTF("Failed to write to file: %s\n", filename);
+      DEBUG_PRINTF("Failed to write to file: %s\n", filename.c_str());
     }
 
     file.close();
@@ -244,12 +244,12 @@ String FileSystem::_readSetting(const char* variable, const char* defaultValue,
   String value = doc[variable];
 
   if (value.equals("") || value == "null") {
-    DEBUG_PRINTF("Applying default setting for '%s' <- '%s'\n", filename,
-                 defaultValue);
+    DEBUG_PRINTF("Applying default setting for '%s' <- '%s'\n",
+                 filename.c_str(), defaultValue);
     file = _mFs.open(filename, FILE_WRITE, createIfUnavailable);
 
     if (!file || file.isDirectory()) {
-      DEBUG_PRINTF("Failed to open file for writing: %s\n", filename);
+      DEBUG_PRINTF("Failed to open file for writing: %s\n", filename.c_str());
       return "Failed to open " + String(filename);
     }
 
@@ -258,7 +258,7 @@ String FileSystem::_readSetting(const char* variable, const char* defaultValue,
 
     file.seek(0);
     if (serializeJson(doc, file) == 0) {
-      DEBUG_PRINTF("Failed to write to file: %s\n", filename);
+      DEBUG_PRINTF("Failed to write to file: %s\n", filename.c_str());
     }
   }
 
@@ -266,7 +266,7 @@ String FileSystem::_readSetting(const char* variable, const char* defaultValue,
   return value;
 }
 
-void FileSystem::editSetting(const char* variable, const char* value) {
+void FileSystem::editSetting(const char *variable, const char *value) {
   String filename = "";
   if (String(variable).equals(FS_VAR_SETTINGS_DISPLAY_BRIGHTNESS) ||
       String(variable).equals(FS_VAR_SETTINGS_DISPLAY_TIMEOUT)) {
@@ -291,7 +291,7 @@ void FileSystem::editSetting(const char* variable, const char* value) {
 
   File file = _mFs.open(filename, FILE_READ);
   if (!file) {
-    DEBUG_PRINTF("Failed to open file for editing: %s\n", filename);
+    DEBUG_PRINTF("Failed to open file for editing: %s\n", filename.c_str());
     return;
   }
 
@@ -303,24 +303,24 @@ void FileSystem::editSetting(const char* variable, const char* value) {
 
   file.seek(0);
   if (serializeJson(doc, file) == 0) {
-    DEBUG_PRINTF("Failed to edit to file: %s\n", filename);
+    DEBUG_PRINTF("Failed to edit to file: %s\n", filename.c_str());
   }
   file.close();
 }
 
-void FileSystem::deleteFile(const char* path) {
+void FileSystem::deleteFile(const char *path) const {
   if (!_mFs.remove(path)) {
     DEBUG_PRINTF("Delete failed: %s\n", path);
   }
 }
 
-void FileSystem::saveCredentials(filesystem_credentials_t type, const char* key,
-                                 const char* value) {
+void FileSystem::saveCredentials(const filesystem_credentials_t type,
+                                 const char *key, const char *value) const {
   String filename = "";
   switch (type) {
-    case CREDENTIALS_WIFI:
-      filename = FS_SETTINGS_NETWORK_WIFI_CREDENTIALS_FILEPATH;
-      break;
+  case CREDENTIALS_WIFI:
+    filename = FS_SETTINGS_NETWORK_WIFI_CREDENTIALS_FILEPATH;
+    break;
   }
 
   File file = _mFs.open(filename, FILE_APPEND, true);
@@ -349,23 +349,23 @@ Database::~Database() {
   sqlite3_free(_zErrMsg);
 }
 
-int Database::openDB(const char* filename, sqlite3** db) {
-  int code = sqlite3_open(filename, db);
+int Database::openDB(const char *filename, sqlite3 **db) {
+  const int code = sqlite3_open(filename, db);
   if (code != SQLITE_OK) {
     DEBUG_PRINTF("Failed to open database: %s\n", sqlite3_errmsg(*db));
   }
   return code;
 }
 
-int Database::executeQuery(const char* sql) {
-  int code = sqlite3_exec(_db, sql, NULL, 0, &_zErrMsg);
+int Database::executeQuery(const char *sql) {
+  const int code = sqlite3_exec(_db, sql, nullptr, nullptr, &_zErrMsg);
   if (code != SQLITE_OK) {
     DEBUG_PRINTF("Failed to execute query: %s\n", _zErrMsg);
   }
   return code;
 }
 
-void Database::close() {
+void Database::close() const {
   sqlite3_close(_db);
   sqlite3_free(_zErrMsg);
 }

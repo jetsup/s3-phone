@@ -76,7 +76,7 @@ class GSM {
    * @brief Send a command to the GSM module
    * @param command Command to send
    */
-  void _sendCommandW(const int value);
+  void _sendCommandW(int value);
 
   /**
    * @brief Send a command to the GSM module
@@ -88,7 +88,7 @@ class GSM {
    * @brief Send a command to the GSM module
    * @param value Command to send
    */
-  void _sendCommandLn(const int value);
+  void _sendCommandLn(int value);
   /**
    * @brief Send a command to the GSM module
    * @param command1 Command to send

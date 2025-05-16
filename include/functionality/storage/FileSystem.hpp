@@ -17,17 +17,16 @@ typedef enum {
 } filesystem_credentials_t;
 
 class FileSystem {
- private:
-  size_t _totalSpaceBytes;
-  size_t _usedSpaceBytes;
-  fs::FS& _mFs;
+  size_t _totalSpaceBytes = 0;
+  size_t _usedSpaceBytes = 0;
+  FS &_mFs;
 
- public:
+public:
   FileSystem() = delete;
 
-  FileSystem(fs::FS& fileSystem = LittleFS);
+  explicit FileSystem(FS &fileSystem = LittleFS);
 
- private:
+private:
   /**
    * @brief This will be called diring powerup to load saved settings or create
    * defaults if settings not available
@@ -36,17 +35,16 @@ class FileSystem {
 
   /**
    * @brief Read user/system settings a JSON file
-   * @param filename The name of the file
    * @param variable The name of the variable to read
    * @param defaultValue The default value of the variable if not present/set
-   * @param createIfUnavailable Create the file with this `filename` if it not
-   * saved in the filesystem
+   * @param createIfUnavailable Create the file with this `filename` if it is
+   * not saved in the filesystem
    * @return Setting value
    */
-  String _readSetting(const char* variable, const char* defaultValue,
+  String _readSetting(const char *variable, const char *defaultValue,
                       bool createIfUnavailable = true);
 
- public:
+public:
   /**
    * @brief Initialize the file system. Formats the file system if it fails to
    * begin if FORMAT_ON_FAIL is set
@@ -62,20 +60,20 @@ class FileSystem {
    * @brief Create a directory
    * @param path The path of the directory to create
    */
-  void createDirectory(const char* path);
+  void createDirectory(const char *path) const;
 
   /**
    * @brief Create a directory
    * @param path The directory to list its content
    */
-  String listDirectory(const char* path);
+  String listDirectory(const char *path) const;
 
   /**
    * @brief Read a file
    * @param filename The name of the file
    * @param createIfNotExists Create the file if it does not exist, by default
    */
-  void readFile(const char* filename, bool createIfNotExists = true);
+  void readFile(const char *filename, bool createIfNotExists = true) const;
 
   /**
    * @brief Append content to the end of a file
@@ -83,8 +81,8 @@ class FileSystem {
    * @param content The content to append
    * @param createIfNotExists Create the file if it does not exist, by default
    */
-  void appendFile(const char* filename, const char* content,
-                  bool createIfNotExists = true);
+  void appendFile(const char *filename, const char *content,
+                  bool createIfNotExists = true) const;
 
   /**
    * @brief Write to a file
@@ -92,43 +90,43 @@ class FileSystem {
    * @param content The content to write
    * @param createIfNotExists Create the file if it does not exist, by default
    */
-  void writeFile(const char* filename, const char* content,
-                 bool createIfNotExists = true);
+  void writeFile(const char *filename, const char *content,
+                 bool createIfNotExists = true) const;
 
   /**
    * @brief Read user/system settings a JSON file
    * @param variable The name of the variable to read
    * @return Setting value
    */
-  String readSetting(const char* variable);
+  String readSetting(const char *variable) const;
 
   /**
    * @brief Edit a setting in a JSON file
    * @param variable The name of the variable to edit
    * @param value The new value of the variable
-   * @param createIfUnavailable Create the file with this `filename` if it not
+   * @note createIfUnavailable Create the file with this `filename` if it is not
    * saved in the filesystem
    */
-  void editSetting(const char* variable, const char* value);
+  void editSetting(const char *variable, const char *value);
 
   /**
    * @brief Delete a file from the file system
    */
-  void deleteFile(const char* path);
+  void deleteFile(const char *path) const;
 
-  void saveCredentials(filesystem_credentials_t type, const char* key,
-                       const char* value);
+  void saveCredentials(filesystem_credentials_t type, const char *key,
+                       const char *value) const;
 };
 
 // SQLite database
 class Database {
- private:
-  sqlite3* _db;  // hold the opened database
-  sqlite3_stmt* _stmt;
-  char* _zErrMsg = 0;
+private:
+  sqlite3 *_db; // hold the opened database
+  sqlite3_stmt *_stmt;
+  char *_zErrMsg = nullptr;
   int _rc;
 
- public:
+public:
   Database();
 
   ~Database();
@@ -140,17 +138,17 @@ class Database {
    * @param db The pointer to the database
    * @return SQLITE_OK if successful
    */
-  int openDB(const char* filename, sqlite3** db);
+  static int openDB(const char *filename, sqlite3 **db);
 
   /**
    * @brief Execute a query on the database
    * @param sql The SQL query to execute
    * @return SQLITE_OK if successful
    */
-  int executeQuery(const char* sql);
+  int executeQuery(const char *sql);
 
   /**
    * @brief Close the database. This is similar to calling the destructor
    */
-  void close();
+  void close() const;
 };

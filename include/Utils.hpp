@@ -13,7 +13,7 @@
  * @param timeZone Timezone offset in HH:MM format
  * @param localizedDateTime The buffer to store the localized date and time
  */
-void localizeTime(String currentTime, String currentDate, String timeZone,
+void localizeTime(const String& currentTime, const String& currentDate, const String& timeZone,
                   char *localizedDateTime);
 
 #define DEBUG 1

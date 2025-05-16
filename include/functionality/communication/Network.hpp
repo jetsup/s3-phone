@@ -7,22 +7,23 @@
 #include <WiFi.h>
 #include <WiFiGeneric.h>
 #include <WiFiUdp.h>
+#include <mdns.h>
 #include <ui/helpers/ui_utils.h>
 
 #include <Config.hpp>
 #include <Utils.hpp>
 
 class Network {
- private:
+private:
   String _hostname;
   IPAddress _localIPAddress;
   IPAddress _gatewayIPAddress;
-  char* _ssid;
-  const char* _password;
-  long _previousConnectionRetryTime;
-  int8_t _previousFoundDeviceCount;
+  String _ssid;
+  String _password;
+  unsigned long _previousConnectionRetryTime;
+  int16_t _previousFoundDeviceCount;
   bool _isConnected;
-  bool _shouldConnect;  // whether the user wants to connect to the network
+  bool _shouldConnect; // whether the user wants to connect to the network
   bool _isStation;
   bool _isAccessPoint;
   bool _refreshUI = false;
@@ -31,13 +32,13 @@ class Network {
 
   bool _hasInternet = false;
 
- public:
+public:
   Network() = delete;
 
   /**
    * @brief Construct a new Network object
    */
-  Network(String hostname = S3PHONE_MODEL_NAME);
+  explicit Network(String hostname = S3PHONE_MODEL_NAME);
 
   /**
    * @brief Destroy and free all variables and memory
@@ -45,7 +46,7 @@ class Network {
   ~Network();
 
   /**
-   * @brief Configure the device as a client to a WiFi
+   * @brief Configure the device as a client to a Wi-Fi
    */
   void enableStationMode();
 
@@ -64,7 +65,7 @@ class Network {
   /**
    * @brief WiFi detected changed and should refresh the UI
    */
-  bool shouldRefreshUI();
+  bool shouldRefreshUI() const;
 
   /**
    * @brief Update the variable for refreshing UI
@@ -75,14 +76,14 @@ class Network {
    * @brief Update the hostname for which this device will be identified with in
    * the local network
    */
-  void setHostname(String hostname);
+  void setHostname(const String &hostname);
 
   /**
    * @brief Initialize the network connection and connect to the network
    * @param ssid The network to connect to
    * @param password The password of the network to connect to
    */
-  void connect(String ssid, String password = "");
+  void connect(const String &ssid, const String &password = "");
 
   /**
    * @brief Get the SSID of the network the device is connected to
@@ -101,7 +102,7 @@ class Network {
    * @return true if the credentials are saved and can be used to connect to
    * the network later `false` if the credentials are not saved
    */
-  bool credentialsSaved();
+  bool credentialsSaved() const;
 
   /**
    * @brief Update the saved credentials status
@@ -112,7 +113,7 @@ class Network {
    * @brief Try to connect to the network with the previously entered
    * credentials
    */
-  void reconnect();
+  void reconnect() const;
 
   /**
    * @brief Disconnect from the network
@@ -123,7 +124,7 @@ class Network {
    * @brief Check if the connected internet has internet access
    * @return true if the device has internet access
    */
-  bool hasInternet();  // TODO: Implement this
+  bool hasInternet() const; // TODO: Implement this
 
   /**
    * @brief Loop function to be called in the main loop
@@ -136,14 +137,14 @@ class Network {
    * @return true if the device is connected to the network
    * @return false if the device is not connected to the network
    */
-  bool isConnected();
+  bool isConnected() const;
 
   /**
    * @brief Get the status of the WiFi radio
    * @return `true` if the system had tried to connect and there are credentials
    * stored. `false` if the system has not tried to connect to a network.
    */
-  bool shouldConnect();
+  bool shouldConnect() const;
 
   /**
    * @brief Set whether the device should connect to the network
@@ -168,4 +169,4 @@ class Network {
   IPAddress getGatewayIPAddress();
 };
 
-#endif  // NETWORK_HPP_
+#endif // NETWORK_HPP_

@@ -88,10 +88,11 @@ Display::Display(uint8_t tftCLK, uint8_t tftMOSI, uint8_t tftMISO,
   pinMode(TFT_LED, OUTPUT);
 }
 
-void Display::updateBrightness(int brightness) {
+void Display::updateBrightness(const int brightness) const
+{
   analogWrite(_backlightPin, brightness);
 }
 
-void Display::sleep() { analogWrite(_backlightPin, 0); }
+void Display::sleep() const { analogWrite(_backlightPin, 0); }
 
-void Display::wake() { analogWrite(_backlightPin, screenBrightnessLevel); }
+void Display::wake() const { analogWrite(_backlightPin, screenBrightnessLevel); }

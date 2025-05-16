@@ -31,17 +31,17 @@ class Display : public lgfx::LGFX_Device {
    * @brief Change screen brightness
    * @param brightness The new screen brightness
    */
-  void updateBrightness(int brightness);
+  void updateBrightness(int brightness) const;
 
   /**
    * @brief Turn off the backlight
    */
-  void sleep();
+  void sleep() const;
 
   /**
    * @brief Turn on the backlight
    */
-  void wake();
+  void wake() const;
 };
 
 #endif  // DISPLAY_HPP_

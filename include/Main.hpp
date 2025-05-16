@@ -133,6 +133,8 @@ void loadSystemConfigurations() {
   int hourOffset = timezoneSTR.substring(1, 3).toInt();
   int minuteOffset = timezoneSTR.substring(4).toInt();
 
+  s3Time.setTimeZone(hourOffset + minuteOffset / 60);
+
   int year = date.substring(0, 4).toInt();
   int month = date.substring(5, 7).toInt();
   int day = date.substring(8, 10).toInt();
@@ -185,6 +187,7 @@ void s3looperTask(void *params) {
 
       if (utilsConnectToWiFi) {
         wifiNameUtilsUpdated = false;
+        DEBUG_PRINTF("Connecting to '%s'::'%s'\n", wifiName, wifiPassword);
         s3WiFi->connect(String(wifiName), String(wifiPassword));
         utilsConnectToWiFi = false;
       }
@@ -210,6 +213,12 @@ void s3looperTask(void *params) {
                                    s3WiFi->getPassword().c_str());
         s3WiFi->setCredentialsSaved(true);
       }
+    }
+
+    if (syncTimeAutomatically && !s3Time.isNtpTimeUpdated()) {
+      syncTimeAutomatically = false;
+      s3Time.updateS3Time(true, 60 * 60);
+      DEBUG_PRINTLN("Syncing time from NTP server");
     }
   }
 }

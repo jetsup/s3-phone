@@ -516,6 +516,7 @@ void ui_event_button_cb(lv_event_t* e) {
       // TODO: Display loading until connected, if connected go to prev screen
       const char* enteredPassword = lv_textarea_get_text(ui_txtWiFiPassword);
       strcpy(wifiPassword, enteredPassword);
+      LV_LOG_USER("WiFi Password: '%s'\n", wifiPassword);
 
       lv_utils_connectWiFi();
 
@@ -616,6 +617,7 @@ void ui_event_list_wifi_cb(lv_event_t* e) {
 
   if (strncmp(btnText, "*", 1) == 0) {
     strcpy(wifiName, wifiNameData);
+    LV_LOG_USER("WiFi Name: `%s`", wifiName);
 
     if (screenStackPush(SCREEN_SETTINGS_NETWORK_INTERNET_WIFI,
                         LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {

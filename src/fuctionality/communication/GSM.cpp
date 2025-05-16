@@ -1,6 +1,6 @@
 #include <functionality/communication/GSM.hpp>
 
-GSM::GSM(uint8_t rx, uint8_t tx, uint32_t baud) {
+GSM::GSM(const uint8_t rx, const uint8_t tx, const uint32_t baud) {
   _gsmSerial = new EspSoftwareSerial::UART(rx, tx);
   _gsmSerial->begin(baud);
 }
@@ -44,7 +44,7 @@ void GSM::init() {
   _processResponse();
 
   // Set SMS storage to SIM
-  _sendCommandLn("AT+CPMS=\"SM\",\"SM\",\"SM\"");
+  _sendCommandLn(R"(AT+CPMS="SM","SM","SM")");
   delay(100);
   _processResponse();
 

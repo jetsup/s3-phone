@@ -1,9 +1,9 @@
 #include <Utils.hpp>
 
-void localizeTime(String currentTime, String currentDate, String timeZone,
+void localizeTime(const String& currentTime, const String& currentDate, const String& timeZone,
                     char *adjustedDateTime) {
-  int currentHour = currentTime.substring(0, currentTime.indexOf(':')).toInt();
-  int currentMinute =
+  const int currentHour = currentTime.substring(0, currentTime.indexOf(':')).toInt();
+  const int currentMinute =
       currentTime.substring(currentTime.indexOf(':') + 1).toInt();
 
   int year = currentDate.substring(0, 4).toInt();

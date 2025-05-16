@@ -29,14 +29,14 @@ class S3Bluetooth {
 
  public:
   S3Bluetooth() = delete;
-  S3Bluetooth(String btName, int scanTime = 5);
+  explicit S3Bluetooth(const String &btName, int scanTime = 5);
   void clientModeInit();
-  void clientScanServers();
-  void clientTerminate();
+  static void clientScanServers();
+  void clientTerminate() const;
   void serverModeInit();
-  void serverSetData(String data);
+  void serverSetData(const String &data) const;
 };
 
-class S3DeviceAdvertiseCallback : public BLEAdvertisedDeviceCallbacks {
-  void onResult(BLEAdvertisedDevice advertisedDevice);
+class S3DeviceAdvertiseCallback final : public BLEAdvertisedDeviceCallbacks {
+  void onResult(BLEAdvertisedDevice advertisedDevice) override;
 };

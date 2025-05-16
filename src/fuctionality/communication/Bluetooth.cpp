@@ -3,7 +3,7 @@
 int discoveredDevicesCount;
 DiscoveredDevice discoveredDevices[10];
 
-S3Bluetooth::S3Bluetooth(String btName, int scanTime)
+S3Bluetooth::S3Bluetooth(const String &btName, const int scanTime)
     : _bluetoothName(btName), _scanTime(scanTime) {}
 
 void S3Bluetooth::clientModeInit() {
@@ -19,7 +19,7 @@ void S3Bluetooth::clientScanServers() {
   // TODO: implement
 }
 
-void S3Bluetooth::clientTerminate() {
+void S3Bluetooth::clientTerminate() const {
   _bleScan->clearResults();
   _bleScan->stop();
 }
@@ -42,7 +42,7 @@ void S3Bluetooth::serverModeInit() {
   BLEDevice::startAdvertising();
 }
 
-void S3Bluetooth::serverSetData(String data) {
+void S3Bluetooth::serverSetData(const String &data) const {
   //
   _pCharacteristic->setValue(data.c_str());
 }
@@ -50,7 +50,7 @@ void S3Bluetooth::serverSetData(String data) {
 //
 
 void S3DeviceAdvertiseCallback::onResult(BLEAdvertisedDevice advertisedDevice) {
-  DiscoveredDevice dDevice = {
+  const DiscoveredDevice dDevice = {
       advertisedDevice.getAddress().toString().c_str(),
       (advertisedDevice.haveRSSI()) ? advertisedDevice.getRSSI() : -1,
       (advertisedDevice.haveName()) ? String(advertisedDevice.getName().c_str())

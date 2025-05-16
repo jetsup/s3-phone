@@ -1,23 +1,26 @@
 #include <functionality/communication/Network.hpp>
+#include <utility>
 
 Network::Network(String hostname)
-    : _previousConnectionRetryTime(0),
-      _isConnected(false),
-      _shouldConnect(false),
-      _previousFoundDeviceCount(0),
-      _hostname(hostname) {}
+    : _previousConnectionRetryTime(0), _isConnected(false),
+      _shouldConnect(false), _previousFoundDeviceCount(0), _hostname(std::move(hostname)) {
+  // setup mDNS
+  mdns_init();
+  mdns_hostname_set(_hostname.c_str());
+  mdns_instance_name_set(_hostname.c_str());
+}
 
 Network::~Network() {
   //
 }
 
 void Network::enableStationMode() {
-  WiFi.mode(WIFI_STA);
+  WiFiClass::mode(WIFI_STA);
   _isStation = true;
 }
 
 void Network::enableAccessPionMode() {
-  WiFi.mode(WIFI_AP);
+  WiFiClass::mode(WIFI_AP);
   _isAccessPoint = true;
 }
 
@@ -30,7 +33,7 @@ uint8_t Network::scanAccessPoints() {
     _scanning = true;
   }
 
-  int16_t foundDevices = WiFi.scanComplete();
+  const int16_t foundDevices = WiFi.scanComplete();
   if (foundDevices > 0) {
     for (int i = 0; i < foundDevices; i++) {
       strncpy(discoveredWiFiNames[i], String(WiFi.SSID(i)).c_str(),
@@ -58,48 +61,51 @@ uint8_t Network::scanAccessPoints() {
   return foundDevices;
 }
 
-bool Network::shouldRefreshUI() { return _refreshUI; }
+bool Network::shouldRefreshUI() const { return _refreshUI; }
 
-void Network::setRefreshUI(bool refresh) { _refreshUI = refresh; }
+void Network::setRefreshUI(const bool refresh) { _refreshUI = refresh; }
 
-void Network::setHostname(String hostname) { _hostname = hostname; }
+void Network::setHostname(const String &hostname) { _hostname = hostname; }
 
-void Network::connect(String ssid, String password) {
-  _ssid = (char*)ssid.c_str();
-  _password = password.c_str();
+void Network::connect(const String &ssid, const String &password) {
+  if (_ssid != ssid || _password != password) {
+    _ssid = ssid;
+    _password = password;
 
-  WiFi.disconnect();  // disconnect if it was previously connected
-  _isConnected = false;
-  _shouldConnect = true;
+    WiFi.disconnect(); // disconnect if it was previously connected
+    _isConnected = false;
+    _shouldConnect = true;
 
-  WiFi.setHostname(_hostname.c_str());
-  WiFi.begin(_ssid, _password);
+    WiFi.begin(_ssid, _password);
+  }
 }
 
 String Network::getPassword() {
   if (_isConnected) {
     return _password;
   }
-  return String();
+  return {};
 }
 
 String Network::getSSID() {
   if (_isConnected) {
     return _ssid;
   }
-  return String();
+  return {};
 }
 
-bool Network::credentialsSaved() { return _credentialsSaved; }
+bool Network::credentialsSaved() const { return _credentialsSaved; }
 
-void Network::setCredentialsSaved(bool saved) { _credentialsSaved = saved; }
+void Network::setCredentialsSaved(const bool saved) {
+  _credentialsSaved = saved;
+}
 
-void Network::reconnect() {
+void Network::reconnect() const {
   if (_shouldConnect) {
-    WiFi.setHostname(_hostname.c_str());
     WiFi.begin(_ssid, _password);
 
-    DEBUG_PRINTF("Reconnecting to '%s'::'%s'\n", _ssid, _password);
+    DEBUG_PRINTF("Reconnecting to '%s'::'%s'\n", _ssid.c_str(),
+                 _password.c_str());
   }
 }
 
@@ -107,10 +113,11 @@ void Network::disconnect() {
   WiFi.disconnect();
   _credentialsSaved = false;
 }
+bool Network::hasInternet() const { return _hasInternet; }
 
-bool Network::isConnected() { return _isConnected; }
+bool Network::isConnected() const { return _isConnected; }
 
-bool Network::shouldConnect() { return _shouldConnect; }
+bool Network::shouldConnect() const { return _shouldConnect; }
 
 void Network::loop() {
   if (_shouldConnect && !_isConnected) {
@@ -125,17 +132,17 @@ void Network::loop() {
     }
   }
 
-  if (WiFi.status() == WL_CONNECTED && !_isConnected) {
+  if (WiFiClass::status() == WL_CONNECTED && !_isConnected) {
     _isConnected = true;
 
     _localIPAddress = WiFi.localIP();
     _gatewayIPAddress = WiFi.gatewayIP();
 
-    DEBUG_PRINTF(">>> IP: %s GIP: %s <<<\n", _localIPAddress.toString(),
-                 _gatewayIPAddress.toString());
+    DEBUG_PRINTF(">>> IP: %s GIP: %s <<<\n", _localIPAddress.toString().c_str(),
+                 _gatewayIPAddress.toString().c_str());
   }
 
-  if (WiFi.status() != WL_CONNECTED) {
+  if (WiFiClass::status() != WL_CONNECTED) {
     _isConnected = false;
   }
 
@@ -143,7 +150,7 @@ void Network::loop() {
   scanAccessPoints();
 }
 
-void Network::setShouldConnect(bool shouldConnect) {
+void Network::setShouldConnect(const bool shouldConnect) {
   _shouldConnect = shouldConnect;
 }
 

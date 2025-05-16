@@ -13,7 +13,7 @@ extern char lvCurrentTime[6];
 extern char lvCurrentDate[15];
 
 #define CONTACT_NAME_NUMBER_LENGTH 44
-extern const char contactSeparationDelimeter[4];
+extern const char contactSeparationDelimiter[4];
 extern char contactName[30];
 extern char contactNumber[14];
 extern bool dateChanged;
@@ -247,8 +247,8 @@ void lv_utils_setWallpaper(uint8_t wallpaperID, bool refreshUI);
 void lv_utils_setBluetooth(bool bleEnabled);
 
 /**
- * @brief Update the status of `WIFI` for the dependent UI components
- * @param bleEnabled Set the status of WIFI
+ * @brief Update the status of `WI-FI` for the dependent UI components
+ * @param wifiState Set the status of WI-FI
  */
 void lv_utils_setWiFi(bool wifiState);
 
@@ -259,7 +259,7 @@ void lv_utils_setWiFi(bool wifiState);
  * @param optionsCount The number of options to be populated, `size of the
  * array`
  * @param evt Event callback
- * @param evtFilter ORed event type to respond to e.g.`LV_EVENT_CLICKED`
+ * @param eventFilter ORed event type to respond to e.g.`LV_EVENT_CLICKED`
  * @param callbackData The data to be passed to the callback
  */
 void lv_utils_populate_list_options(lv_obj_t *list, const char **listOptions,
@@ -268,7 +268,7 @@ void lv_utils_populate_list_options(lv_obj_t *list, const char **listOptions,
                                     const char *callbackData);
 
 /**
- * @brief Update the WiFi list with new available scanned WiFi connections
+ * @brief Update the Wi-Fi list with new available scanned Wi-Fi connections
  */
 void lv_utils_refreshWiFiList();
 

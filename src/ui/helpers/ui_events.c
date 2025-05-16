@@ -1,10 +1,9 @@
 #include "ui/helpers/ui_events.h"
 
-void ui_event_imagebutton_cb(lv_event_t* e) {
-  lv_event_code_t event_code = lv_event_get_code(e);
-  lv_obj_t* target = lv_event_get_target(e);
+void ui_event_image_button_cb(lv_event_t *e) {
+  const lv_event_code_t event_code = lv_event_get_code(e);
 
-  const char* btnData = (const char*)(const char*)lv_event_get_user_data(e);
+  const char *btnData = lv_event_get_user_data(e);
 
   if (event_code == LV_EVENT_CLICKED) {
     if (strcmp(btnData, "phone") == 0) {
@@ -146,22 +145,21 @@ void ui_event_imagebutton_cb(lv_event_t* e) {
   }
 }
 
-void ui_event_evtBottombar(lv_event_t* e) {
-  lv_event_code_t event_code = lv_event_get_code(e);
-  lv_obj_t* target = lv_event_get_target(e);
-  const char* btnData = (const char*)(const char*)lv_event_get_user_data(e);
+void ui_event_evtBottombar(lv_event_t *e) {
+  const lv_event_code_t event_code = lv_event_get_code(e);
+  const char *btnData = lv_event_get_user_data(e);
 
   if (event_code == LV_EVENT_CLICKED) {
     if (strcmp(btnData, "navbar home") == 0) {
       if (!screenStackIsEmpty()) {
-        ScreenStackElement previousScreen = screenStackPeek();
+        const ScreenStackElement previousScreen = screenStackPeek();
         screenStackEmpty();
         _ui_screen_change(SCREEN_HOME, previousScreen.transitionAnimation,
                           UI_ANIMATION_DURATION, 0);
       }
     } else if (strcmp(btnData, "navbar back") == 0) {
       if (!screenStackIsEmpty() && screenStackSize() > 0) {
-        ScreenStackElement poppedScreen = screenStackPop();
+        const ScreenStackElement poppedScreen = screenStackPop();
         lv_utils_initScreen(poppedScreen.screen);
         _ui_screen_change(poppedScreen.screen, poppedScreen.transitionAnimation,
                           UI_ANIMATION_DURATION, 0);
@@ -178,9 +176,8 @@ void ui_event_evtBottombar(lv_event_t* e) {
   }
 }
 
-void ui_event_fab_cb(lv_event_t* e) {
-  lv_event_code_t event_code = lv_event_get_code(e);
-  lv_obj_t* floatButton = lv_event_get_target(e);
+void ui_event_fab_cb(lv_event_t *e) {
+  const lv_event_code_t event_code = lv_event_get_code(e);
 
   if (event_code == LV_EVENT_CLICKED) {
     if (screenStackPush(SCREEN_CONTACTS, LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
@@ -191,10 +188,10 @@ void ui_event_fab_cb(lv_event_t* e) {
 }
 
 // General Events
-void ui_event_textarea_cb(lv_event_t* e) {
-  lv_event_code_t code = lv_event_get_code(e);
-  lv_obj_t* ta = lv_event_get_target(e);
-  const char* textData = (const char*)(const char*)lv_event_get_user_data(e);
+void ui_event_textarea_cb(lv_event_t *e) {
+  const lv_event_code_t code = lv_event_get_code(e);
+  lv_obj_t *ta = lv_event_get_target(e);
+  const char *textData = lv_event_get_user_data(e);
 
   if (code == LV_EVENT_CLICKED) {
     if (strcmp(textData, "full") == 0) {
@@ -230,11 +227,10 @@ void ui_event_textarea_cb(lv_event_t* e) {
   }
 }
 
-void ui_event_keyboard_cb(lv_event_t* e) {
-  lv_event_code_t code = lv_event_get_code(e);
-  lv_obj_t* target = lv_event_get_target(e);
-  const char* keyboardData =
-      (const char*)(const char*)lv_event_get_user_data(e);
+void ui_event_keyboard_cb(lv_event_t *e) {
+  const lv_event_code_t code = lv_event_get_code(e);
+  const lv_obj_t *target = lv_event_get_target(e);
+  const char *keyboardData = lv_event_get_user_data(e);
 
   if (code == LV_EVENT_READY || code == LV_EVENT_CANCEL) {
     if (strcmp(keyboardData, "keyboard full") == 0) {
@@ -244,9 +240,9 @@ void ui_event_keyboard_cb(lv_event_t* e) {
       lv_obj_delete(ui_keyboard_num);
       ui_keyboard_num = NULL;
     } else if (strcmp(keyboardData, "sim unlock") == 0) {
-      lv_obj_t* uData = lv_event_get_user_data(e);
+      lv_obj_t *uData = lv_event_get_user_data(e);
 
-      const char* txt = lv_buttonmatrix_get_button_text(
+      const char *txt = lv_buttonmatrix_get_button_text(
           target, lv_buttonmatrix_get_selected_button(target));
 
       if (lv_strcmp(txt, LV_SYMBOL_BACKSPACE) == 0)
@@ -259,16 +255,17 @@ void ui_event_keyboard_cb(lv_event_t* e) {
   }
 }
 
-void ui_event_slider_cb(lv_event_t* e) {
-  lv_event_code_t code = lv_event_get_code(e);
-  lv_obj_t* target = lv_event_get_target(e);
-  const char* sliderData = (const char*)(const char*)lv_event_get_user_data(e);
+void ui_event_slider_cb(lv_event_t *e) {
+  const lv_event_code_t code = lv_event_get_code(e);
+  const lv_obj_t *target = lv_event_get_target(e);
+  const char *sliderData =
+      (const char *)(const char *)lv_event_get_user_data(e);
 
   if (code == LV_EVENT_VALUE_CHANGED) {
     if (strcmp(sliderData, "settings brightness") == 0) {
       lv_utils_setBrightness(lv_slider_get_value(target));
 
-      uint8_t brightnessPercentage =
+      const uint8_t brightnessPercentage =
           ((float)screenBrightnessLevel / (float)UI_BRIGHTNESS_SLIDER_MAX) *
           100;
       char sBrightness[5];
@@ -279,13 +276,12 @@ void ui_event_slider_cb(lv_event_t* e) {
   }
 }
 
-void ui_event_dropdown_cb(lv_event_t* e) {
-  lv_event_code_t code = lv_event_get_code(e);
-  lv_obj_t* target = lv_event_get_target(e);
-  const char* dropdownData =
-      (const char*)(const char*)lv_event_get_user_data(e);
+void ui_event_dropdown_cb(lv_event_t *e) {
+  const lv_event_code_t code = lv_event_get_code(e);
+  const lv_obj_t *target = lv_event_get_target(e);
+  const char *dropdownData = lv_event_get_user_data(e);
 
-  int selected = lv_dropdown_get_selected(target);
+  const uint32_t selected = lv_dropdown_get_selected(target);
 
   if (code == LV_EVENT_VALUE_CHANGED) {
     if (strcmp(dropdownData, "settings screen timeout") == 0) {
@@ -319,10 +315,11 @@ void ui_event_dropdown_cb(lv_event_t* e) {
   }
 }
 
-void ui_event_switch_cb(lv_event_t* e) {
+void ui_event_switch_cb(lv_event_t *e) {
   lv_event_code_t code = lv_event_get_code(e);
-  lv_obj_t* target = lv_event_get_target(e);
-  const char* switchData = (const char*)(const char*)lv_event_get_user_data(e);
+  lv_obj_t *target = lv_event_get_target(e);
+  const char *switchData =
+      (const char *)(const char *)lv_event_get_user_data(e);
 
   bool switchOn = lv_obj_has_state(target, LV_STATE_CHECKED);
 
@@ -357,11 +354,10 @@ void ui_event_switch_cb(lv_event_t* e) {
   }
 }
 
-void ui_event_checkbox_cb(lv_event_t* e) {
-  lv_event_code_t code = lv_event_get_code(e);
-  lv_obj_t* target = lv_event_get_target(e);
-  const char* checkboxData =
-      (const char*)(const char*)lv_event_get_user_data(e);
+void ui_event_checkbox_cb(lv_event_t *e) {
+  const lv_event_code_t code = lv_event_get_code(e);
+  const lv_obj_t *target = lv_event_get_target(e);
+  const char *checkboxData = lv_event_get_user_data(e);
 
   if (code == LV_EVENT_VALUE_CHANGED) {
     if (strcmp(checkboxData, "time auto sync") == 0) {
@@ -379,16 +375,11 @@ void ui_event_checkbox_cb(lv_event_t* e) {
   }
 }
 
-void ui_event_image_cb(lv_event_t* e) {
-  lv_event_code_t code = lv_event_get_code(e);
-  lv_obj_t* target = lv_event_get_target(e);
-  const char* switchData = (const char*)(const char*)lv_event_get_user_data(e);
-}
+void ui_event_image_cb(lv_event_t *e) {}
 
-void ui_event_label_cb(lv_event_t* e) {
-  lv_event_code_t code = lv_event_get_code(e);
-  lv_obj_t* target = lv_event_get_target(e);
-  const char* labelData = (const char*)(const char*)lv_event_get_user_data(e);
+void ui_event_label_cb(lv_event_t *e) {
+  const lv_event_code_t code = lv_event_get_code(e);
+  const char *labelData = lv_event_get_user_data(e);
 
   if (code == LV_EVENT_CLICKED) {
     if (strcmp(labelData, "time home") == 0) {
@@ -397,12 +388,12 @@ void ui_event_label_cb(lv_event_t* e) {
                           UI_ANIMATION_DURATION, 0);
       }
     } else if (strcmp(labelData, "contact discard") == 0) {
-      ScreenStackElement prevScreen = screenStackPop();
+      const ScreenStackElement prevScreen = screenStackPop();
 
       _ui_screen_change(prevScreen.screen, prevScreen.transitionAnimation,
                         UI_ANIMATION_DURATION, 0);
     } else if (strcmp(labelData, "contact save") == 0) {
-      ScreenStackElement prevScreen = screenStackPop();
+      const ScreenStackElement prevScreen = screenStackPop();
 
       _ui_screen_change(prevScreen.screen, prevScreen.transitionAnimation,
                         UI_ANIMATION_DURATION, 0);
@@ -412,8 +403,7 @@ void ui_event_label_cb(lv_event_t* e) {
       char wallpaperTag[19];
       strcpy(wallpaperTag, labelData);
 
-      char* token;
-      token = strtok(wallpaperTag, delimiter);
+      const char *token = strtok(wallpaperTag, delimiter);
       if (token != NULL) {
         token = strtok(NULL, delimiter);
         if (token != NULL) {
@@ -437,27 +427,26 @@ void ui_event_label_cb(lv_event_t* e) {
   }
 }
 
-void ui_event_button_cb(lv_event_t* e) {
-  lv_event_code_t code = lv_event_get_code(e);
-  lv_obj_t* target = lv_event_get_target(e);
-  const char* buttonData = (const char*)(const char*)lv_event_get_user_data(e);
+void ui_event_button_cb(lv_event_t *e) {
+  const lv_event_code_t code = lv_event_get_code(e);
+  lv_obj_t *target = lv_event_get_target(e);
+  const char *buttonData = lv_event_get_user_data(e);
 
   if (code == LV_EVENT_CLICKED) {
     if (strcmp(buttonData, "calendar discard") == 0) {
-      char bufDate[11];  // DD/MM/YYYY
-      uint32_t year, month, day;
+      char bufDate[11]; // DD/MM/YYYY
       lv_utils_getDate(bufDate);
-      year = atoi(bufDate + 6);
-      month = atoi(bufDate + 3);
-      day = atoi(bufDate);
+
+      const uint32_t year = atoi(bufDate + 6);
+      const uint32_t month = atoi(bufDate + 3);
+      const uint32_t day = atoi(bufDate);
 
       lv_calendar_set_today_date(ui_calendar, year, month, day);
 
       lv_obj_add_state(ui_btnCalendarApply, LV_STATE_DISABLED);
       lv_obj_add_state(ui_btnCalendarDiscard, LV_STATE_DISABLED);
     } else if (strcmp(buttonData, "calendar update") == 0) {
-      uint32_t year, month, day;
-      const lv_calendar_date_t* date = lv_calendar_get_today_date(ui_calendar);
+      const lv_calendar_date_t *date = lv_calendar_get_today_date(ui_calendar);
       lv_utils_setDate(date->year, date->month, date->day);
 
       lv_obj_add_state(ui_btnCalendarApply, LV_STATE_DISABLED);
@@ -467,22 +456,21 @@ void ui_event_button_cb(lv_event_t* e) {
 
       lv_utils_setWallpaper(clickedWallpaperImage, true);
 
-      ScreenStackElement prevScreen = screenStackPop();
+      const ScreenStackElement prevScreen = screenStackPop();
       lv_utils_initScreen(prevScreen.screen);
 
       _ui_screen_change(prevScreen.screen, prevScreen.transitionAnimation,
                         UI_ANIMATION_DURATION, 0);
     } else if (strcmp(buttonData, "contact option") == 0) {
     } else if (strcmp(buttonData, "contact list") == 0) {
-      const char* contact = lv_list_get_button_text(ui_listContact, target);
+      const char *contact = lv_list_get_button_text(ui_listContact, target);
       char contactData[CONTACT_NAME_NUMBER_LENGTH];
       strcpy(contactData, contact);
 
-      char* token;
-      token = strtok(contactData, contactSeparationDelimeter);
+      const char *token = strtok(contactData, contactSeparationDelimiter);
       if (token != NULL) {
         strlcpy(contactName, token, sizeof(contactName));
-        token = strtok(NULL, contactSeparationDelimeter);
+        token = strtok(NULL, contactSeparationDelimiter);
         if (token != NULL) {
           strlcpy(contactNumber, token, sizeof(contactNumber));
         }
@@ -491,10 +479,10 @@ void ui_event_button_cb(lv_event_t* e) {
         _ui_screen_change(SCREEN_CONTACT_OPTIONS, LV_SCR_LOAD_ANIM_MOVE_LEFT,
                           UI_ANIMATION_DURATION, 0);
 
-        lv_label_set_text(ui_lblContactDetailsTitle, (const char*)contactName);
+        lv_label_set_text(ui_lblContactDetailsTitle, (const char *)contactName);
       }
     } else if (strcmp(buttonData, "network option") == 0) {
-      lv_obj_t* list = lv_obj_get_parent(target);
+      lv_obj_t *list = lv_obj_get_parent(target);
       const buttonText = lv_list_get_button_text(list, target);
 
       if (strcmp(buttonText, "WiFi") == 0) {
@@ -514,19 +502,20 @@ void ui_event_button_cb(lv_event_t* e) {
       }
     } else if (strcmp(buttonData, "wifi connect") == 0) {
       // TODO: Display loading until connected, if connected go to prev screen
-      const char* enteredPassword = lv_textarea_get_text(ui_txtWiFiPassword);
+      const char *enteredPassword = lv_textarea_get_text(ui_txtWiFiPassword);
       strcpy(wifiPassword, enteredPassword);
       LV_LOG_USER("WiFi Password: '%s'\n", wifiPassword);
 
       lv_utils_connectWiFi();
 
       // TODO: don't go back if the connection was not successful
-      ScreenStackElement prevScreen = screenStackPop();
+      const ScreenStackElement prevScreen = screenStackPop();
       _ui_screen_change(prevScreen.screen, prevScreen.transitionAnimation,
                         UI_ANIMATION_DURATION, 0);
     } else if (strcmp(buttonData, "ts time update") == 0) {
-      uint8_t hour = atoi(lv_textarea_get_text(ui_timeScreenInputHour));
-      uint8_t minute = atoi(lv_textarea_get_text(ui_timeScreenInputMinute));
+      const uint8_t hour = atoi(lv_textarea_get_text(ui_timeScreenInputHour));
+      const uint8_t minute =
+          atoi(lv_textarea_get_text(ui_timeScreenInputMinute));
 
       lv_utils_setTime(hour, minute, 0);
     } else if (strcmp(buttonData, "ts time cancel") == 0) {
@@ -536,13 +525,13 @@ void ui_event_button_cb(lv_event_t* e) {
   }
 }
 
-void toggle_password_visibility_cb(lv_event_t* e) {
-  lv_event_code_t code = lv_event_get_code(e);
-  lv_obj_t* eyeBtn = lv_event_get_target(e);
-  lv_obj_t* txtPasswordField = lv_event_get_user_data(e);
+void toggle_password_visibility_cb(lv_event_t *e) {
+  const lv_event_code_t code = lv_event_get_code(e);
+  lv_obj_t *eyeBtn = lv_event_get_target(e);
+  lv_obj_t *txtPasswordField = lv_event_get_user_data(e);
 
   if (code == LV_EVENT_CLICKED) {
-    bool isPasswordMode = lv_textarea_get_password_mode(txtPasswordField);
+    const bool isPasswordMode = lv_textarea_get_password_mode(txtPasswordField);
     lv_textarea_set_password_mode(txtPasswordField, !isPasswordMode);
 
     if (isPasswordMode) {
@@ -555,13 +544,13 @@ void toggle_password_visibility_cb(lv_event_t* e) {
   }
 }
 
-void ui_event_list_button_cb(lv_event_t* e) {
-  lv_event_code_t code = lv_event_get_code(e);
-  lv_obj_t* target = lv_event_get_target(e);
-  lv_obj_t* list = lv_obj_get_parent(target);
+void ui_event_list_button_cb(lv_event_t *e) {
+  const lv_event_code_t code = lv_event_get_code(e);
+  lv_obj_t *target = lv_event_get_target(e);
+  lv_obj_t *list = lv_obj_get_parent(target);
 
-  const char* buttonData = (const char*)(const char*)lv_event_get_user_data(e);
-  const char* buttonText = lv_list_get_button_text(list, target);
+  const char *buttonData = lv_event_get_user_data(e);
+  const char *buttonText = lv_list_get_button_text(list, target);
 
   if (code == LV_EVENT_CLICKED) {
     if (strcmp(buttonData, "contact option") == 0) {
@@ -569,11 +558,10 @@ void ui_event_list_button_cb(lv_event_t* e) {
       char contactData[CONTACT_NAME_NUMBER_LENGTH];
       strcpy(contactData, buttonText);
 
-      char* token;
-      token = strtok(contactData, contactSeparationDelimeter);
+      const char *token = strtok(contactData, contactSeparationDelimiter);
       if (token != NULL) {
         strlcpy(contactName, token, sizeof(contactName));
-        token = strtok(NULL, contactSeparationDelimeter);
+        token = strtok(NULL, contactSeparationDelimiter);
         if (token != NULL) {
           strlcpy(contactNumber, token, sizeof(contactNumber));
         }
@@ -582,7 +570,7 @@ void ui_event_list_button_cb(lv_event_t* e) {
         _ui_screen_change(SCREEN_CONTACT_OPTIONS, LV_SCR_LOAD_ANIM_MOVE_LEFT,
                           UI_ANIMATION_DURATION, 0);
 
-        lv_label_set_text(ui_lblContactDetailsTitle, (const char*)contactName);
+        lv_label_set_text(ui_lblContactDetailsTitle, contactName);
       }
     } else if (strcmp(buttonData, "network option") == 0) {
       if (strcmp(buttonText, "WiFi") == 0) {
@@ -604,13 +592,12 @@ void ui_event_list_button_cb(lv_event_t* e) {
   }
 }
 
-void ui_event_list_wifi_cb(lv_event_t* e) {
-  lv_event_code_t code = lv_event_get_code(e);
-  lv_obj_t* target = lv_event_get_target(e);
-  lv_obj_t* list = lv_obj_get_parent(target);
+void ui_event_list_wifi_cb(lv_event_t *e) {
+  lv_obj_t *target = lv_event_get_target(e);
+  lv_obj_t *list = lv_obj_get_parent(target);
 
-  const char* wifiNameData = (char*)(const char*)lv_event_get_user_data(e);
-  const char* btnText = lv_list_get_button_text(list, target);
+  const char *wifiNameData = (char *)(const char *)lv_event_get_user_data(e);
+  const char *btnText = lv_list_get_button_text(list, target);
 
   LV_LOG_USER("WiFi Data: `%s`::`%d`", wifiNameData,
               strncmp(btnText, "*", 1) == 0);
@@ -626,7 +613,7 @@ void ui_event_list_wifi_cb(lv_event_t* e) {
     }
   } else {
     strcpy(wifiName, wifiNameData);
-    strcpy(wifiPassword, "");  // clear the previous password
+    strcpy(wifiPassword, ""); // clear the previous password
 
     lv_utils_connectWiFi();
   }

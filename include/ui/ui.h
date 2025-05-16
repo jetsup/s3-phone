@@ -118,7 +118,6 @@ extern lv_obj_t* ui_contactsScreen;
 extern lv_obj_t* ui_panelContactMain;
 extern lv_obj_t* ui_lblContactTitle;
 extern lv_obj_t* ui_listContact;
-extern lv_obj_t* ui_lblContactBack;
 // SCREEN: ui_contactOptionsScreen
 void ui_contactOptionsScreen_screen_init(void);
 extern lv_obj_t* ui_contactOptionsScreen;
@@ -315,7 +314,7 @@ void ui_event_textarea_cb(lv_event_t* e);
 void ui_event_keyboard_cb(lv_event_t* e);
 void ui_event_fab_cb(lv_event_t* e);
 void ui_event_evtBottombar(lv_event_t* e);
-void ui_event_imagebutton_cb(lv_event_t* e);
+void ui_event_image_button_cb(lv_event_t* e);
 void ui_event_uiComponentsChangeEvent(lv_event_t* e);
 void ui_event_slider_cb(lv_event_t* e);
 void ui_event_dropdown_cb(lv_event_t* e);

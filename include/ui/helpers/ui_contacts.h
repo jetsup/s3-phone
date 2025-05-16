@@ -25,9 +25,7 @@ void contact_add_to_list(lv_obj_t* list, const char* text,
 
 /**
  * @brief Set the contact list and display it
- * @param names The names of the contacts
- * @param numbers The numbers of the contacts
- * @param count The number of contacts
+ * @param list The list of contacts
  * @return void
  */
 void contact_set_contact_list(lv_obj_t* list);

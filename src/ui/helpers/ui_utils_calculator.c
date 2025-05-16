@@ -148,10 +148,10 @@ double evaluate(const char *expr, int *error) {
 
 //
 void remove_trailing_zeros(char *numberIn, char *numberOut) {
-  int len = strlen(numberIn);
-  int i, j;
+  const size_t len = strlen(numberIn);
+  unsigned int i;
 
-  int decimal_pos = -1;
+  size_t decimal_pos = -1;
   for (i = 0; i < len; i++) {
     if (numberIn[i] == '.') {
       decimal_pos = i;

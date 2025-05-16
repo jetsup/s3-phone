@@ -233,14 +233,14 @@ void ui_homeScreen_screen_init(void) {
 
   lv_obj_add_event_cb(ui_lblHomeTime, ui_event_label_cb, LV_EVENT_CLICKED,
                       "time home");
-  lv_obj_add_event_cb(ui_imbHomePhone, ui_event_imagebutton_cb, LV_EVENT_ALL,
+  lv_obj_add_event_cb(ui_imbHomePhone, ui_event_image_button_cb, LV_EVENT_ALL,
                       "home phone");
-  lv_obj_add_event_cb(ui_imbHomeMessages, ui_event_imagebutton_cb, LV_EVENT_ALL,
+  lv_obj_add_event_cb(ui_imbHomeMessages, ui_event_image_button_cb, LV_EVENT_ALL,
                       "home messages");
-  lv_obj_add_event_cb(ui_imbHomeApps, ui_event_imagebutton_cb, LV_EVENT_ALL,
+  lv_obj_add_event_cb(ui_imbHomeApps, ui_event_image_button_cb, LV_EVENT_ALL,
                       "apps");
-  lv_obj_add_event_cb(ui_imbHomeBrowser, ui_event_imagebutton_cb, LV_EVENT_ALL,
+  lv_obj_add_event_cb(ui_imbHomeBrowser, ui_event_image_button_cb, LV_EVENT_ALL,
                       "home browser");
-  lv_obj_add_event_cb(ui_imbHomeContacts, ui_event_imagebutton_cb, LV_EVENT_ALL,
+  lv_obj_add_event_cb(ui_imbHomeContacts, ui_event_image_button_cb, LV_EVENT_ALL,
                       "home contacts");
 }

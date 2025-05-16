@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-void ui_event_imagebutton_cb(lv_event_t* e);
+void ui_event_image_button_cb(lv_event_t* e);
 void ui_event_evtBottombar(lv_event_t* e);
 void ui_event_fab_cb(lv_event_t* e);
 void ui_event_textarea_cb(lv_event_t* e);

@@ -34,13 +34,12 @@ void ui_calendarScreen_screen_init(void) {
   lv_obj_add_event_cb(ui_calendar, ui_event_uiComponentsChangeEvent,
                       LV_EVENT_ALL, "date clicked");
   char bufDate[11];  // DD/MM/YYYY
-  uint32_t year, month, day;
 
   lv_utils_getDate(bufDate);
 
-  year = atoi(bufDate + 6);
-  month = atoi(bufDate + 3);
-  day = atoi(bufDate);
+  const uint32_t year = atoi(bufDate + 6);
+  const uint32_t month = atoi(bufDate + 3);
+  const uint32_t day = atoi(bufDate);
 
   lv_calendar_set_today_date(ui_calendar, year, month, day);
   lv_calendar_set_showed_date(ui_calendar, year, month);

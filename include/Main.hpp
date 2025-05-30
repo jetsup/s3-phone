@@ -15,14 +15,13 @@
 #include "ui/ui.h"
 
 int contactsCount = 0;
-String names[] = {"George Ngigi", "John", "Joe", "Brandon"};
-String numbers[] = {"0714430347", "0788965432", "0709765432", "0787653434"};
-char *cStrNames[] = {};
-char *cStrNumbers[] = {};
+String names[MAX_CONTACTS] = {};
+String numbers[MAX_CONTACTS] = {};
+char *cStrNames[MAX_CONTACTS] = {};
+char *cStrNumbers[MAX_CONTACTS] = {};
 
-char *cNames[] = {};
-char *cNumbers[] = {};
-int cCount = 0;
+char *contactNames[MAX_CONTACTS] = {};
+char *contactNumbers[MAX_CONTACTS] = {};
 
 GSM gsm(GSM_RX, GSM_TX, GSM_BAUD);
 static Display display(TFT_CLK, TFT_MOSI, TFT_MISO, TFT_CS, TFT_DC, TFT_RST,
@@ -366,5 +365,26 @@ void s3UILooper() {
       lv_utils_refreshWiFiList();
       s3WiFi->setRefreshUI(false);
     }
+  }
+
+  if (shouldSaveContact) {
+    DEBUG_PRINTF("'%s'::'%s'\n", contactSaveName, contactSaveNumber);
+
+    fileSystem.saveToJSON(FS_CONTACTS_FILEPATH, contactSaveName,
+                          contactSaveNumber);
+    shouldSaveContact = false;
+  }
+
+  if (readContacts) {
+    DEBUG_PRINTLN("Reading contacts from file system");
+    fileSystem.readKeyValueJSON(FS_CONTACTS_FILEPATH, contactNames,
+                                contactNumbers);
+
+    for (int i = 0; i < contactsCount; i++) {
+      DEBUG_PRINTF("Contact %d: '%s'::'%s'\n", i + 1, contactNames[i],
+                   contactNumbers[i]);
+    }
+
+    readContacts = false;
   }
 }

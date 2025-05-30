@@ -140,6 +140,25 @@ void FileSystem::_loadSettings(const bool createIfUnavailable) {
                  settingsParDefaults[i].c_str());
     DEBUG_PRINTF("%s: %s\n", settingsParameters[i].c_str(), setting.c_str());
   }
+
+  // Create files
+  // TODO: Every file to be created on boot should be included here
+  String filesToCreate[] = {FS_CONTACTS_FILEPATH};
+
+  for (const String &filepath : filesToCreate) {
+    _createFile(filepath.c_str());
+  }
+
+  // ======================= Read settings variables =======================
+  // Contacts settings
+  contactsCount = getTotalItemsInJSON(FS_CONTACTS_FILEPATH);
+  if (contactsCount > 0) {
+    readKeyValueJSON(FS_CONTACTS_FILEPATH, contactNames, contactNumbers);
+
+    DEBUG_PRINTF("Contacts count: %d\n", contactsCount);
+  } else {
+    DEBUG_PRINTLN("No contacts found");
+  }
 }
 
 String FileSystem::readSetting(const char *variable) const {
@@ -266,6 +285,23 @@ String FileSystem::_readSetting(const char *variable, const char *defaultValue,
   return value;
 }
 
+bool FileSystem::_createFile(const char *filepath) {
+  if (_mFs.exists(filepath)) {
+    DEBUG_PRINTF("The file: '%s' exists!\n", filepath);
+    return false;
+  }
+
+  File file = _mFs.open(filepath, FILE_WRITE, true);
+
+  if (!file) {
+    DEBUG_PRINTF("Could not create the file '%s'!\n", filepath);
+    return false;
+  }
+
+  DEBUG_PRINTF("File created: %s\n", filepath);
+  return true;
+}
+
 void FileSystem::editSetting(const char *variable, const char *value) {
   String filename = "";
   if (String(variable).equals(FS_VAR_SETTINGS_DISPLAY_BRIGHTNESS) ||
@@ -318,9 +354,9 @@ void FileSystem::saveCredentials(const filesystem_credentials_t type,
                                  const char *key, const char *value) const {
   String filename = "";
   switch (type) {
-  case CREDENTIALS_WIFI:
-    filename = FS_SETTINGS_NETWORK_WIFI_CREDENTIALS_FILEPATH;
-    break;
+    case CREDENTIALS_WIFI:
+      filename = FS_SETTINGS_NETWORK_WIFI_CREDENTIALS_FILEPATH;
+      break;
   }
 
   File file = _mFs.open(filename, FILE_APPEND, true);
@@ -338,6 +374,87 @@ void FileSystem::saveCredentials(const filesystem_credentials_t type,
   if (serializeJson(doc, file) == 0) {
     DEBUG_PRINTLN("Failed to write to file");
   }
+  file.close();
+}
+
+void FileSystem::saveToJSON(const char *filepath, const char *key,
+                            const char *value) {
+  File file = _mFs.open(filepath, FILE_APPEND);
+  if (!file) {
+    DEBUG_PRINTF("Failed to open file for reading: %s\n", filepath);
+    return;
+  }
+
+  JsonDocument doc;
+  if (file.size() == 0) {
+    doc[key] = value;
+
+    file.seek(0);
+    if (serializeJson(doc, file) == 0) {
+      DEBUG_PRINTLN("[JSON Empty]Failed to write to file");
+    }
+    file.close();
+    return;
+  }
+
+  deserializeJson(doc, file);
+
+  doc[key] = value;
+
+  file.seek(0);
+  if (serializeJson(doc, file) == 0) {
+    DEBUG_PRINTLN("[JSON]Failed to write to file");
+  }
+
+  file.close();
+}
+
+int FileSystem::getTotalItemsInJSON(const char *filepath) const {
+  File file = _mFs.open(filepath, FILE_READ);
+  if (!file) {
+    DEBUG_PRINTF("Failed to open file for reading: %s\n", filepath);
+    return -1;
+  }
+
+  JsonDocument doc;
+  deserializeJson(doc, file);
+
+  int count = doc.size();
+  file.close();
+
+  DEBUG_PRINTF("Total items in JSON file '%s': %d\n", filepath, count);
+
+  return count;
+}
+
+void FileSystem::readKeyValueJSON(const char *filepath, char **keys,
+                                  char **values) {
+  File file = _mFs.open(filepath, FILE_READ);
+  if (!file) {
+    DEBUG_PRINTF("Failed to open file for reading: %s\n", filepath);
+    return;
+  }
+
+  JsonDocument doc;
+  DeserializationError error = deserializeJson(doc, file);
+  if (error) {
+    DEBUG_PRINTF("deserializeJson() failed: %s\n", error.c_str());
+    file.close();
+    return;
+  }
+
+  short counter = 0;
+  for (JsonPair kv : doc.as<JsonObject>()) {
+    DEBUG_PRINTF("KEY: '%s' VALUE: '%s'\n", kv.key().c_str(),
+                 kv.value().as<String>().c_str());
+
+    keys[counter] = strdup(kv.key().c_str());
+    values[counter] = strdup(kv.value().as<String>().c_str());
+    counter++;
+  }
+
+  DEBUG_PRINTLN("Read contacts done");
+
   file.close();
 }
 

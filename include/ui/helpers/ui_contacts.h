@@ -13,11 +13,11 @@ extern char contactOptions[9][18];
 // ===============================CONTACTS===============================
 #define MAX_CONTACTS 254
 #define MAX_CONTACT_NAME_LENGTH 30
-#define MAX_CONTACT_NUMBER_LENGTH 14
+#define MAX_CONTACT_NUMBER_LENGTH 13
 
-extern char* cNames[MAX_CONTACTS];
-extern char* cNumbers[MAX_CONTACTS];
-extern int cCount;
+extern char* contactNames[MAX_CONTACTS];
+extern char* contactNumbers[MAX_CONTACTS];
+extern int contactsCount;
 
 void contact_add_to_list(lv_obj_t* list, const char* text,
                          const char* symbol_icon, lv_event_cb_t event_cb/*,

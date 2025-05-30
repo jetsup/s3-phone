@@ -17,6 +17,12 @@ ScreenStack screenStack;
 // Home Screen
 bool homeScreenVisible = false;
 
+// Contact Add Screen
+char contactSaveName[30] = {};
+char contactSaveNumber[13] = {};
+bool shouldSaveContact = false;
+bool readContacts = false;
+
 // Settings Display
 int screenBrightnessLevel = 100;
 bool brightnessChanged = false;

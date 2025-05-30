@@ -1,6 +1,8 @@
 #ifndef _UI_EVENTS_H
 #define _UI_EVENTS_H
 
+#include <stdio.h>
+
 #include "ui/ui.h"
 
 #ifdef __cplusplus

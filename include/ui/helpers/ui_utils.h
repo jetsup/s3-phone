@@ -28,6 +28,12 @@ static lv_display_t *lv_display;
 // Home Screen
 extern bool homeScreenVisible;
 
+// Contact Add Screen
+extern char contactSaveName[30];
+extern char contactSaveNumber[13];
+extern bool shouldSaveContact;
+extern bool readContacts;
+
 // Settings Display
 #define UI_BRIGHTNESS_SLIDER_MAX 4096
 #define UI_BRIGHTNESS_SLIDER_MIN 100

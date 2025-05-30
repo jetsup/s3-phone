@@ -3,6 +3,7 @@
 void setup() {
   if (DEBUG) {
     Serial.begin(115200);
+    delay(2000);
   }
   analogReadResolution(S3_PHONE_ANALOG_RESOLUTION);
   analogWriteResolution(S3_PHONE_ANALOG_RESOLUTION);
@@ -47,23 +48,10 @@ void setup() {
   lv_indev_set_type(indev, LV_INDEV_TYPE_POINTER);
   lv_indev_set_read_cb(indev, my_touchpad_read);
 
-  for (int i = 0; i < 4; i++) {
-    DEBUG_PRINTF(">> %s %s\n", names[i].c_str(), numbers[i].c_str());
-  }
-
-  contactsCount = 4;
-
-  for (int i = 0; i < 4; i++) {
-    cNames[i] = const_cast<char*>(names[i].c_str());
-    cNumbers[i] = const_cast<char*>(numbers[i].c_str());
-
-    DEBUG_PRINTF("%s::%s\n", cNames[i], cNumbers[i]);
-    cCount++;
-  }
-
   ui_init();
   DEBUG_PRINTLN("UI initialized");
-  xTaskCreatePinnedToCore(s3looperTask, "S3Looper", 4096, nullptr, 1, nullptr, 1);
+  xTaskCreatePinnedToCore(s3looperTask, "S3Looper", 4096, nullptr, 1, nullptr,
+                          1);
 }
 
 void loop() {

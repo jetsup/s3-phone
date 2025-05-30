@@ -10,6 +10,7 @@
 #include <Config.hpp>
 #include <Utils.hpp>
 
+#include "ui/helpers/ui_contacts.h"
 #include "ui/helpers/ui_utils.h"
 
 typedef enum {
@@ -21,12 +22,12 @@ class FileSystem {
   size_t _usedSpaceBytes = 0;
   FS &_mFs;
 
-public:
+ public:
   FileSystem() = delete;
 
   explicit FileSystem(FS &fileSystem = LittleFS);
 
-private:
+ private:
   /**
    * @brief This will be called diring powerup to load saved settings or create
    * defaults if settings not available
@@ -44,7 +45,14 @@ private:
   String _readSetting(const char *variable, const char *defaultValue,
                       bool createIfUnavailable = true);
 
-public:
+  /**
+   * @brief Create a file in the file system
+   * @param filepath The name of the file to be created. Should start with `/`
+   * @return `true` if the file was created successfully, `false` otherwise
+   */
+  bool _createFile(const char *filepath);
+
+ public:
   /**
    * @brief Initialize the file system. Formats the file system if it fails to
    * begin if FORMAT_ON_FAIL is set
@@ -116,17 +124,42 @@ public:
 
   void saveCredentials(filesystem_credentials_t type, const char *key,
                        const char *value) const;
+
+  /**
+   * @brief Add or edit the content of a JSON file
+   * @param filepath The file containing the JSON object
+   * @param key The key of the JSON file
+   * @param value The value associated with the key
+   */
+  void saveToJSON(const char *filepath, const char *key, const char *value);
+
+  /**
+   * @brief Get the total number of items in a JSON file
+   * @param filepath The file containing the JSON object
+   * @return The total number of items in the JSON file
+   */
+  int getTotalItemsInJSON(const char *filepath) const;
+
+  /**
+   * @brief Read the `keys` and `values` of a JSON document and store them in a
+   * variables
+   * @param filepath The filename of the JSON file
+   * @param keys The buffer to store all the keys in the JSON file
+   * @param values The buffer to store all the values associated with the
+   * corresponding key
+   */
+  void readKeyValueJSON(const char *filepath, char **keys, char **values);
 };
 
 // SQLite database
 class Database {
-private:
-  sqlite3 *_db; // hold the opened database
+ private:
+  sqlite3 *_db;  // hold the opened database
   sqlite3_stmt *_stmt;
   char *_zErrMsg = nullptr;
   int _rc;
 
-public:
+ public:
   Database();
 
   ~Database();

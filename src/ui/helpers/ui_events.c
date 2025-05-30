@@ -393,10 +393,39 @@ void ui_event_label_cb(lv_event_t *e) {
       _ui_screen_change(prevScreen.screen, prevScreen.transitionAnimation,
                         UI_ANIMATION_DURATION, 0);
     } else if (strcmp(labelData, "contact save") == 0) {
-      const ScreenStackElement prevScreen = screenStackPop();
+      sprintf(contactSaveName, "%s",
+              lv_textarea_get_text(ui_txtContactAddName));
+      sprintf(contactSaveNumber, "%s",
+              lv_textarea_get_text(ui_txtContactAddNumber));
 
-      _ui_screen_change(prevScreen.screen, prevScreen.transitionAnimation,
-                        UI_ANIMATION_DURATION, 0);
+      LV_LOG_USER("Name: '%s'\tNumber: '%s'", contactSaveName, contactSaveNumber);
+
+      if (strlen(contactSaveName) < 3) {
+        LV_LOG_USER("Name too short. The name '%s' has %d characters!",
+                    contactSaveName, strlen(contactSaveName));
+        return;
+      }
+
+      if (strlen(contactSaveNumber) < 11) {
+        LV_LOG_USER("Invalid contact number. Only has %d characters!",
+                    strlen(contactSaveNumber));
+        return;
+      }
+
+      if (contactSaveNumber[0] != '+') {
+        LV_LOG_USER(
+            "The phone number should include a country code. You entered '%s'!",
+            contactSaveNumber);
+        return;
+      }
+
+      //   const ScreenStackElement prevScreen = screenStackPop();
+
+      //   _ui_screen_change(prevScreen.screen, prevScreen.transitionAnimation,
+      //                     UI_ANIMATION_DURATION, 0);
+
+      shouldSaveContact = true;
+      // TODO: Go back to the previous page
     } else if (strcmp(labelData, "wallpaper select") > 0) {
       const char delimiter[] = " ";
 
@@ -434,7 +463,7 @@ void ui_event_button_cb(lv_event_t *e) {
 
   if (code == LV_EVENT_CLICKED) {
     if (strcmp(buttonData, "calendar discard") == 0) {
-      char bufDate[11]; // DD/MM/YYYY
+      char bufDate[11];  // DD/MM/YYYY
       lv_utils_getDate(bufDate);
 
       const uint32_t year = atoi(bufDate + 6);
@@ -613,7 +642,7 @@ void ui_event_list_wifi_cb(lv_event_t *e) {
     }
   } else {
     strcpy(wifiName, wifiNameData);
-    strcpy(wifiPassword, ""); // clear the previous password
+    strcpy(wifiPassword, "");  // clear the previous password
 
     lv_utils_connectWiFi();
   }

@@ -61,7 +61,7 @@ void ui_contactAddScreen_screen_init(void) {
   lv_obj_set_align(ui_txtContactAddNumber, LV_ALIGN_CENTER);
   lv_textarea_set_placeholder_text(ui_txtContactAddNumber, "Number...");
   lv_textarea_set_one_line(ui_txtContactAddNumber, true);
-  lv_textarea_set_max_length(ui_txtContactAddNumber, 15);
+  lv_textarea_set_max_length(ui_txtContactAddNumber, 13);
   lv_obj_set_style_bg_opa(ui_txtContactAddNumber, 0,
                           LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_add_event_cb(ui_txtContactAddNumber, ui_event_textarea_cb,

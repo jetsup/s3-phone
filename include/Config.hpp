@@ -45,6 +45,8 @@
 // File System
 #define FILESYSTEM_FORMAT_ON_FAIL 1
 
+#define FS_CONTACTS_FILEPATH "/communication/gsm/contacts.json"
+
 #define FS_SETTINGS_DISPLAY_FILEPATH "/system/settings/display.json"
 #define FS_SETTINGS_THEMES_FILEPATH "/system/settings/themes.json"
 #define FS_SETTINGS_CONNECTIVITY_FILEPATH "/system/settings/connectivity.json"

@@ -393,12 +393,14 @@ void ui_event_label_cb(lv_event_t *e) {
       _ui_screen_change(prevScreen.screen, prevScreen.transitionAnimation,
                         UI_ANIMATION_DURATION, 0);
     } else if (strcmp(labelData, "contact save") == 0) {
-      sprintf(contactSaveName, "%s",
-              lv_textarea_get_text(ui_txtContactAddName));
-      sprintf(contactSaveNumber, "%s",
-              lv_textarea_get_text(ui_txtContactAddNumber));
+      strlcpy(contactSaveName, lv_textarea_get_text(ui_txtContactAddName),
+              sizeof(contactSaveName));
 
-      LV_LOG_USER("Name: '%s'\tNumber: '%s'", contactSaveName, contactSaveNumber);
+      strlcpy(contactSaveNumber, lv_textarea_get_text(ui_txtContactAddNumber),
+              sizeof(contactSaveNumber));
+
+      LV_LOG_USER("Name: '%s'\tNumber: '%s'", contactSaveName,
+                  contactSaveNumber);
 
       if (strlen(contactSaveName) < 3) {
         LV_LOG_USER("Name too short. The name '%s' has %d characters!",
@@ -407,8 +409,8 @@ void ui_event_label_cb(lv_event_t *e) {
       }
 
       if (strlen(contactSaveNumber) < 11) {
-        LV_LOG_USER("Invalid contact number. Only has %d characters!",
-                    strlen(contactSaveNumber));
+        LV_LOG_USER("Invalid contact number '%s'. Only has %d characters!",
+                    contactSaveNumber, strlen(contactSaveNumber));
         return;
       }
 

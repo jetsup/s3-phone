@@ -34,6 +34,8 @@ void contacts_add_data(char* names[], char* numbers[], int count) {
 }
 
 void contact_set_contact_list(lv_obj_t* list) {
+  lv_obj_clean(list);
+
   for (int i = 0; i < contactsCount; i++) {
     char nameNumber[57];
     strcpy(nameNumber, contactNames[i]);
@@ -45,6 +47,8 @@ void contact_set_contact_list(lv_obj_t* list) {
                         ui_event_list_button_cb);
   }
 }
+
+void refreshContactList() { contact_set_contact_list(ui_listContact); }
 
 void contacts_add_contact_to_array(char** names, char** numbers) {
   for (int i = 0; i < 4; i++) {
@@ -61,7 +65,7 @@ void contact_details_set_options_list(lv_obj_t* list) {
     lv_obj_t* btn;
     btn = lv_list_add_btn(list, NULL, contactOptions[i]);
     lv_obj_set_style_bg_opa(btn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_add_event_cb(btn, ui_event_list_button_cb,
-                        LV_EVENT_CLICKED, "contact option");
+    lv_obj_add_event_cb(btn, ui_event_list_button_cb, LV_EVENT_CLICKED,
+                        "contact option");
   }
 }

@@ -373,6 +373,18 @@ void s3UILooper() {
     fileSystem.saveToJSON(FS_CONTACTS_FILEPATH, contactSaveName,
                           contactSaveNumber);
     shouldSaveContact = false;
+
+    contactsCount = fileSystem.getTotalItemsInJSON(FS_CONTACTS_FILEPATH);
+    fileSystem.readKeyValueJSON(FS_CONTACTS_FILEPATH, contactNames,
+                                contactNumbers);
+
+    // TODO: go back to the previous screen
+    const ScreenStackElement prevScreen = screenStackPop();
+
+    _ui_screen_change(prevScreen.screen, prevScreen.transitionAnimation,
+                      UI_ANIMATION_DURATION, 0);
+
+    refreshContactList();
   }
 
   if (readContacts) {

@@ -333,6 +333,7 @@ void FileSystem::editSetting(const char *variable, const char *value) {
 
   JsonDocument doc;
   deserializeJson(doc, file);
+  file.close();
 
   file = _mFs.open(filename, FILE_WRITE);
   doc[variable] = value;
@@ -379,7 +380,7 @@ void FileSystem::saveCredentials(const filesystem_credentials_t type,
 
 void FileSystem::saveToJSON(const char *filepath, const char *key,
                             const char *value) {
-  File file = _mFs.open(filepath, FILE_APPEND);
+  File file = _mFs.open(filepath, FILE_READ);
   if (!file) {
     DEBUG_PRINTF("Failed to open file for reading: %s\n", filepath);
     return;
@@ -388,6 +389,9 @@ void FileSystem::saveToJSON(const char *filepath, const char *key,
   JsonDocument doc;
   if (file.size() == 0) {
     doc[key] = value;
+
+    file.close();
+    file = _mFs.open(filepath, FILE_WRITE);
 
     file.seek(0);
     if (serializeJson(doc, file) == 0) {
@@ -399,7 +403,12 @@ void FileSystem::saveToJSON(const char *filepath, const char *key,
 
   deserializeJson(doc, file);
 
+  file.close();
+  file = _mFs.open(filepath, FILE_WRITE);
+
   doc[key] = value;
+
+  serializeJsonPretty(doc, Serial);
 
   file.seek(0);
   if (serializeJson(doc, file) == 0) {

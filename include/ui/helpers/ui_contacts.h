@@ -29,6 +29,12 @@ void contact_add_to_list(lv_obj_t* list, const char* text,
  * @return void
  */
 void contact_set_contact_list(lv_obj_t* list);
+
+/**
+ * @brief Refresh the UI after contact changes
+ */
+void refreshContactList();
+
 // void contact_set_contact_list( char** names,  char** numbers,
 //                               int count);
 

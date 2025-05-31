@@ -37,11 +37,11 @@ extern bool readContacts;
 // Contact Details Screen
 extern char selectedContactName[30];
 extern char selectedContactNumber[13];
-extern bool shouldDelete;
-extern bool shouldEdit;
-extern bool shouldView;
-extern bool shouldCall;
-extern bool shouldSMS;
+extern bool shouldDeleteSelectedContact;
+extern bool shouldEditSelectedContact;
+extern bool shouldViewSelectedContact;
+extern bool shouldCallSelectedContact;
+extern bool shouldSMSSelectedContact;
 
 // Settings Display
 #define UI_BRIGHTNESS_SLIDER_MAX 4096
@@ -177,6 +177,11 @@ void screenStackEmpty();
 int screenStackSize();
 
 //============================UI Updates============================
+
+/**
+ * @brief Go to the previous screen
+ */
+void ui_navigate_previous_screen();
 
 /**
  * @brief Updates the time and date on the screen

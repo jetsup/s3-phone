@@ -1,7 +1,7 @@
 #include "ui/helpers/ui_utils.h"
 
-char lvCurrentTime[6] = {};  // 10:15
-char lvCurrentDate[15] = {}; // 15/03/2021 Fri
+char lvCurrentTime[6] = {};   // 10:15
+char lvCurrentDate[15] = {};  // 15/03/2021 Fri
 
 const char contactSeparationDelimiter[] = "-";
 char contactName[30] = {};
@@ -26,18 +26,18 @@ bool readContacts = false;
 // Contact Details Screen
 char selectedContactName[30] = {};
 char selectedContactNumber[13] = {};
-bool shouldDelete = false;
-bool shouldEdit = false;
-bool shouldView = false;
-bool shouldCall = false;
-bool shouldSMS = false;
+bool shouldDeleteSelectedContact = false;
+bool shouldEditSelectedContact = false;
+bool shouldViewSelectedContact = false;
+bool shouldCallSelectedContact = false;
+bool shouldSMSSelectedContact = false;
 
 // Settings Display
 int screenBrightnessLevel = 100;
 bool brightnessChanged = false;
 
 const char screenTimeoutSeparationDelimeter[] = " - ";
-unsigned int screenTimeout = 15; // Initial: if 0 set screenInteractive false
+unsigned int screenTimeout = 15;  // Initial: if 0 set screenInteractive false
 bool timeoutChanged = false;
 bool screenInteractive = true;
 unsigned long previousScreenTouch = 0;
@@ -74,7 +74,7 @@ bool wifiScreenVisible = false;
 bool isWiFiConnected = false;
 char wifiName[MAX_WIFI_NAME_LENGTH];
 char wifiPassword[MAX_WIFI_PASSWORD_LENGTH];
-int wifiChannel = 0; // TODO: Implement channel selection
+int wifiChannel = 0;  // TODO: Implement channel selection
 bool utilsConnectToWiFi = false;
 char connectedWiFiSSID[MAX_WIFI_NAME_LENGTH];
 char discoveredWiFiNames[MAX_WIFI_DISCOVERABLE][MAX_WIFI_NAME_LENGTH];
@@ -98,6 +98,13 @@ bool timezoneChanged = false;
 s3_resource_num_t lv_utils_getResourceByID(int id);
 lv_font_t *lv_utils_getFont(uint8_t fontSize);
 //================================UI Update===============================
+void ui_navigate_previous_screen() {
+  const ScreenStackElement prevScreen = screenStackPop();
+
+  _ui_screen_change(prevScreen.screen, prevScreen.transitionAnimation,
+                    UI_ANIMATION_DURATION, 0);
+}
+
 void ui_utils_updateTimeDate() {
   if (lv_obj_has_class(ui_lblHomeTime, (&lv_label_class)) &&
       lv_obj_has_class(ui_lblHomeDate, (&lv_label_class))) {
@@ -128,24 +135,24 @@ void lv_utils_setScreenTimeout(unsigned int timeout) {
 
 uint8_t lv_set_selected_timeout() {
   switch (screenTimeout) {
-  case TIMEOUT_NEVER:
-    return DROP_TIMEOUT_NEVER;
-  case TIMEOUT_5_SEC:
-    return DROP_TIMEOUT_5_SEC;
-  case TIMEOUT_10_SEC:
-    return DROP_TIMEOUT_10_SEC;
-  case TIMEOUT_15_SEC:
-    return DROP_TIMEOUT_15_SEC;
-  case TIMEOUT_30_SEC:
-    return DROP_TIMEOUT_30_SEC;
-  case TIMEOUT_1_MIN:
-    return DROP_TIMEOUT_1_MIN;
-  case TIMEOUT_2_MIN:
-    return DROP_TIMEOUT_2_MIN;
-  case TIMEOUT_5_MIN:
-    return DROP_TIMEOUT_5_MIN;
-  case TIMEOUT_10_MIN:
-    return DROP_TIMEOUT_10_MIN;
+    case TIMEOUT_NEVER:
+      return DROP_TIMEOUT_NEVER;
+    case TIMEOUT_5_SEC:
+      return DROP_TIMEOUT_5_SEC;
+    case TIMEOUT_10_SEC:
+      return DROP_TIMEOUT_10_SEC;
+    case TIMEOUT_15_SEC:
+      return DROP_TIMEOUT_15_SEC;
+    case TIMEOUT_30_SEC:
+      return DROP_TIMEOUT_30_SEC;
+    case TIMEOUT_1_MIN:
+      return DROP_TIMEOUT_1_MIN;
+    case TIMEOUT_2_MIN:
+      return DROP_TIMEOUT_2_MIN;
+    case TIMEOUT_5_MIN:
+      return DROP_TIMEOUT_5_MIN;
+    case TIMEOUT_10_MIN:
+      return DROP_TIMEOUT_10_MIN;
   }
 }
 
@@ -158,50 +165,50 @@ void lv_utils_setFonts(const uint8_t sFont, const uint8_t mFont,
 
 lv_font_t *lv_utils_getFont(const uint8_t fontSize) {
   switch (fontSize) {
-  case 8:
-    return &lv_font_montserrat_8;
-  case 10:
-    return &lv_font_montserrat_10;
-  case 12:
-    return &lv_font_montserrat_12;
-  case 14:
-    return &lv_font_montserrat_14;
-  case 16:
-    return &lv_font_montserrat_16;
-  case 18:
-    return &lv_font_montserrat_18;
-  case 20:
-    return &lv_font_montserrat_20;
-  case 22:
-    return &lv_font_montserrat_22;
-  case 24:
-    return &lv_font_montserrat_24;
-  case 26:
-    return &lv_font_montserrat_26;
-  case 28:
-    return &lv_font_montserrat_28;
-  case 30:
-    return &lv_font_montserrat_30;
-  case 32:
-    return &lv_font_montserrat_32;
-  case 34:
-    return &lv_font_montserrat_34;
-  case 36:
-    return &lv_font_montserrat_38;
-  case 38:
-    return &lv_font_montserrat_38;
-  case 40:
-    return &lv_font_montserrat_40;
-  case 42:
-    return &lv_font_montserrat_42;
-  case 44:
-    return &lv_font_montserrat_44;
-  case 46:
-    return &lv_font_montserrat_46;
-  case 48:
-    return &lv_font_montserrat_48;
-  default:
-    return &lv_font_montserrat_10;
+    case 8:
+      return &lv_font_montserrat_8;
+    case 10:
+      return &lv_font_montserrat_10;
+    case 12:
+      return &lv_font_montserrat_12;
+    case 14:
+      return &lv_font_montserrat_14;
+    case 16:
+      return &lv_font_montserrat_16;
+    case 18:
+      return &lv_font_montserrat_18;
+    case 20:
+      return &lv_font_montserrat_20;
+    case 22:
+      return &lv_font_montserrat_22;
+    case 24:
+      return &lv_font_montserrat_24;
+    case 26:
+      return &lv_font_montserrat_26;
+    case 28:
+      return &lv_font_montserrat_28;
+    case 30:
+      return &lv_font_montserrat_30;
+    case 32:
+      return &lv_font_montserrat_32;
+    case 34:
+      return &lv_font_montserrat_34;
+    case 36:
+      return &lv_font_montserrat_38;
+    case 38:
+      return &lv_font_montserrat_38;
+    case 40:
+      return &lv_font_montserrat_40;
+    case 42:
+      return &lv_font_montserrat_42;
+    case 44:
+      return &lv_font_montserrat_44;
+    case 46:
+      return &lv_font_montserrat_46;
+    case 48:
+      return &lv_font_montserrat_48;
+    default:
+      return &lv_font_montserrat_10;
   }
 }
 
@@ -220,7 +227,7 @@ void lv_utils_applyTheme() {
   themeApplied = true;
 
   lv_color_t themeColorPrimary, themeColorSecondary;
-  systemFontMedium = &lv_font_montserrat_14; // FIXME: remove hardcoding
+  systemFontMedium = &lv_font_montserrat_14;  // FIXME: remove hardcoding
   if (darkThemeSelected) {
     themeColorPrimary.red = 5;
     themeColorPrimary.green = 2;
@@ -256,12 +263,12 @@ void ui_add_bottom_bar(lv_obj_t *parent, const int colorRGB,
   lv_obj_set_flex_align(ui_bottomBar, LV_FLEX_ALIGN_SPACE_AROUND,
                         LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER);
   lv_obj_remove_flag(ui_bottomBar,
-                     LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE); /// Flags
+                     LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);  /// Flags
 
   ui_lblBottombarTasks = lv_label_create(ui_bottomBar);
-  lv_obj_set_width(ui_lblBottombarTasks, LV_SIZE_CONTENT);      /// 1
-  lv_obj_set_height(ui_lblBottombarTasks, LV_SIZE_CONTENT);     /// 1
-  lv_obj_add_flag(ui_lblBottombarTasks, LV_OBJ_FLAG_CLICKABLE); /// Flags
+  lv_obj_set_width(ui_lblBottombarTasks, LV_SIZE_CONTENT);       /// 1
+  lv_obj_set_height(ui_lblBottombarTasks, LV_SIZE_CONTENT);      /// 1
+  lv_obj_add_flag(ui_lblBottombarTasks, LV_OBJ_FLAG_CLICKABLE);  /// Flags
   lv_label_set_text(ui_lblBottombarTasks, LV_SYMBOL_STOP);
   lv_obj_set_style_text_color(ui_lblBottombarTasks, lv_color_hex(colorRGB),
                               LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -269,9 +276,9 @@ void ui_add_bottom_bar(lv_obj_t *parent, const int colorRGB,
                             LV_PART_MAIN | LV_STATE_DEFAULT);
 
   ui_lblBottombarHome = lv_label_create(ui_bottomBar);
-  lv_obj_set_width(ui_lblBottombarHome, LV_SIZE_CONTENT);      /// 1
-  lv_obj_set_height(ui_lblBottombarHome, LV_SIZE_CONTENT);     /// 1
-  lv_obj_add_flag(ui_lblBottombarHome, LV_OBJ_FLAG_CLICKABLE); /// Flags
+  lv_obj_set_width(ui_lblBottombarHome, LV_SIZE_CONTENT);       /// 1
+  lv_obj_set_height(ui_lblBottombarHome, LV_SIZE_CONTENT);      /// 1
+  lv_obj_add_flag(ui_lblBottombarHome, LV_OBJ_FLAG_CLICKABLE);  /// Flags
   lv_label_set_text(ui_lblBottombarHome, LV_SYMBOL_HOME);
   lv_obj_set_style_text_color(ui_lblBottombarHome, lv_color_hex(colorRGB),
                               LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -279,9 +286,9 @@ void ui_add_bottom_bar(lv_obj_t *parent, const int colorRGB,
                             LV_PART_MAIN | LV_STATE_DEFAULT);
 
   ui_lblBottombarBack = lv_label_create(ui_bottomBar);
-  lv_obj_set_width(ui_lblBottombarBack, LV_SIZE_CONTENT);      /// 1
-  lv_obj_set_height(ui_lblBottombarBack, LV_SIZE_CONTENT);     /// 1
-  lv_obj_add_flag(ui_lblBottombarBack, LV_OBJ_FLAG_CLICKABLE); /// Flags
+  lv_obj_set_width(ui_lblBottombarBack, LV_SIZE_CONTENT);       /// 1
+  lv_obj_set_height(ui_lblBottombarBack, LV_SIZE_CONTENT);      /// 1
+  lv_obj_add_flag(ui_lblBottombarBack, LV_OBJ_FLAG_CLICKABLE);  /// Flags
   lv_label_set_text(ui_lblBottombarBack, LV_SYMBOL_LEFT LV_SYMBOL_LEFT);
   lv_obj_set_style_text_color(ui_lblBottombarBack, lv_color_hex(colorRGB),
                               LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -311,26 +318,27 @@ void lv_utils_setTimeZone(const int timezoneIndex) {
   timezoneChanged = true;
 }
 
-void ui_utils_name_number(const char *contactData, char *nameBuf, char *numberBuf) {
-    const char *openParen = strchr(contactData, '(');
-    const char *closeParen = strchr(contactData, ')');
-    if (openParen && closeParen && closeParen > openParen) {
-        size_t nameLen = openParen - contactData;
-        if (nameLen > 0 && contactData[nameLen - 1] == ' ')
-            nameLen--; // Remove trailing space before '('
-        strncpy(nameBuf, contactData, nameLen);
-        nameBuf[nameLen] = '\0';
+void ui_utils_name_number(const char *contactData, char *nameBuf,
+                          char *numberBuf) {
+  const char *openParen = strchr(contactData, '(');
+  const char *closeParen = strchr(contactData, ')');
+  if (openParen && closeParen && closeParen > openParen) {
+    size_t nameLen = openParen - contactData;
+    if (nameLen > 0 && contactData[nameLen - 1] == ' ')
+      nameLen--;  // Remove trailing space before '('
+    strncpy(nameBuf, contactData, nameLen);
+    nameBuf[nameLen] = '\0';
 
-        size_t numberLen = closeParen - openParen - 1;
-        strncpy(numberBuf, openParen + 1, numberLen);
-        numberBuf[numberLen] = '\0';
-    } else {
-        strncpy(nameBuf, contactData, 29);
-        nameBuf[29] = '\0';
-        numberBuf[0] = '\0';
-    }
-    
-    LV_LOG_USER("Extracted Name: %s, Number: %s", nameBuf, numberBuf);
+    size_t numberLen = closeParen - openParen - 1;
+    strncpy(numberBuf, openParen + 1, numberLen);
+    numberBuf[numberLen] = '\0';
+  } else {
+    strncpy(nameBuf, contactData, 29);
+    nameBuf[29] = '\0';
+    numberBuf[0] = '\0';
+  }
+
+  LV_LOG_USER("Extracted Name: %s, Number: %s", nameBuf, numberBuf);
 }
 
 void ui_utils_trim(char *str, const char *trimChars) {
@@ -408,16 +416,16 @@ int screenStackSize() { return screenStack.top + 1; }
 
 lv_image_dsc_t *lv_utils_getImage(s3_resource_num_t imageID) {
   switch (imageID) {
-  case 1:
-    return &ui_img_bg1_png;
-  case 2:
-    return &ui_img_bg2_png;
-  case 3:
-    return &ui_img_bg3_png;
-  case 4:
-    return &ui_img_bg4_png;
-  case 5:
-    return &ui_img_bg5_png;
+    case 1:
+      return &ui_img_bg1_png;
+    case 2:
+      return &ui_img_bg2_png;
+    case 3:
+      return &ui_img_bg3_png;
+    case 4:
+      return &ui_img_bg4_png;
+    case 5:
+      return &ui_img_bg5_png;
   }
 }
 
@@ -425,26 +433,26 @@ void lv_utils_getResourceName(const int resID, char *nameBuf) {
   const s3_resource_num_t resS3ID = lv_utils_getResourceByID(resID);
 
   switch (resS3ID) {
-  case S3_IMG_BACKGROUND_BEAUTIFUL_SUNSET: {
-    strcpy(nameBuf, "Beautiful Sunset");
-    return;
-  }
-  case S3_IMG_BACKGROUND_DOCK_SUNSET: {
-    strcpy(nameBuf, "Dock Sunset");
-    return;
-  }
-  case S3_IMG_BACKGROUND_NATURE_FOOTPATH: {
-    strcpy(nameBuf, "Nature Pathway");
-    return;
-  }
-  case S3_IMG_BACKGROUND_GREEN_LAKE: {
-    strcpy(nameBuf, "Green Lake");
-    return;
-  }
-  case S3_IMG_BACKGROUND_GREEN_FOREST: {
-    strcpy(nameBuf, "Green Forest");
-    return;
-  }
+    case S3_IMG_BACKGROUND_BEAUTIFUL_SUNSET: {
+      strcpy(nameBuf, "Beautiful Sunset");
+      return;
+    }
+    case S3_IMG_BACKGROUND_DOCK_SUNSET: {
+      strcpy(nameBuf, "Dock Sunset");
+      return;
+    }
+    case S3_IMG_BACKGROUND_NATURE_FOOTPATH: {
+      strcpy(nameBuf, "Nature Pathway");
+      return;
+    }
+    case S3_IMG_BACKGROUND_GREEN_LAKE: {
+      strcpy(nameBuf, "Green Lake");
+      return;
+    }
+    case S3_IMG_BACKGROUND_GREEN_FOREST: {
+      strcpy(nameBuf, "Green Forest");
+      return;
+    }
   }
 }
 
@@ -458,16 +466,16 @@ void lv_utils_setWallpaper(const uint8_t wallpaperID, bool refreshUI) {
 
 s3_resource_num_t lv_utils_getResourceByID(const int id) {
   switch (id) {
-  case 1:
-    return S3_IMG_BACKGROUND_BEAUTIFUL_SUNSET;
-  case 2:
-    return S3_IMG_BACKGROUND_DOCK_SUNSET;
-  case 3:
-    return S3_IMG_BACKGROUND_NATURE_FOOTPATH;
-  case 4:
-    return S3_IMG_BACKGROUND_GREEN_LAKE;
-  case 5:
-    return S3_IMG_BACKGROUND_GREEN_FOREST;
+    case 1:
+      return S3_IMG_BACKGROUND_BEAUTIFUL_SUNSET;
+    case 2:
+      return S3_IMG_BACKGROUND_DOCK_SUNSET;
+    case 3:
+      return S3_IMG_BACKGROUND_NATURE_FOOTPATH;
+    case 4:
+      return S3_IMG_BACKGROUND_GREEN_LAKE;
+    case 5:
+      return S3_IMG_BACKGROUND_GREEN_FOREST;
   }
 }
 

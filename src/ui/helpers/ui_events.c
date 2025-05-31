@@ -560,6 +560,17 @@ void ui_event_button_cb(lv_event_t *e) {
   }
 }
 
+void ui_event_msg_button_cb(lv_event_t *e) {
+  const char *buttonData = lv_event_get_user_data(e);
+  if (strcmp(buttonData, "delete") == 0) {
+    shouldDeleteSelectedContact = true;
+    lv_msgbox_close(ui_msgBoxContactDetails);
+    LV_LOG_USER("Deleting '%s'", selectedContactName);
+  } else if (strcmp(buttonData, "cancel") == 0) {
+    lv_msgbox_close(ui_msgBoxContactDetails);
+  }
+}
+
 void toggle_password_visibility_cb(lv_event_t *e) {
   const lv_event_code_t code = lv_event_get_code(e);
   lv_obj_t *eyeBtn = lv_event_get_target(e);
@@ -593,8 +604,34 @@ void ui_event_list_button_cb(lv_event_t *e) {
       const char *optionText = lv_list_get_button_text(list, target);
       LV_LOG_USER("Selected contact option: %s", optionText);
 
-      if (strcmp(optionText, "Delete")) {
+      if (strcmp(optionText, "Delete") == 0) {
         // open a confirmation dialog
+        ui_msgBoxContactDetails = lv_msgbox_create(NULL);
+        char tmpDeleteTitle[7 + 30 + 1];
+        lv_snprintf(tmpDeleteTitle, sizeof(tmpDeleteTitle), "Delete %s",
+                    selectedContactName);
+        lv_msgbox_add_title(ui_msgBoxContactDetails, tmpDeleteTitle);
+        lv_msgbox_add_text(ui_msgBoxContactDetails,
+                           "Are you sure you want to delete this contact?");
+        lv_obj_set_width(ui_msgBoxContactDetails, 230);
+
+        ui_msgBoxBtnPositiveContactDetails =
+            lv_msgbox_add_footer_button(ui_msgBoxContactDetails, "Yes");
+        lv_obj_set_style_bg_color(ui_msgBoxBtnPositiveContactDetails,
+                                  lv_color_hex(0xf52222),
+                                  LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_width(ui_msgBoxBtnPositiveContactDetails, 90);
+        lv_obj_add_event_cb(ui_msgBoxBtnPositiveContactDetails,
+                            ui_event_msg_button_cb, LV_EVENT_CLICKED, "delete");
+
+        ui_msgBoxBtnNegativeContactDetails =
+            lv_msgbox_add_footer_button(ui_msgBoxContactDetails, "Cancel");
+        lv_obj_set_style_bg_color(ui_msgBoxBtnNegativeContactDetails,
+                                  lv_color_hex(0x27c22c),
+                                  LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_width(ui_msgBoxBtnNegativeContactDetails, 90);
+        lv_obj_add_event_cb(ui_msgBoxBtnNegativeContactDetails,
+                            ui_event_msg_button_cb, LV_EVENT_CLICKED, "cancel");
       } else if (strcmp(optionText, "Edit") == 0) {
         if (screenStackPush(SCREEN_CONTACTS, LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
           _ui_screen_change(SCREEN_CONTACT_EDIT, LV_SCR_LOAD_ANIM_MOVE_LEFT,

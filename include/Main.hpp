@@ -378,12 +378,23 @@ void s3UILooper() {
     fileSystem.readKeyValueJSON(FS_CONTACTS_FILEPATH, contactNames,
                                 contactNumbers);
 
-    // TODO: go back to the previous screen
-    const ScreenStackElement prevScreen = screenStackPop();
+    ui_navigate_previous_screen();
 
-    _ui_screen_change(prevScreen.screen, prevScreen.transitionAnimation,
-                      UI_ANIMATION_DURATION, 0);
+    refreshContactList();
+  }
 
+  if (shouldDeleteSelectedContact) {
+    fileSystem.deleteDataJSON(FS_CONTACTS_FILEPATH, selectedContactName);
+    contactsCount = fileSystem.getTotalItemsInJSON(FS_CONTACTS_FILEPATH);
+    fileSystem.readKeyValueJSON(FS_CONTACTS_FILEPATH, contactNames,
+                                contactNumbers);
+    DEBUG_PRINTF("[LOOP]Deleting: '%s'\n", selectedContactName);
+
+    strcpy(selectedContactName, "");
+    strcpy(selectedContactNumber, "");
+    shouldDeleteSelectedContact = false;
+
+    ui_navigate_previous_screen();
     refreshContactList();
   }
 

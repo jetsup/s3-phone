@@ -134,6 +134,16 @@ class FileSystem {
   void saveToJSON(const char *filepath, const char *key, const char *value);
 
   /**
+   * @brief Edit the content of the JSON including the key
+   * @param filepath The file containing the JSON object
+   * @param prevKey The previous key to be replaced
+   * @param newKey The new key to be added
+   * @param value The value associated with the new key
+   */
+  void editDataJSON(const char *filepath, const char *prevKey,
+                    const char *newKey, const char *value);
+
+  /**
    * @brief Get the total number of items in a JSON file
    * @param filepath The file containing the JSON object
    * @return The total number of items in the JSON file

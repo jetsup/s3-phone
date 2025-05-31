@@ -38,6 +38,7 @@ void ui_contactAddScreen_screen_init(void) {
   lv_obj_set_y(ui_txtContactAddName, -130);
   lv_obj_set_align(ui_txtContactAddName, LV_ALIGN_CENTER);
   lv_textarea_set_placeholder_text(ui_txtContactAddName, "Name...");
+  lv_textarea_set_text(ui_txtContactAddName, selectedContactName);
   lv_textarea_set_one_line(ui_txtContactAddName, true);
   lv_textarea_set_max_length(ui_txtContactAddName, 30);
   lv_obj_set_style_bg_opa(ui_txtContactAddName, 0,
@@ -60,6 +61,7 @@ void ui_contactAddScreen_screen_init(void) {
   lv_obj_set_y(ui_txtContactAddNumber, -85);
   lv_obj_set_align(ui_txtContactAddNumber, LV_ALIGN_CENTER);
   lv_textarea_set_placeholder_text(ui_txtContactAddNumber, "Number...");
+  lv_textarea_set_text(ui_txtContactAddNumber, selectedContactNumber);
   lv_textarea_set_one_line(ui_txtContactAddNumber, true);
   lv_textarea_set_max_length(ui_txtContactAddNumber, 13);
   lv_obj_set_style_bg_opa(ui_txtContactAddNumber, 0,
@@ -67,32 +69,41 @@ void ui_contactAddScreen_screen_init(void) {
   lv_obj_add_event_cb(ui_txtContactAddNumber, ui_event_textarea_cb,
                       LV_EVENT_ALL, "num");
 
-  ui_lblContactAddSaveTo = lv_label_create(ui_panelContactAdd);
-  lv_obj_set_width(ui_lblContactAddSaveTo, LV_SIZE_CONTENT);   /// 1
-  lv_obj_set_height(ui_lblContactAddSaveTo, LV_SIZE_CONTENT);  /// 1
-  lv_obj_set_x(ui_lblContactAddSaveTo, -84);
-  lv_obj_set_y(ui_lblContactAddSaveTo, -45);
-  lv_obj_set_align(ui_lblContactAddSaveTo, LV_ALIGN_CENTER);
-  lv_label_set_text(ui_lblContactAddSaveTo, "Save To");
+  if (!shouldEditSelectedContact) {
+    ui_lblContactAddSaveTo = lv_label_create(ui_panelContactAdd);
+    lv_obj_set_width(ui_lblContactAddSaveTo, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_lblContactAddSaveTo, LV_SIZE_CONTENT);  /// 1
+    lv_obj_set_x(ui_lblContactAddSaveTo, -84);
+    lv_obj_set_y(ui_lblContactAddSaveTo, -45);
+    lv_obj_set_align(ui_lblContactAddSaveTo, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_lblContactAddSaveTo, "Save To");
 
-  ui_dropDownContactAddSaveTo = lv_dropdown_create(ui_panelContactAdd);
-  lv_dropdown_set_options(ui_dropDownContactAddSaveTo,
-                          "SIM Card\nInternal Storage");
-  lv_obj_set_width(ui_dropDownContactAddSaveTo, 155);
-  lv_obj_set_height(ui_dropDownContactAddSaveTo, 36);
-  lv_obj_set_x(ui_dropDownContactAddSaveTo, 30);
-  lv_obj_set_y(ui_dropDownContactAddSaveTo, -40);
-  lv_obj_set_align(ui_dropDownContactAddSaveTo, LV_ALIGN_CENTER);
-  lv_obj_add_flag(ui_dropDownContactAddSaveTo,
-                  LV_OBJ_FLAG_SCROLL_ON_FOCUS);  /// Flags
-  lv_obj_set_style_bg_opa(ui_dropDownContactAddSaveTo, 0,
-                          LV_PART_MAIN | LV_STATE_DEFAULT);
+    ui_dropDownContactAddSaveTo = lv_dropdown_create(ui_panelContactAdd);
+    lv_dropdown_set_options(ui_dropDownContactAddSaveTo,
+                            "SIM Card\nInternal Storage");
+    lv_obj_set_width(ui_dropDownContactAddSaveTo, 155);
+    lv_obj_set_height(ui_dropDownContactAddSaveTo, 36);
+    lv_obj_set_x(ui_dropDownContactAddSaveTo, 30);
+    lv_obj_set_y(ui_dropDownContactAddSaveTo, -40);
+    lv_obj_set_align(ui_dropDownContactAddSaveTo, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_dropDownContactAddSaveTo,
+                    LV_OBJ_FLAG_SCROLL_ON_FOCUS);  /// Flags
+    lv_obj_set_style_bg_opa(ui_dropDownContactAddSaveTo, 0,
+                            LV_PART_MAIN | LV_STATE_DEFAULT);
+  }
 
   // function buttons
+  char actionText[7];
+  if (shouldEditSelectedContact) {
+    strcpy(actionText, "Update");
+  } else {
+    strcpy(actionText, "Save");
+  }
+
   ui_lblContactAddSave = lv_label_create(ui_panelContactAdd);
   lv_obj_set_align(ui_lblContactAddSave, LV_ALIGN_BOTTOM_LEFT);
   lv_obj_add_flag(ui_lblContactAddSave, LV_OBJ_FLAG_CLICKABLE);  /// Flags
-  lv_label_set_text(ui_lblContactAddSave, "Save");
+  lv_label_set_text(ui_lblContactAddSave, actionText);
   lv_obj_set_style_text_color(ui_lblContactAddSave, lv_color_hex(0x20FF13),
                               LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_add_event_cb(ui_lblContactAddSave, ui_event_label_cb, LV_EVENT_CLICKED,

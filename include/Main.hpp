@@ -367,7 +367,7 @@ void s3UILooper() {
     }
   }
 
-  if (shouldSaveContact) {
+  if (shouldSaveContact && !shouldEditSelectedContact) {
     DEBUG_PRINTF("'%s'::'%s'\n", contactSaveName, contactSaveNumber);
 
     fileSystem.saveToJSON(FS_CONTACTS_FILEPATH, contactSaveName,
@@ -380,6 +380,25 @@ void s3UILooper() {
 
     ui_navigate_previous_screen();
 
+    refreshContactList();
+  }
+
+  if (shouldEditSelectedContact && shouldSaveContact) {
+    DEBUG_PRINTF("[Editing]Contact '%s'::'%s'\n[Previous]Contact '%s'::'%s'\n",
+                 selectedContactName, selectedContactNumber, contactSaveName,
+                 contactSaveNumber);
+
+    fileSystem.editDataJSON(FS_CONTACTS_FILEPATH, selectedContactName,
+                            contactSaveName, contactSaveNumber);
+    contactsCount = fileSystem.getTotalItemsInJSON(FS_CONTACTS_FILEPATH);
+    fileSystem.readKeyValueJSON(FS_CONTACTS_FILEPATH, contactNames,
+                                contactNumbers);
+
+    strcpy(selectedContactName, "");
+    strcpy(selectedContactNumber, "");
+    shouldEditSelectedContact = false;
+
+    ui_navigate_previous_screen();
     refreshContactList();
   }
 

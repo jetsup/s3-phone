@@ -633,8 +633,9 @@ void ui_event_list_button_cb(lv_event_t *e) {
         lv_obj_add_event_cb(ui_msgBoxBtnNegativeContactDetails,
                             ui_event_msg_button_cb, LV_EVENT_CLICKED, "cancel");
       } else if (strcmp(optionText, "Edit") == 0) {
+        shouldEditSelectedContact = true;
         if (screenStackPush(SCREEN_CONTACTS, LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
-          _ui_screen_change(SCREEN_CONTACT_EDIT, LV_SCR_LOAD_ANIM_MOVE_LEFT,
+          _ui_screen_change(SCREEN_CONTACT_ADD, LV_SCR_LOAD_ANIM_MOVE_LEFT,
                             UI_ANIMATION_DURATION, 0);
 
           //   lv_textarea_set_text(ui_txtContactEditName, contactName);

@@ -418,6 +418,38 @@ void FileSystem::saveToJSON(const char *filepath, const char *key,
   file.close();
 }
 
+void FileSystem::editDataJSON(const char *filepath, const char *prevKey,
+                              const char *newKey, const char *value) {
+  File file = _mFs.open(filepath, FILE_READ);
+  if (!file) {
+    DEBUG_PRINTF("[JSON Edit]Failed to open file for reading: %s\n", filepath);
+    return;
+  }
+
+  JsonDocument doc;
+  deserializeJson(doc, file);
+  file.close();
+
+  // Only remove prevKey if it's different from newKey
+  if (strcmp(prevKey, newKey) != 0) {
+    doc.remove(prevKey);
+  }
+  doc[newKey] = value;
+
+  file = _mFs.open(filepath, FILE_WRITE);
+  if (!file) {
+    DEBUG_PRINTF("[JSON Edit]Failed to open file for writing: %s\n", filepath);
+    return;
+  }
+
+  file.seek(0);
+  if (serializeJson(doc, file) == 0) {
+    DEBUG_PRINTLN("[JSON Edit]Failed to write to file");
+  }
+
+  file.close();
+}
+
 int FileSystem::getTotalItemsInJSON(const char *filepath) const {
   File file = _mFs.open(filepath, FILE_READ);
   if (!file) {

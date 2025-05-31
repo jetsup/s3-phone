@@ -399,6 +399,9 @@ void ui_event_label_cb(lv_event_t *e) {
       strlcpy(contactSaveNumber, lv_textarea_get_text(ui_txtContactAddNumber),
               sizeof(contactSaveNumber));
 
+      ui_utils_trim(contactSaveName, " ");
+      ui_utils_trim(contactSaveNumber, " ");
+
       LV_LOG_USER("Name: '%s'\tNumber: '%s'", contactSaveName,
                   contactSaveNumber);
 
@@ -494,6 +497,7 @@ void ui_event_button_cb(lv_event_t *e) {
                         UI_ANIMATION_DURATION, 0);
     } else if (strcmp(buttonData, "contact option") == 0) {
     } else if (strcmp(buttonData, "contact list") == 0) {
+      // FIXME: confirm the working of this and remove
       const char *contact = lv_list_get_button_text(ui_listContact, target);
       char contactData[CONTACT_NAME_NUMBER_LENGTH];
       strcpy(contactData, contact);
@@ -585,18 +589,31 @@ void ui_event_list_button_cb(lv_event_t *e) {
 
   if (code == LV_EVENT_CLICKED) {
     if (strcmp(buttonData, "contact option") == 0) {
+      // Get the text of the option
+      const char *optionText = lv_list_get_button_text(list, target);
+      LV_LOG_USER("Selected contact option: %s", optionText);
+
+      if (strcmp(optionText, "Delete")) {
+        // open a confirmation dialog
+      } else if (strcmp(optionText, "Edit") == 0) {
+        if (screenStackPush(SCREEN_CONTACTS, LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
+          _ui_screen_change(SCREEN_CONTACT_EDIT, LV_SCR_LOAD_ANIM_MOVE_LEFT,
+                            UI_ANIMATION_DURATION, 0);
+
+          //   lv_textarea_set_text(ui_txtContactEditName, contactName);
+          //   lv_textarea_set_text(ui_txtContactEditNumber, contactNumber);
+        }
+      }
     } else if (strcmp(buttonData, "contact list") == 0) {
       char contactData[CONTACT_NAME_NUMBER_LENGTH];
       strcpy(contactData, buttonText);
 
-      const char *token = strtok(contactData, contactSeparationDelimiter);
-      if (token != NULL) {
-        strlcpy(contactName, token, sizeof(contactName));
-        token = strtok(NULL, contactSeparationDelimiter);
-        if (token != NULL) {
-          strlcpy(contactNumber, token, sizeof(contactNumber));
-        }
-      }
+      ui_utils_name_number(contactData, selectedContactName,
+                           selectedContactNumber);
+
+      strcpy(contactName, selectedContactName);
+      strcpy(contactNumber, selectedContactNumber);
+
       if (screenStackPush(SCREEN_CONTACTS, LV_SCR_LOAD_ANIM_MOVE_RIGHT)) {
         _ui_screen_change(SCREEN_CONTACT_OPTIONS, LV_SCR_LOAD_ANIM_MOVE_LEFT,
                           UI_ANIMATION_DURATION, 0);

@@ -34,6 +34,15 @@ extern char contactSaveNumber[13];
 extern bool shouldSaveContact;
 extern bool readContacts;
 
+// Contact Details Screen
+extern char selectedContactName[30];
+extern char selectedContactNumber[13];
+extern bool shouldDelete;
+extern bool shouldEdit;
+extern bool shouldView;
+extern bool shouldCall;
+extern bool shouldSMS;
+
 // Settings Display
 #define UI_BRIGHTNESS_SLIDER_MAX 4096
 #define UI_BRIGHTNESS_SLIDER_MIN 100
@@ -317,6 +326,21 @@ void lv_utils_updateSyncTime();
  * @param timezoneIndex The index of the timezone
  */
 void lv_utils_setTimeZone(int timezoneIndex);
+
+/**
+ * @brief Extract the name and number from the contact data string
+ * @param contactData The contact data string
+ * @param nameBuf The buffer to store the extracted name
+ * @param numberBuf The buffer to store the extracted number
+ */
+void ui_utils_name_number(const char *contactData, char *nameBuf, char *numberBuf);
+
+/**
+ * @brief Trim the string by removing the specified characters from both ends
+ * @param str The string to be trimmed
+ * @param trimChars The characters to be trimmed
+ */
+void ui_utils_trim(char *str, const char *trimChars);
 
 #ifdef __cplusplus
 }

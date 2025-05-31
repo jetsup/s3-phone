@@ -124,6 +124,9 @@ extern lv_obj_t* ui_contactOptionsScreen;
 extern lv_obj_t* ui_panelContactDetails;
 extern lv_obj_t* ui_lblContactDetailsTitle;
 extern lv_obj_t* ui_listContactDetailsOptions;
+extern lv_obj_t* ui_msgBoxContactDetails;
+extern lv_obj_t* ui_msgBoxBtnPositiveContactDetails;
+extern lv_obj_t* ui_msgBoxBtnNegativeContactDetails;
 extern lv_obj_t* ui_lblContactDetailsBack;
 extern lv_obj_t* ui_lblContactBack;
 // SCREEN: ui_simPinScreen

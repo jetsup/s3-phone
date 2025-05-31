@@ -149,6 +149,13 @@ class FileSystem {
    * corresponding key
    */
   void readKeyValueJSON(const char *filepath, char **keys, char **values);
+
+  /**
+   * @brief Delete the data associated with the `key` from the JSON
+   * @param filepath The JSON file containing the data
+   * @param key The key associated with the data to be deleted
+   */
+  void deleteDataJSON(const char *filepath, const char *key);
 };
 
 // SQLite database

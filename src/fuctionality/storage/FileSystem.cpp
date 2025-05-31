@@ -467,6 +467,41 @@ void FileSystem::readKeyValueJSON(const char *filepath, char **keys,
   file.close();
 }
 
+void FileSystem::deleteDataJSON(const char *filepath, const char *key) {
+  File file = _mFs.open(filepath, FILE_READ);
+  if (!file) {
+    DEBUG_PRINTF("[DELETE JSON]Failed to open file for reading: %s\n",
+                 filepath);
+    return;
+  }
+
+  JsonDocument doc;
+  DeserializationError error = deserializeJson(doc, file);
+  if (error) {
+    DEBUG_PRINTF("[DELETE JSON]DeserializeJson() failed: %s\n", error.c_str());
+    file.close();
+    return;
+  }
+
+  file.close();
+
+  doc.remove(key);
+
+  file = _mFs.open(filepath, FILE_WRITE);
+  if (!file) {
+    DEBUG_PRINTF("[DELETE JSON]Failed to open file for writing: %s\n",
+                 filepath);
+    return;
+  }
+
+  file.seek(0);
+  if (serializeJson(doc, file) == 0) {
+    DEBUG_PRINTLN("[DELETE JSON]Failed to write to file");
+  }
+
+  file.close();
+}
+
 // SQLite implementation
 Database::Database() { sqlite3_initialize(); }
 

@@ -106,6 +106,9 @@ lv_obj_t* ui_contactOptionsScreen;
 lv_obj_t* ui_panelContactDetails;
 lv_obj_t* ui_lblContactDetailsTitle;
 lv_obj_t* ui_listContactDetailsOptions;
+lv_obj_t* ui_msgBoxContactDetails;
+lv_obj_t* ui_msgBoxBtnPositiveContactDetails;
+lv_obj_t* ui_msgBoxBtnNegativeContactDetails;
 lv_obj_t* ui_lblContactDetailsBack;
 
 // SCREEN: ui_simPinScreen

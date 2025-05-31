@@ -23,6 +23,15 @@ char contactSaveNumber[13] = {};
 bool shouldSaveContact = false;
 bool readContacts = false;
 
+// Contact Details Screen
+char selectedContactName[30] = {};
+char selectedContactNumber[13] = {};
+bool shouldDelete = false;
+bool shouldEdit = false;
+bool shouldView = false;
+bool shouldCall = false;
+bool shouldSMS = false;
+
 // Settings Display
 int screenBrightnessLevel = 100;
 bool brightnessChanged = false;
@@ -300,6 +309,45 @@ void lv_utils_setTimeZone(const int timezoneIndex) {
   // TODO: update the time based on the timezone
   currentTimezoneIndex = timezoneIndex;
   timezoneChanged = true;
+}
+
+void ui_utils_name_number(const char *contactData, char *nameBuf, char *numberBuf) {
+    const char *openParen = strchr(contactData, '(');
+    const char *closeParen = strchr(contactData, ')');
+    if (openParen && closeParen && closeParen > openParen) {
+        size_t nameLen = openParen - contactData;
+        if (nameLen > 0 && contactData[nameLen - 1] == ' ')
+            nameLen--; // Remove trailing space before '('
+        strncpy(nameBuf, contactData, nameLen);
+        nameBuf[nameLen] = '\0';
+
+        size_t numberLen = closeParen - openParen - 1;
+        strncpy(numberBuf, openParen + 1, numberLen);
+        numberBuf[numberLen] = '\0';
+    } else {
+        strncpy(nameBuf, contactData, 29);
+        nameBuf[29] = '\0';
+        numberBuf[0] = '\0';
+    }
+    
+    LV_LOG_USER("Extracted Name: %s, Number: %s", nameBuf, numberBuf);
+}
+
+void ui_utils_trim(char *str, const char *trimChars) {
+  char *end;
+
+  // Trim leading characters
+  while (*str && strchr(trimChars, *str)) {
+    str++;
+  }
+
+  // Trim trailing characters
+  end = str + strlen(str) - 1;
+  while (end > str && strchr(trimChars, *end)) {
+    end--;
+  }
+
+  *(end + 1) = '\0';
 }
 
 //==============================Screen Stack==============================

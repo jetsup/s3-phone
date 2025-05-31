@@ -11,10 +11,10 @@
  * @param currentTime Current time in HH:MM format
  * @param currentDate Current date in YYYY-MM-DD format
  * @param timeZone Timezone offset in HH:MM format
- * @param localizedDateTime The buffer to store the localized date and time
+ * @param adjustedDateTime The buffer to store the localized date and time
  */
 void localizeTime(const String& currentTime, const String& currentDate, const String& timeZone,
-                  char *localizedDateTime);
+                  char *adjustedDateTime);
 
 #define DEBUG 1
 

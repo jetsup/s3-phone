@@ -14,7 +14,7 @@
 #include "ui/helpers/ui_contacts.h"
 #include "ui/ui.h"
 
-int contactsCount = 0;
+size_t contactsCount = 0;
 String names[MAX_CONTACTS] = {};
 String numbers[MAX_CONTACTS] = {};
 char *cStrNames[MAX_CONTACTS] = {};
@@ -34,31 +34,32 @@ bool wifiNameUtilsUpdated = false;
 unsigned int lastTickMillis = 0;
 
 void *drawBuffer;
-const unsigned int lvBufferSize = TFT_DRAW_BUF_SIZE;
+constexpr unsigned int lvBufferSize = TFT_DRAW_BUF_SIZE;
 uint8_t lvBuffer[lvBufferSize * 2];
 uint8_t lvBuffer2[lvBufferSize * 2];
 
 // ----------------------------------------------------------
 /* Display flushing*/
-void lv_flush_cb(lv_display_t *disp, const lv_area_t *area,
-                 unsigned char *data) {
-  uint32_t w = lv_area_get_width(area);
-  uint32_t h = lv_area_get_height(area);
+inline void lv_flush_cb(lv_display_t *disp, const lv_area_t *area,
+                        unsigned char *data) {
+  const int32_t w = lv_area_get_width(area);
+  const int32_t h = lv_area_get_height(area);
   display.startWrite();
   display.setAddrWindow(area->x1, area->y1, w, h);
   lv_draw_sw_rgb565_swap(data, w * h);
-  display.pushImage(area->x1, area->y1, w, h, (uint16_t *)data);
-  display.writePixels((uint16_t *)data, w * h);
+  display.pushImage(area->x1, area->y1, w, h,
+                    reinterpret_cast<uint16_t *>(data));
+  display.writePixels(reinterpret_cast<uint16_t *>(data), w * h);
   display.endWrite();
 
   lv_display_flush_ready(disp);
 }
 
 /* Read the touchpad*/
-void my_touchpad_read(lv_indev_t *indev_driver, lv_indev_data_t *data) {
+inline void my_touchpad_read(lv_indev_t *indev_driver, lv_indev_data_t *data) {
   uint16_t touchX, touchY;
 
-  bool touched = display.getTouch(&touchX, &touchY);
+  const bool touched = display.getTouch(&touchX, &touchY);
 
   if (!touched) {
     data->state = LV_INDEV_STATE_REL;
@@ -82,7 +83,7 @@ void my_touchpad_read(lv_indev_t *indev_driver, lv_indev_data_t *data) {
  * @brief Load configurations from file system and apply them. Called during
  * system boot
  */
-void loadSystemConfigurations() {
+inline void loadSystemConfigurations() {
   lv_utils_setBrightness(
       fileSystem.readSetting(FS_VAR_SETTINGS_DISPLAY_BRIGHTNESS).toInt());
 
@@ -92,11 +93,11 @@ void loadSystemConfigurations() {
   lv_utils_setTheme(
       fileSystem.readSetting(FS_VAR_SETTINGS_THEMES_THEME_DARK).toInt());
 
-  uint8_t fontSmall =
+  const uint8_t fontSmall =
       fileSystem.readSetting(FS_VAR_SETTINGS_THEMES_FONT_SMALL).toInt();
-  uint8_t fontMedium =
+  const uint8_t fontMedium =
       fileSystem.readSetting(FS_VAR_SETTINGS_THEMES_FONT_MEDIUM).toInt();
-  uint8_t fontLarge =
+  const uint8_t fontLarge =
       fileSystem.readSetting(FS_VAR_SETTINGS_THEMES_FONT_LARGE).toInt();
 
   lv_utils_setFonts(fontSmall, fontMedium, fontLarge);
@@ -104,57 +105,59 @@ void loadSystemConfigurations() {
   lv_utils_setWallpaper(
       fileSystem.readSetting(FS_VAR_SETTINGS_THEMES_WALLPAPER).toInt(), false);
 
-  bool bleEnabledMain =
+  const bool bleEnabledMain =
       fileSystem.readSetting(FS_VAR_SETTINGS_CONNECTIVITY_BLE).toInt();
   lv_utils_setBluetooth(bleEnabledMain);
 
-  bool wifiEnabledMain =
+  const bool wifiEnabledMain =
       fileSystem.readSetting(FS_VAR_SETTINGS_NETWORKING_WIFI_STATE).toInt();
   lv_utils_setWiFi(wifiEnabledMain);
 
   // load date and time
   // YYYY-MM-DD
   // HH:MM:SS
-  String date = fileSystem.readSetting(FS_VAR_SETTINGS_DATE_TIME_DATE);
-  String time = fileSystem.readSetting(FS_VAR_SETTINGS_DATE_TIME_TIME);
+  const String date = fileSystem.readSetting(FS_VAR_SETTINGS_DATE_TIME_DATE);
+  const String time = fileSystem.readSetting(FS_VAR_SETTINGS_DATE_TIME_TIME);
   currentTimezoneIndex =
       fileSystem.readSetting(FS_VAR_SETTINGS_DATE_TIME_TIMEZONE).toInt();
   // TODO: update the time based on the timezone
-  String timezoneSTR = /*"+03:00"*/ getTimezoneString(
+  const String timezoneSTR = /*"+03:00"*/ getTimezoneString(
       static_cast<ETimezones>(currentTimezoneIndex));
-  char offsetSign = timezoneSTR.charAt(0);
+  const char offsetSign = timezoneSTR.charAt(0);
   bool isOffsetPositive;
   if (offsetSign == '+') {
     isOffsetPositive = true;
-  } else {  // for negative and 00:00
+  } else { // for negative and 00:00
     isOffsetPositive = false;
   }
-  int hourOffset = timezoneSTR.substring(1, 3).toInt();
-  int minuteOffset = timezoneSTR.substring(4).toInt();
+  const int hourOffset = timezoneSTR.substring(1, 3).toInt();
+  const int minuteOffset = timezoneSTR.substring(4).toInt();
 
-  s3Time.setTimeZone(hourOffset + minuteOffset / 60);
+  s3Time.setTimeZone(static_cast<float>(hourOffset) +
+                     static_cast<float>(minuteOffset) / 60);
 
-  int year = date.substring(0, 4).toInt();
-  int month = date.substring(5, 7).toInt();
-  int day = date.substring(8, 10).toInt();
-  int hour = time.substring(0, 2).toInt();
-  int minute = time.substring(3, 5).toInt();
-  int second = time.substring(6, 8).toInt();
+  const int year = date.substring(0, 4).toInt();
+  const int month = date.substring(5, 7).toInt();
+  const int day = date.substring(8, 10).toInt();
+  const int hour = time.substring(0, 2).toInt();
+  const int minute = time.substring(3, 5).toInt();
+  const int second = time.substring(6, 8).toInt();
 
   s3Time.setTime(second, minute, hour, day, month, year, 0);
   currentTimeHour = hour;
   currentTimeMinute = minute;
   currentTimeSecond = second;
 
-  sprintf(lvCurrentDate, "%s/%s/%s %s", s3Time.getTime("%d"),
-          s3Time.getTime("%m"), s3Time.getTime("%Y"), s3Time.getTime("%a"));
+  sprintf(lvCurrentDate, "%s/%s/%s %s", s3Time.getTime("%d").c_str(),
+          s3Time.getTime("%m").c_str(), s3Time.getTime("%Y").c_str(),
+          s3Time.getTime("%a").c_str());
 
   sprintf(lvCurrentTime, "%02d:%02d", currentTimeHour, currentTimeMinute);
   if (homeScreenVisible) {
     ui_utils_updateTimeDate();
   }
 
-  int syncTime = fileSystem.readSetting(FS_VAR_SETTINGS_DATE_TIME_SYNC).toInt();
+  const int syncTime = fileSystem.readSetting(FS_VAR_SETTINGS_DATE_TIME_SYNC).toInt();
   syncTimeAutomatically = syncTime;
 };
 
@@ -162,7 +165,7 @@ void loadSystemConfigurations() {
  * @brief Contains all the background functions and operations that do not
  * update the UI directly
  */
-void s3looperTask(void *params) {
+inline void s3looperTask(void *params) {
   while (true) {
     if (wifiStatusChanged) {
       wifiStatusChanged = false;
@@ -226,20 +229,21 @@ void s3looperTask(void *params) {
  * @brief This function is the same as `s3looperTask` but have `lvgl` functions
  * that should only run on `main loop` thread.
  */
-void s3UILooper() {
+inline void s3UILooper() {
   s3Time.loop();
 
   if (dateChanged) {
     dateChanged = false;
     s3Time.setTime(s3Time.getSecond(), s3Time.getMinute(), s3Time.getHour(),
-                   newDay, newMonth, newYear, s3Time.getMicros());
+                   newDay, newMonth, newYear,
+                   static_cast<int>(s3Time.getMicros()));
 
-    fileSystem.editSetting(
-        FS_VAR_SETTINGS_DATE_TIME_DATE,
-        String(String(newYear) + "-" + (newMonth < 10 ? "0" : "") +
-               String(newMonth) + "-" + (newDay < 10 ? "0" : "") +
-               String(newDay))
-            .c_str());
+    fileSystem.editSetting(FS_VAR_SETTINGS_DATE_TIME_DATE,
+                           String(String(newYear) + "-" +
+                                  (newMonth < 10 ? "0" : "") +
+                                  String(newMonth) + "-" +
+                                  (newDay < 10 ? "0" : "") + String(newDay))
+                               .c_str());
   }
 
   if (brightnessChanged) {
@@ -266,20 +270,17 @@ void s3UILooper() {
     DEBUG_PRINTF("Date: '%s' Time: '%s' Timezone: '%s'\n", cDate.c_str(),
                  cTime.c_str(), selectedTimezoneStr.c_str());
 
-    char *localizedDateTime = (char *)malloc(17);  // "2025-03-01 12:56\0"
+    const auto localizedDateTime = static_cast<char *>(malloc(17)); // "2025-03-01 12:56\0"
     localizeTime(cTime, cDate, selectedTimezoneStr, localizedDateTime);
 
     DEBUG_PRINTF("Localized Time: '%s'\n", localizedDateTime);
 
-    int localizedYear, localizedMonth, localizedDay, localizedHour,
-        localizedMinute;
-
-    String localizedSTR = String(localizedDateTime);
-    localizedYear = localizedSTR.substring(0, 4).toInt();
-    localizedMonth = localizedSTR.substring(5, 7).toInt();
-    localizedDay = localizedSTR.substring(8, 10).toInt();
-    localizedHour = localizedSTR.substring(11, 13).toInt();
-    localizedMinute = localizedSTR.substring(14).toInt();
+    const auto localizedSTR = String(localizedDateTime);
+    const int localizedYear = localizedSTR.substring(0, 4).toInt();
+    const int localizedMonth = localizedSTR.substring(5, 7).toInt();
+    const int localizedDay = localizedSTR.substring(8, 10).toInt();
+    const int localizedHour = localizedSTR.substring(11, 13).toInt();
+    const int localizedMinute = localizedSTR.substring(14).toInt();
 
     s3Time.setTime(s3Time.getSecond(), localizedMinute, localizedHour,
                    localizedDay, localizedMonth, localizedYear);
@@ -332,8 +333,9 @@ void s3UILooper() {
     currentTimeMinute = s3Time.getMinute();
     currentTimeSecond = s3Time.getSecond();
     sprintf(lvCurrentTime, "%02d:%02d", currentTimeHour, currentTimeMinute);
-    sprintf(lvCurrentDate, "%s/%s/%s %s", s3Time.getTime("%d"),
-            s3Time.getTime("%m"), s3Time.getTime("%Y"), s3Time.getTime("%a"));
+    sprintf(lvCurrentDate, "%s/%s/%s %s", s3Time.getTime("%d").c_str(),
+            s3Time.getTime("%m").c_str(), s3Time.getTime("%Y").c_str(),
+            s3Time.getTime("%a").c_str());
     if (homeScreenVisible) {
       ui_utils_updateTimeDate();
     }
@@ -343,15 +345,15 @@ void s3UILooper() {
     updateTimeSet = false;
     s3Time.setTime(currentTimeSecond, currentTimeMinute, currentTimeHour,
                    s3Time.getDay(), s3Time.getMonth(), s3Time.getYear(),
-                   s3Time.getMicros());
-    fileSystem.editSetting(
-        FS_VAR_SETTINGS_DATE_TIME_TIME,
-        String((s3Time.getHour() < 10 ? "0" : "") + String(s3Time.getHour()) +
-               ":" + (s3Time.getMinute() < 10 ? "0" : "") +
-               String(s3Time.getMinute()) + ":" +
-               (s3Time.getSecond() < 10 ? "0" : "") +
-               String(s3Time.getSecond()))
-            .c_str());
+                   static_cast<int>(s3Time.getMicros()));
+    fileSystem.editSetting(FS_VAR_SETTINGS_DATE_TIME_TIME,
+                           String((s3Time.getHour() < 10 ? "0" : "") +
+                                  String(s3Time.getHour()) + ":" +
+                                  (s3Time.getMinute() < 10 ? "0" : "") +
+                                  String(s3Time.getMinute()) + ":" +
+                                  (s3Time.getSecond() < 10 ? "0" : "") +
+                                  String(s3Time.getSecond()))
+                               .c_str());
   }
 
   if (syncTimeAutomaticallyChanged) {

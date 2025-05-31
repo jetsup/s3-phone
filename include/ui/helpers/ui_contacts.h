@@ -17,7 +17,7 @@ extern char contactOptions[9][18];
 
 extern char* contactNames[MAX_CONTACTS];
 extern char* contactNumbers[MAX_CONTACTS];
-extern int contactsCount;
+extern size_t contactsCount;
 
 void contact_add_to_list(lv_obj_t* list, const char* text,
                          const char* symbol_icon, lv_event_cb_t event_cb/*,

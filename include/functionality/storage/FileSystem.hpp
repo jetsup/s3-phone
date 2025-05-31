@@ -43,7 +43,7 @@ class FileSystem {
    * @return Setting value
    */
   String _readSetting(const char *variable, const char *defaultValue,
-                      bool createIfUnavailable = true);
+                      bool createIfUnavailable = true) const;
 
   /**
    * @brief Create a file in the file system
@@ -115,7 +115,7 @@ class FileSystem {
    * @note createIfUnavailable Create the file with this `filename` if it is not
    * saved in the filesystem
    */
-  void editSetting(const char *variable, const char *value);
+  void editSetting(const char *variable, const char *value) const;
 
   /**
    * @brief Delete a file from the file system
@@ -141,14 +141,14 @@ class FileSystem {
    * @param value The value associated with the new key
    */
   void editDataJSON(const char *filepath, const char *prevKey,
-                    const char *newKey, const char *value);
+                    const char *newKey, const char *value) const;
 
   /**
    * @brief Get the total number of items in a JSON file
    * @param filepath The file containing the JSON object
    * @return The total number of items in the JSON file
    */
-  int getTotalItemsInJSON(const char *filepath) const;
+  size_t getTotalItemsInJSON(const char *filepath) const;
 
   /**
    * @brief Read the `keys` and `values` of a JSON document and store them in a
@@ -158,14 +158,14 @@ class FileSystem {
    * @param values The buffer to store all the values associated with the
    * corresponding key
    */
-  void readKeyValueJSON(const char *filepath, char **keys, char **values);
+  void readKeyValueJSON(const char *filepath, char **keys, char **values) const;
 
   /**
    * @brief Delete the data associated with the `key` from the JSON
    * @param filepath The JSON file containing the data
    * @param key The key associated with the data to be deleted
    */
-  void deleteDataJSON(const char *filepath, const char *key);
+  void deleteDataJSON(const char *filepath, const char *key) const;
 };
 
 // SQLite database

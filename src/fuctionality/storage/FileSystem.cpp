@@ -203,7 +203,7 @@ String FileSystem::readSetting(const char *variable) const {
 }
 
 String FileSystem::_readSetting(const char *variable, const char *defaultValue,
-                                bool createIfUnavailable) {
+                                bool createIfUnavailable) const {
   String filename = "";
   JsonDocument doc;
 
@@ -302,7 +302,7 @@ bool FileSystem::_createFile(const char *filepath) {
   return true;
 }
 
-void FileSystem::editSetting(const char *variable, const char *value) {
+void FileSystem::editSetting(const char *variable, const char *value) const {
   String filename = "";
   if (String(variable).equals(FS_VAR_SETTINGS_DISPLAY_BRIGHTNESS) ||
       String(variable).equals(FS_VAR_SETTINGS_DISPLAY_TIMEOUT)) {
@@ -419,7 +419,7 @@ void FileSystem::saveToJSON(const char *filepath, const char *key,
 }
 
 void FileSystem::editDataJSON(const char *filepath, const char *prevKey,
-                              const char *newKey, const char *value) {
+                              const char *newKey, const char *value) const {
   File file = _mFs.open(filepath, FILE_READ);
   if (!file) {
     DEBUG_PRINTF("[JSON Edit]Failed to open file for reading: %s\n", filepath);
@@ -450,7 +450,7 @@ void FileSystem::editDataJSON(const char *filepath, const char *prevKey,
   file.close();
 }
 
-int FileSystem::getTotalItemsInJSON(const char *filepath) const {
+size_t FileSystem::getTotalItemsInJSON(const char *filepath) const {
   File file = _mFs.open(filepath, FILE_READ);
   if (!file) {
     DEBUG_PRINTF("Failed to open file for reading: %s\n", filepath);
@@ -460,7 +460,7 @@ int FileSystem::getTotalItemsInJSON(const char *filepath) const {
   JsonDocument doc;
   deserializeJson(doc, file);
 
-  int count = doc.size();
+  const size_t count = doc.size();
   file.close();
 
   DEBUG_PRINTF("Total items in JSON file '%s': %d\n", filepath, count);
@@ -469,7 +469,7 @@ int FileSystem::getTotalItemsInJSON(const char *filepath) const {
 }
 
 void FileSystem::readKeyValueJSON(const char *filepath, char **keys,
-                                  char **values) {
+                                  char **values) const {
   File file = _mFs.open(filepath, FILE_READ);
   if (!file) {
     DEBUG_PRINTF("Failed to open file for reading: %s\n", filepath);
@@ -499,7 +499,7 @@ void FileSystem::readKeyValueJSON(const char *filepath, char **keys,
   file.close();
 }
 
-void FileSystem::deleteDataJSON(const char *filepath, const char *key) {
+void FileSystem::deleteDataJSON(const char *filepath, const char *key) const {
   File file = _mFs.open(filepath, FILE_READ);
   if (!file) {
     DEBUG_PRINTF("[DELETE JSON]Failed to open file for reading: %s\n",

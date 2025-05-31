@@ -3,9 +3,9 @@
 // LVGL version: 9.1.0
 // Project name: s3-phone
 
-#include "ui/ui.h"
 #include "ui/helpers/ui_contacts.h"
 #include "ui/helpers/ui_utils.h"
+#include "ui/ui.h"
 
 void ui_contactsScreen_screen_init(void) {
   ui_contactsScreen = lv_obj_create(NULL);

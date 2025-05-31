@@ -46,6 +46,18 @@ void contact_set_contact_list(lv_obj_t* list) {
     contact_add_to_list(list, nameNumber, LVC_SYMBOL_SD_CARD,
                         ui_event_list_button_cb);
   }
+
+  // show the add FAB
+  lv_obj_t* float_btn = lv_button_create(ui_listContact);
+  lv_obj_set_size(float_btn, 40, 40);
+  lv_obj_add_flag(float_btn, LV_OBJ_FLAG_FLOATING);
+  lv_obj_align(
+      float_btn, LV_ALIGN_BOTTOM_RIGHT, 0,
+      /*-lv_obj_get_style_pad_right(ui_listContact, LV_PART_MAIN)*/ -5);
+  lv_obj_set_style_radius(float_btn, LV_RADIUS_CIRCLE, 0);
+  lv_obj_set_style_bg_image_src(float_btn, LV_SYMBOL_PLUS, 0);
+  lv_obj_set_style_text_font(float_btn, lv_theme_get_font_large(float_btn), 0);
+  lv_obj_add_event_cb(float_btn, ui_event_fab_cb, LV_EVENT_ALL, ui_listContact);
 }
 
 void refreshContactList() { contact_set_contact_list(ui_listContact); }
